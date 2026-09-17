@@ -25,7 +25,7 @@ El kit se personaliza contigo mediante una entrevista inicial (`/empezar`).
 ## Instalación
 
 ```bash
-git clone <URL-de-tu-copia-de-andromeda-ai> mi-aios
+git clone https://github.com/Miguel21313/andromeda-ai.git mi-aios
 ```
 
 ```bash
@@ -178,9 +178,7 @@ Convierte tu colección de notas, proyectos y memorias del asistente en un solo 
 
 La repetición del crecimiento también te sirve para mostrarle a alguien qué contiene tu AIOS.
 
-[![El Cerebro 3D creciendo de una idea a un globo de conocimiento conectado (demo original de AIS-OS, en inglés)](docs/media/3d-brain-preview.gif)](https://github.com/nateherkai/AIS-OS/raw/refs/heads/main/docs/media/3d-brain-demo.mp4)
-
-La vista previa muestra la secuencia completa de crecimiento. **[Descarga el video original de 36 segundos](https://github.com/nateherkai/AIS-OS/raw/refs/heads/main/docs/media/3d-brain-demo.mp4)** para verlo en resolución completa. Esa grabación es del proyecto original: muestra el "HerkBrain" de Nate, con la interfaz en inglés. En Andromeda AI la interfaz está en español, y el skill construye el tuyo con el nombre, las categorías y el conocimiento que elijas.
+> Próximamente: una grabación de demo en español de Andromeda AI. Mientras tanto, ejecuta `/cerebro-3d` y pulsa "Reproducir demo" (`D`) para verlo en vivo con tus propios datos.
 
 ### Cómo funciona
 
