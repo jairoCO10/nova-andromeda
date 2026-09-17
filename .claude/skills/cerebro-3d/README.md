@@ -1,19 +1,19 @@
-# 3D Brain skill
+# Skill Cerebro 3D
 
-Build a named, interactive globe from an AIOS's saved knowledge. The skill asks for the brain's display name and main categories, maps them to selected local folders, and creates the bundled app under `apps/3d-brain/`.
+Construye un globo interactivo, con el nombre que tú elijas, a partir del conocimiento guardado en tu AIOS. El skill te pide el nombre del cerebro y sus categorías principales, relaciona cada categoría con carpetas locales que tú apruebas y crea la app incluida en `apps/3d-brain/`.
 
 - Claude Code: `/cerebro-3d`
-- Codex: select **3D Brain**, or type `$cerebro-3d`
-- Natural language: “Build a 3D brain from my AIOS.”
+- Codex: selecciona **Cerebro 3D** o escribe `$cerebro-3d`
+- Lenguaje natural: "Construye un cerebro 3D con mi AIOS."
 
-Node.js 22+ is required. The renderer is included, so generated apps run with `node serve.mjs` without an npm install. Building a modified renderer requires `npm ci` and `npm run build:js` in the generated app.
+Requiere Node.js 22 o superior. El renderer ya viene compilado, así que la app generada funciona con `node serve.mjs` sin instalar nada con npm. Si modificas el renderer, ejecuta `npm ci` y `npm run build:js` en la app generada.
 
-The app includes a spherical layout, central orb, colored categories, search, a note reader, source filters, inventory, Cinema, and interactive growth replay. Drag and zoom remain available during growth. Connections come from the selected notes; the animation illustrates connectivity, not historical creation dates.
+La app incluye el globo, el orbe central, categorías con colores, búsqueda, lector de notas, filtros por fuente, inventario, modo cine y una repetición interactiva del crecimiento. Puedes arrastrar y hacer zoom mientras crece. Las conexiones salen de las notas seleccionadas: la animación muestra cómo se conectan, no cuándo se crearon.
 
-Markdown/text and curated Codex memory are supported directly. Claude memory uses its selected Markdown folder. Meeting and video knowledge can come from saved Markdown exports. Other formats and online services require an export or a tested adapter.
+Lee directamente Markdown y texto, y también la memoria curada de Codex. La memoria de Claude se lee desde la carpeta Markdown que elijas. El conocimiento de reuniones y videos puede venir de exportaciones en Markdown. Otros formatos y servicios en línea necesitan una exportación o un adaptador probado.
 
-To install separately, copy this entire folder, including `assets`, `scripts`, `references`, and `agents`, to the target AIOS's `.claude/skills/cerebro-3d/`. In AIS-OS, run `bash scripts/sync-codex-skills.sh cerebro-3d` to generate the Codex copy. Do not copy only `SKILL.md` or include a generated user's config/data.
+Para instalarlo por separado, copia esta carpeta completa (incluidas `assets`, `scripts`, `references` y `agents`) en `.claude/skills/cerebro-3d/` del AIOS de destino. En este repositorio, ejecuta `bash scripts/sync-codex-skills.sh cerebro-3d` para generar la copia de Codex. No copies solo `SKILL.md` ni incluyas la configuración o los datos generados de otra persona.
 
-Package validation: `node scripts/test-package.mjs`. For a larger fictional visual fixture, add `--keep --demo --out <scratch-folder>`.
+Validación del paquete: `node scripts/test-package.mjs`. Para una prueba visual más grande con datos ficticios, agrega `--keep --demo --out <carpeta-temporal>`.
 
-See [SKILL.md](SKILL.md) for the workflow, [the portable spec](references/portable-spec.md) for the implementation contract, and [the config guide](references/config.md) for adapters and limits.
+Consulta [SKILL.md](SKILL.md) para ver el flujo, [la especificación portable](references/portable-spec.md) para el contrato de implementación y [la guía de configuración](references/config.md) para los adaptadores y límites.

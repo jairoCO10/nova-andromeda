@@ -34,7 +34,7 @@ export async function buildGraph(configFile = path.join(HERE,'brain.config.json'
     const real = await fs.realpath(file);
     if (within(real,HERE)) return;
     const stat = await fs.stat(real);
-    if (!stat.isFile() || stat.size > 1024*1024) { warnings.push(`Skipped oversized or non-file input: ${slash(file)}`); return; }
+    if (!stat.isFile() || stat.size > 1024*1024) { warnings.push(`Se omitió una entrada demasiado grande o que no es un archivo: ${slash(file)}`); return; }
     const identity = `${real}:${input.startLine || 0}`;
     if (seen.has(identity)) return;
     seen.add(identity); scanned++;
@@ -50,7 +50,7 @@ export async function buildGraph(configFile = path.join(HERE,'brain.config.json'
   }
   async function walk(dir,source,base=dir) {
     const stat = await fs.lstat(dir);
-    if (stat.isSymbolicLink()) { warnings.push(`Skipped symbolic link: ${slash(dir)}`); return; }
+    if (stat.isSymbolicLink()) { warnings.push(`Se omitió un enlace simbólico: ${slash(dir)}`); return; }
     if (stat.isFile()) { if (/\.(md|txt)$/i.test(dir)) await add(dir,source); return; }
     if (!stat.isDirectory() || within(await fs.realpath(dir),HERE)) return;
     for (const e of (await fs.readdir(dir,{withFileTypes:true})).sort((a,b)=>a.name.localeCompare(b.name))) {
@@ -69,9 +69,9 @@ export async function buildGraph(configFile = path.join(HERE,'brain.config.json'
       if (source.type === 'codex-memory') {
         for (const r of await readCodexMemories(input)) await add(r.file,source,r);
       } else await walk(input,source);
-    } catch (err) { if (err.code === 'ENOENT' || err.code === 'EACCES') warnings.push(`${source.label}: cannot read ${slash(input)} (${err.code})`); else throw err; }
+    } catch (err) { if (err.code === 'ENOENT' || err.code === 'EACCES') warnings.push(`${source.label}: no se puede leer ${slash(input)} (${err.code})`); else throw err; }
   }
-  if (records.size >= config.maxNodes) warnings.push(`Reached the ${config.maxNodes}-note limit. Narrow the category paths or raise maxNodes.`);
+  if (records.size >= config.maxNodes) warnings.push(`Se alcanzó el límite de ${config.maxNodes} notas. Acota las rutas de las categorías o aumenta maxNodes.`);
   const all = [...records.values()], visible = all.filter(r=>r.node.kind!=='index');
   const aliases = new Map(), files = new Map(), edges = new Map();
   const register = (alias,r) => { const k=key(alias); const list=aliases.get(k)||[]; if (!list.includes(r)) list.push(r); aliases.set(k,list); };
@@ -140,6 +140,6 @@ if (process.argv[1] && path.resolve(process.argv[1])===fileURLToPath(import.meta
   const {graph}=await buildGraph();
   await fs.mkdir(path.join(HERE,'data'),{recursive:true});
   await fs.writeFile(path.join(HERE,'data/graph.json'),JSON.stringify(graph));
-  console.log(`${graph.brain.name}: ${graph.nodes.length} notes, ${graph.links.length} connections, ${graph.sources.length} categories.`);
+  console.log(`${graph.brain.name}: ${graph.nodes.length} notas, ${graph.links.length} conexiones, ${graph.sources.length} categorías.`);
   for(const warning of graph.warnings) console.warn(warning);
 }

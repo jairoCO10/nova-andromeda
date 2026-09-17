@@ -17,8 +17,8 @@ const root=await fs.mkdtemp(path.join(parent,'brain-package-fixture-'));
 const write=async(name,body)=>{await fs.mkdir(path.dirname(path.join(root,name)),{recursive:true});await fs.writeFile(path.join(root,name),body);};
 let child;
 try{
-  assert.throws(()=>validateConfig({name:'',sources:[]}),/name/);
-  assert.throws(()=>validateConfig({name:'Test',sources:[{id:'same',label:'A',paths:['a']},{id:'same',label:'B',paths:['b']}]}),/unique/);
+  assert.throws(()=>validateConfig({name:'',sources:[]}),/nombre/);
+  assert.throws(()=>validateConfig({name:'Test',sources:[{id:'same',label:'A',paths:['a']},{id:'same',label:'B',paths:['b']}]}),/único/);
   const config={name:'Atlas Brain',port:4641,sources:[
     {id:'strategy',label:'Strategy',paths:['context']},
     {id:'studio',label:'Studio knowledge',paths:['studio']},

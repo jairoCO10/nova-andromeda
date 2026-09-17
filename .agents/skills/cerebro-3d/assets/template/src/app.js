@@ -13,22 +13,23 @@ const DAY = 86400000;
 const params = new URLSearchParams(location.search);
 
 const KIND_LABEL = {
-  meeting: 'meeting sync', entity: 'company / product', person: 'person', concept: 'concept', page: 'page', document: 'source document',
-  sync: 'recurring sync', qa: 'Q&A', 'all-hands': 'all hands', planning: 'planning session', interview: 'interview', call: 'call', community: 'community call', recording: 'recording', series: 'meeting series',
-  video: 'video', tool: 'tool', technique: 'technique', comparison: 'comparison',
-  feedback: 'feedback memory', project: 'project memory', reference: 'reference memory', user: 'about you', note: 'note',
-  recollection: 'session recap',
-  app: 'app / tool', business: 'business & ops', bucket: 'skill output', skill: 'skill', agent: 'agent', other: 'project',
+  meeting: 'reunión', entity: 'empresa / producto', person: 'persona', concept: 'concepto', page: 'página', document: 'documento fuente',
+  sync: 'reunión recurrente', qa: 'preguntas y respuestas', 'all-hands': 'reunión general', planning: 'sesión de planificación', interview: 'entrevista', call: 'llamada', community: 'llamada de comunidad', recording: 'grabación', series: 'serie de reuniones',
+  video: 'video', tool: 'herramienta', technique: 'técnica', comparison: 'comparación',
+  feedback: 'memoria de feedback', project: 'memoria de proyecto', reference: 'memoria de referencia', user: 'sobre ti', note: 'nota',
+  recollection: 'resumen de sesión',
+  app: 'app / herramienta', business: 'negocio y operaciones', bucket: 'resultado de skill', skill: 'skill', agent: 'agente', other: 'proyecto',
 };
+const LINK_KIND_LABEL = { mention: 'mención', source: 'enlace de archivo', bridge: 'puente', attended: 'asistencia', series: 'serie' };
 const FLAG_TEXT = {
-  stale: (n, s) => `Stale: last touched ${ago(n.updated)} (threshold ${s.staleDays} days)`,
-  quiet: (n) => `Quiet: no file changes for ${n.ageDays} days. Archive or revive.`,
-  orphan: () => 'Orphan: nothing links here and it links to nothing',
-  stub: (n) => `Stub: only ${n.words} words`,
-  'broken-links': (n) => (n.broken.length === 1 ? '1 link points at a page that does not exist' : `${n.broken.length} links point at pages that do not exist`),
-  'missing-folder': () => 'Listed in the index but the folder is missing',
-  'not-ingested': () => 'Transcript only: no wiki write-up yet. Ingest it or leave it as a record.',
-  archived: () => 'Marked archived in its frontmatter',
+  stale: (n, s) => `Desactualizada: último cambio ${ago(n.updated)} (umbral: ${s.staleDays} días)`,
+  quiet: (n) => `Inactivo: sin cambios hace ${n.ageDays} días. Archívalo o retómalo.`,
+  orphan: () => 'Huérfana: nada enlaza aquí y no enlaza a nada',
+  stub: (n) => `Borrador: solo ${n.words} palabras`,
+  'broken-links': (n) => (n.broken.length === 1 ? '1 enlace apunta a una página que no existe' : `${n.broken.length} enlaces apuntan a páginas que no existen`),
+  'missing-folder': () => 'Aparece en el índice, pero la carpeta no existe',
+  'not-ingested': () => 'Solo transcripción: aún no tiene página en la wiki. Procésala o déjala como registro.',
+  archived: () => 'Marcada como archivada en su frontmatter',
 };
 
 let graph;               // ForceGraph3D instance
@@ -60,20 +61,23 @@ let bloomPass = null;
 // ---------- utils ----------
 
 function ago(ts) {
-  if (!ts) return 'unknown';
+  if (!ts) return 'desconocido';
   const d = Math.round((Date.now() - ts) / DAY);
-  if (d <= 0) return 'today';
-  if (d === 1) return 'yesterday';
-  if (d < 30) return `${d} days ago`;
-  if (d < 365) return `${Math.round(d / 30)} mo ago`;
-  return `${(d / 365).toFixed(1)} y ago`;
+  if (d <= 0) return 'hoy';
+  if (d === 1) return 'ayer';
+  if (d < 30) return `hace ${d} días`;
+  if (d < 365) return `hace ${Math.round(d / 30)} m`;
+  return `hace ${(d / 365).toLocaleString('es', { maximumFractionDigits: 1 })} a`;
 }
 function fmtDate(ts) {
   if (!ts) return '';
   return new Date(ts).toISOString().slice(0, 10);
 }
 function num(n) {
-  return n == null ? '' : Number(n).toLocaleString('en-US');
+  return n == null ? '' : Number(n).toLocaleString('es');
+}
+function words(w) {
+  return w < 1000 ? `${num(w)} palabras` : `${num(Math.round(w / 1000))} mil palabras`;
 }
 function esc(s) {
   return String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -121,13 +125,13 @@ function radiusOf(n) {
 async function main() {
   const res = await fetch('/api/graph');
   data = await res.json();
-  if (!res.ok) throw new Error(data.error || 'Could not load the brain.');
+  if (!res.ok) throw new Error(data.error || 'No se pudo cargar el cerebro.');
   const brainName = data.brain.name;
-  document.title = brainName;
+  document.title = `${brainName} · Andromeda AI`;
   document.querySelector('.brand-name').textContent = brainName;
   document.querySelector('.splash-title').textContent = brainName;
   document.querySelector('.mode-label').textContent = brainName.toUpperCase() + ' / 3D';
-  $('visible-status').textContent = data.warnings?.length ? data.warnings.length + ' source ' + (data.warnings.length === 1 ? 'notice' : 'notices') + ' in inventory' : 'Local knowledge · connected';
+  $('visible-status').textContent = data.warnings?.length ? data.warnings.length + ' ' + (data.warnings.length === 1 ? 'aviso de fuente' : 'avisos de fuentes') + ' en el inventario' : 'Conocimiento local · conectado';
   for (const s of data.sources) sourceById[s.id] = s;
   activeSources = new Set(data.sources.map((s) => s.id));
   for (const n of data.nodes) nodesById.set(n.id, n);
@@ -142,8 +146,8 @@ async function main() {
   buildSearchIndex();
   renderLegend();
   renderInventory();
-  $('brand-meta').textContent = `${num(data.nodes.length)} notes · ${num(data.links.length)} connections`;
-  $('splash-stats').textContent = `${num(data.nodes.length)} notes · ${num(data.links.length)} connections · ${data.sources.length} sources`;
+  $('brand-meta').textContent = `${num(data.nodes.length)} notas · ${num(data.links.length)} conexiones`;
+  $('splash-stats').textContent = `${num(data.nodes.length)} notas · ${num(data.links.length)} conexiones · ${data.sources.length} ${data.sources.length === 1 ? 'fuente' : 'fuentes'}`;
   $('total-notes').textContent = num(data.nodes.length);
   $('total-sources').textContent = data.sources.length;
   $('total-links').textContent = num(data.links.length);
@@ -495,7 +499,7 @@ function onHover(n) {
   if (demo && !growth?.complete) return;
   const hl = $('hover-label');
   if (n && (!selected || n.id !== selected.id)) {
-    hl.innerHTML = `<b>${esc(n.title)}</b><span>${esc(sourceById[n.source].label)} · ${esc(KIND_LABEL[n.kind] || n.kind)}${n.updated ? ' · ' + esc(ago(n.updated)) : ''}${n.flags?.length ? ' · needs attention' : ''}</span>`;
+    hl.innerHTML = `<b>${esc(n.title)}</b><span>${esc(sourceById[n.source].label)} · ${esc(KIND_LABEL[n.kind] || n.kind)}${n.updated ? ' · ' + esc(ago(n.updated)) : ''}${n.flags?.length ? ' · requiere atención' : ''}</span>`;
     hl.hidden = false;
     document.body.style.cursor = 'pointer';
   } else {
@@ -521,31 +525,31 @@ function renderDrawer(n) {
   $('d-title').textContent = n.title;
 
   const meta = [];
-  if (n.updated) meta.push(`<span>updated <b>${fmtDate(n.updated)}</b> (${ago(n.updated)})</span>`);
-  if (n.created && n.created !== n.updated) meta.push(`<span>created <b>${fmtDate(n.created)}</b></span>`);
-  if (n.words) meta.push(`<span><b>${num(n.words)}</b> words</span>`);
-  meta.push(`<span><b>${n.degree}</b> connections</span>`);
-  if (n.views != null) meta.push(`<span><b>${num(n.views)}</b> views</span>`);
-  if (n.likes != null) meta.push(`<span><b>${num(n.likes)}</b> likes</span>`);
+  if (n.updated) meta.push(`<span>actualizada <b>${fmtDate(n.updated)}</b> (${ago(n.updated)})</span>`);
+  if (n.created && n.created !== n.updated) meta.push(`<span>creada <b>${fmtDate(n.created)}</b></span>`);
+  if (n.words) meta.push(`<span><b>${num(n.words)}</b> palabras</span>`);
+  meta.push(`<span><b>${n.degree}</b> conexiones</span>`);
+  if (n.views != null) meta.push(`<span><b>${num(n.views)}</b> vistas</span>`);
+  if (n.likes != null) meta.push(`<span><b>${num(n.likes)}</b> me gusta</span>`);
   if (n.channel) meta.push(`<span>${esc(n.channel)}</span>`);
   if (n.source === 'meeting' && n.kind !== 'series') {
-    if (n.meetingDate) meta.unshift(`<span>held <b>${fmtDate(n.meetingDate)}</b> (${ago(n.meetingDate)})</span>`);
-    if (n.seriesGroup || n.series) meta.push(`<span>series <b>${esc(n.seriesGroup || n.series)}</b></span>`);
+    if (n.meetingDate) meta.unshift(`<span>realizada <b>${fmtDate(n.meetingDate)}</b> (${ago(n.meetingDate)})</span>`);
+    if (n.seriesGroup || n.series) meta.push(`<span>serie <b>${esc(n.seriesGroup || n.series)}</b></span>`);
     if (n.duration) meta.push(`<span><b>${n.duration}</b> min</span>`);
-    if (n.transcriptWords) meta.push(`<span>transcript <b>${num(n.transcriptWords)}</b> words</span>`);
-    meta.push(`<span>${n.ingested ? 'written up in the wiki' : 'transcript only'}</span>`);
-    if (n.participants?.length) meta.push(`<span>with <b>${esc(n.participants.slice(0, 8).join(', ') || 'Not listed')}</b></span>`);
+    if (n.transcriptWords) meta.push(`<span>transcripción de <b>${num(n.transcriptWords)}</b> palabras</span>`);
+    meta.push(`<span>${n.ingested ? 'documentada en la wiki' : 'solo transcripción'}</span>`);
+    if (n.participants?.length) meta.push(`<span>con <b>${esc(n.participants.slice(0, 8).join(', ') || 'Sin participantes')}</b></span>`);
   }
-  if (n.kind === 'series') meta.push(`<span><b>${(n.seriesMembers || []).length}</b> meetings</span><span><b>${n.ingestedCount || 0}</b> written up</span>`);
-  if (n.published && n.kind === 'video') meta.push(`<span>published <b>${fmtDate(n.published)}</b></span>`);
-  if (n.status) meta.push(`<span>status <b>${esc(n.status)}</b></span>`);
-  if (n.confidence) meta.push(`<span>confidence <b>${esc(n.confidence)}</b></span>`);
-  if (n.model) meta.push(`<span>model <b>${esc(n.model)}</b></span>`);
+  if (n.kind === 'series') meta.push(`<span><b>${(n.seriesMembers || []).length}</b> reuniones</span><span><b>${n.ingestedCount || 0}</b> documentadas</span>`);
+  if (n.published && n.kind === 'video') meta.push(`<span>publicado <b>${fmtDate(n.published)}</b></span>`);
+  if (n.status) meta.push(`<span>estado <b>${esc(n.status)}</b></span>`);
+  if (n.confidence) meta.push(`<span>confianza <b>${esc(n.confidence)}</b></span>`);
+  if (n.model) meta.push(`<span>modelo <b>${esc(n.model)}</b></span>`);
   if (n.tags?.length) meta.push(`<span>${n.tags.slice(0, 6).map((t) => '#' + esc(t)).join(' ')}</span>`);
   $('d-meta').innerHTML = meta.join('');
 
   const flags = (n.flags || []).map((f) => `<span class="flag" title="${esc(f)}">${esc(FLAG_TEXT[f] ? FLAG_TEXT[f](n, src) : f)}</span>`);
-  if (!flags.length) flags.push('<span class="flag ok">Healthy: linked, current, and complete</span>');
+  if (!flags.length) flags.push('<span class="flag ok">Saludable: enlazada, al día y completa</span>');
   $('d-flags').innerHTML = flags.join('');
 
   $('d-summary').textContent = n.summary || '';
@@ -557,7 +561,7 @@ function renderDrawer(n) {
   if (n.url) { yt.hidden = false; yt.href = n.url; } else yt.hidden = true;
   const tr = $('d-transcript');
   tr.hidden = !n.transcriptPath;
-  tr.textContent = 'Read transcript';
+  tr.textContent = 'Leer transcripción';
   $('d-read').hidden = n.kind === 'series' || (n.source === 'meeting' && !n.ingested);
   $('d-reveal').hidden = n.kind === 'series';
 
@@ -575,11 +579,11 @@ function renderDrawer(n) {
     const list = groups[s.id];
     if (!list) continue;
     list.sort((a, b) => b.node.degree - a.node.degree);
-    const rows = list.slice(0, 40).map((c) => `<div class="conn" data-id="${esc(c.node.id)}"><span>${esc(c.node.title)}</span><span class="conn-kind">${c.kind === 'link' ? esc(KIND_LABEL[c.node.kind] || c.node.kind) : esc(c.kind)}</span></div>`);
-    if (list.length > 40) rows.push(`<div class="conn muted"><span>… and ${list.length - 40} more</span></div>`);
+    const rows = list.slice(0, 40).map((c) => `<div class="conn" data-id="${esc(c.node.id)}"><span>${esc(c.node.title)}</span><span class="conn-kind">${c.kind === 'link' ? esc(KIND_LABEL[c.node.kind] || c.node.kind) : esc(LINK_KIND_LABEL[c.kind] || c.kind)}</span></div>`);
+    if (list.length > 40) rows.push(`<div class="conn muted"><span>… y ${list.length - 40} más</span></div>`);
     parts.push(`<div class="conn-group"><div class="conn-group-title"><i style="background:${s.color}"></i>${esc(s.label)} (${list.length})</div>${rows.join('')}</div>`);
   }
-  $('d-connections').innerHTML = parts.join('') || '<div class="muted small-text">No connections. Link it from another note or it will stay invisible to retrieval.</div>';
+  $('d-connections').innerHTML = parts.join('') || '<div class="muted small-text">Sin conexiones. Enlázala desde otra nota; si no, la búsqueda por enlaces nunca la encontrará.</div>';
 
   const bw = $('d-broken-wrap');
   if (n.broken?.length) {
@@ -590,7 +594,7 @@ function renderDrawer(n) {
 
   $('d-content-wrap').hidden = true;
   $('d-content').innerHTML = '';
-  $('d-read').textContent = 'Read note';
+  $('d-read').textContent = 'Leer nota';
   shownPart = null;
   d.querySelector('.drawer-scroll').scrollTop = 0;
 }
@@ -599,11 +603,11 @@ let shownPart = null;
 async function readNote(n, part = 'note') {
   const wrap = $('d-content-wrap');
   const btn = part === 'transcript' ? $('d-transcript') : $('d-read');
-  const label = part === 'transcript' ? 'Read transcript' : 'Read note';
+  const label = part === 'transcript' ? 'Leer transcripción' : 'Leer nota';
   if (!wrap.hidden && shownPart === part) { wrap.hidden = true; shownPart = null; btn.textContent = label; return; }
-  $('d-read').textContent = 'Read note';
-  $('d-transcript').textContent = 'Read transcript';
-  btn.textContent = 'Loading…';
+  $('d-read').textContent = 'Leer nota';
+  $('d-transcript').textContent = 'Leer transcripción';
+  btn.textContent = 'Cargando…';
   const res = await fetch(`/api/node?id=${encodeURIComponent(n.id)}${part === 'transcript' ? '&part=transcript' : ''}`);
   const body = await res.json();
   let md = body.markdown || '';
@@ -615,7 +619,7 @@ async function readNote(n, part = 'note') {
   md = md.replace(/\[\[([^\]|#]+)(?:#[^\]|]*)?(?:\|([^\]]*))?\]\]/g, (m, target, alias) => {
     const t = resolveLink(n, target.trim());
     const text = esc(alias || target);
-    return t ? `<a class="wikilink" data-id="${esc(t.id)}">${text}</a>` : `<a class="wikilink dead" title="no page named ${esc(target)}">${text}</a>`;
+    return t ? `<a class="wikilink" data-id="${esc(t.id)}">${text}</a>` : `<a class="wikilink dead" title="no existe una página llamada ${esc(target)}">${text}</a>`;
   });
   let html = '';
   try { html = marked.parse(md, { gfm: true, breaks: false }); } catch { html = `<pre>${esc(md)}</pre>`; }
@@ -628,12 +632,12 @@ async function readNote(n, part = 'note') {
     anchor.removeAttribute('href');
     anchor.classList.add('wikilink');
     if (target) anchor.dataset.id = target.id;
-    else { anchor.classList.add('dead'); anchor.title = 'Target is outside the selected graph or unresolved'; }
+    else { anchor.classList.add('dead'); anchor.title = 'El destino está fuera del grafo seleccionado o no se pudo resolver'; }
   }
   $('d-path').textContent = body.path || n.path;
   wrap.hidden = false;
   shownPart = part;
-  btn.textContent = part === 'transcript' ? 'Hide transcript' : 'Hide note';
+  btn.textContent = part === 'transcript' ? 'Ocultar transcripción' : 'Ocultar nota';
   wrap.scrollIntoView({ behavior: motionPreference.matches ? 'instant' : 'smooth', block: 'start' });
 }
 
@@ -688,7 +692,7 @@ function applyVisibility() {
   computeHighlight(selected || hovered);
   graph.nodeVisibility(displayNode);
   restyleAll();
-  $('visible-status').textContent = `${num(data.nodes.filter(isVisible).length)} notes in view`;
+  $('visible-status').textContent = `${num(data.nodes.filter(isVisible).length)} notas a la vista`;
 }
 
 // ---------- inventory ----------
@@ -698,19 +702,19 @@ function renderInventory() {
   const srcs = Object.values(inv.bySource);
   $('inv-notices').textContent = (data.warnings || []).join('\n');
   $('inv-notices').hidden = !(data.warnings || []).length;
-  $('inv-lede').textContent = `${num(inv.totals.nodes)} notes and ${num(inv.totals.links)} connections across ${srcs.length} stores, about ${num(Math.round(inv.totals.words / 1000))}k words. Click a store to view it alone. Every list below is clickable.`;
+  $('inv-lede').textContent = `${num(inv.totals.nodes)} notas y ${num(inv.totals.links)} conexiones en ${srcs.length} ${srcs.length === 1 ? 'fuente' : 'fuentes'}, unas ${words(inv.totals.words)}. Haz clic en una fuente para verla sola. Todas las listas de abajo son clicables.`;
 
   $('inv-sources').innerHTML = srcs.map((s) => {
-    const kinds = Object.entries(s.kinds).sort((a, b) => b[1] - a[1]).map(([k, v]) => `<span>${v} ${esc(KIND_LABEL[k] || k)}</span>`).join('');
+    const kinds = Object.entries(s.kinds).sort((a, b) => b[1] - a[1]).map(([k, v]) => `<span>${esc(KIND_LABEL[k] || k)}: ${v}</span>`).join('');
     return `<div class="inv-card" data-source="${s.id}" style="--c:${s.color}">
       <div class="inv-card-head"><i></i><b>${esc(s.label)}</b><span class="n">${num(s.count)}</span></div>
       <p>${esc(s.blurb)}</p>
       <div class="inv-kinds">${kinds}</div>
       <div class="inv-card-foot">
-        <span>newest <b>${s.newest ? ago(s.newest) : '?'}</b></span>
-        <span>oldest <b>${s.oldest ? ago(s.oldest) : '?'}</b></span>
-        ${s.words ? `<span><b>${num(Math.round(s.words / 1000))}k</b> words</span>` : ''}
-        <span class="${s.flagged ? 'warn' : ''}"><b>${s.flagged}</b> need attention</span>
+        <span>más reciente <b>${s.newest ? ago(s.newest) : '?'}</b></span>
+        <span>más antigua <b>${s.oldest ? ago(s.oldest) : '?'}</b></span>
+        ${s.words ? `<span><b>${words(s.words)}</b></span>` : ''}
+        <span class="${s.flagged ? 'warn' : ''}"><b>${s.flagged}</b> requieren atención</span>
         <span title="${esc(s.root)}">${esc(shortPath(s.root))}</span>
       </div>
     </div>`;
@@ -722,18 +726,18 @@ function renderInventory() {
     activeSources = activeSources.size === 1 && activeSources.has(id) ? new Set(data.sources.map((s) => s.id)) : new Set([id]);
     syncLegend();
     applyVisibility();
-    toast(activeSources.size === 1 ? `Showing only ${sourceById[id].label}` : 'Showing everything');
+    toast(activeSources.size === 1 ? `Mostrando solo ${sourceById[id].label}` : 'Mostrando todo');
   });
 
   const yt = inv.youtube || {};
   if (yt.videos) {
     const pct = Math.round((yt.transcribed / yt.videos) * 100);
     $('inv-youtube').innerHTML = `
-      <div class="section-head"><span>YouTube coverage</span><span class="count">${pct}% of the channel is in the brain</span></div>
+      <div class="section-head"><span>Cobertura de YouTube</span><span class="count">${pct}% del canal está en el cerebro</span></div>
       <div class="yt-grid">
-        <div class="yt-tile"><div class="l">Channel videos</div><div class="v">${num(yt.videos)}</div><div class="m">${num(yt.subscribers)} subscribers</div></div>
-        <div class="yt-tile"><div class="l">Transcribed</div><div class="v">${num(yt.transcribed)}</div><div class="m">pages in Video knowledge</div></div>
-        <div class="yt-tile"><div class="l">Not ingested</div><div class="v">${num(yt.videos - yt.transcribed)}</div><div class="m">run /process-video</div></div>
+        <div class="yt-tile"><div class="l">Videos del canal</div><div class="v">${num(yt.videos)}</div><div class="m">${num(yt.subscribers)} suscriptores</div></div>
+        <div class="yt-tile"><div class="l">Transcritos</div><div class="v">${num(yt.transcribed)}</div><div class="m">páginas de conocimiento de video</div></div>
+        <div class="yt-tile"><div class="l">Sin procesar</div><div class="v">${num(yt.videos - yt.transcribed)}</div><div class="m">procésalos con tu flujo de video</div></div>
       </div>
       <div class="coverage"><i style="width:${pct}%"></i></div>`;
   } else $('inv-youtube').hidden = true;
@@ -741,28 +745,28 @@ function renderInventory() {
   const mt = inv.meetings;
   if (mt && mt.total) {
     const gapDays = mt.lastIngested ? Math.round((Date.now() - mt.lastIngested) / DAY) : null;
-    const rows = mt.series.map((s) => `<div class="hrow" data-id="${esc(s.hub)}"><i style="background:var(--meeting)"></i><span class="t">${esc(s.series)}</span><span class="a">${s.total} · ${s.ingested} in wiki · ${s.first ? fmtDate(s.first).slice(0, 7) : ''} to ${s.last ? fmtDate(s.last).slice(0, 7) : ''}</span></div>`).join('');
+    const rows = mt.series.map((s) => `<div class="hrow" data-id="${esc(s.hub)}"><i style="background:var(--meeting)"></i><span class="t">${esc(s.series)}</span><span class="a">${s.total} · ${s.ingested} en la wiki · ${s.first ? fmtDate(s.first).slice(0, 7) : ''} a ${s.last ? fmtDate(s.last).slice(0, 7) : ''}</span></div>`).join('');
     $('inv-meetings').innerHTML = `
-      <div class="section-head"><span>Meetings</span><span class="count">${num(mt.total)} calls · ${num(Math.round(mt.minutes / 60))} hours</span></div>
+      <div class="section-head"><span>Reuniones</span><span class="count">${num(mt.total)} llamadas · ${num(Math.round(mt.minutes / 60))} horas</span></div>
       <div class="yt-grid">
-        <div class="yt-tile"><div class="l">Written up</div><div class="v">${num(mt.ingested)}</div><div class="m">wiki pages with a transcript</div></div>
-        <div class="yt-tile"><div class="l">Transcript only</div><div class="v">${num(mt.transcriptOnly)}</div><div class="m">no wiki page yet</div></div>
-        <div class="yt-tile"><div class="l">Last write-up</div><div class="v">${gapDays == null ? '?' : gapDays + 'd'}</div><div class="m">${mt.lastIngested ? 'ago, ' + fmtDate(mt.lastIngested) : 'never'}</div></div>
+        <div class="yt-tile"><div class="l">Documentadas</div><div class="v">${num(mt.ingested)}</div><div class="m">páginas de wiki con transcripción</div></div>
+        <div class="yt-tile"><div class="l">Solo transcripción</div><div class="v">${num(mt.transcriptOnly)}</div><div class="m">aún sin página en la wiki</div></div>
+        <div class="yt-tile"><div class="l">Última documentación</div><div class="v">${gapDays == null ? '?' : gapDays + ' d'}</div><div class="m">${mt.lastIngested ? 'atrás, ' + fmtDate(mt.lastIngested) : 'nunca'}</div></div>
       </div>
       <div class="coverage"><i style="width:${Math.round((mt.ingested / mt.total) * 100)}%;background:var(--meeting);box-shadow:0 0 12px var(--meeting)"></i></div>
-      <p class="muted small-text" style="margin:10px 0 4px">${fmtDate(mt.first)} to ${fmtDate(mt.last)}. Each series below is a hub node in the graph; click to open it.</p>
+      <p class="muted small-text" style="margin:10px 0 4px">Del ${fmtDate(mt.first)} al ${fmtDate(mt.last)}. Cada serie de abajo es un nodo central del grafo; haz clic para abrirla.</p>
       <div class="rows" style="max-height:none">${rows}</div>`;
   } else $('inv-meetings').hidden = true;
 
   const flagDefs = [
-    ['not-ingested', 'Meetings without a write-up', 'Transcript is in the raw store but no wiki page exists. Ingest the ones that matter; the rest can stay as records.'],
-    ['stale', 'Stale pages', 'Living pages not updated past their threshold. Re-read and refresh, or archive.'],
-    ['quiet', 'Quiet projects', 'No file changes in 60 days. Move to archives/ and drop the index row, or pick it back up.'],
-    ['broken-links', 'Broken links', 'No unambiguous target was found in the selected sources. Check the link or add the missing source.'],
-    ['orphan', 'Orphans', 'Nothing points at these. Retrieval will never find them by following links.'],
-    ['stub', 'Stubs', 'Under 60 words. Expand if useful, or archive.'],
-    ['missing-folder', 'Missing folders', 'Listed in projects/_index.md but the folder is gone.'],
-    ['archived', 'Marked archived', 'Frontmatter says archived; consider moving the file.'],
+    ['not-ingested', 'Reuniones sin documentar', 'La transcripción está guardada, pero no tiene página en la wiki. Procesa las importantes; el resto puede quedar como registro.'],
+    ['stale', 'Páginas desactualizadas', 'Páginas vivas que superaron su umbral sin actualizarse. Revísalas y actualízalas, o archívalas.'],
+    ['quiet', 'Proyectos inactivos', 'Sin cambios en 60 días. Muévelos a archives/ y quítalos del índice, o retómalos.'],
+    ['broken-links', 'Enlaces rotos', 'No se encontró un destino inequívoco en las fuentes seleccionadas. Revisa el enlace o agrega la fuente que falta.'],
+    ['orphan', 'Huérfanas', 'Nada apunta a estas notas. La búsqueda por enlaces nunca las encontrará.'],
+    ['stub', 'Borradores', 'Menos de 60 palabras. Amplíalas si son útiles, o archívalas.'],
+    ['missing-folder', 'Carpetas faltantes', 'Aparecen en projects/_index.md, pero la carpeta ya no existe.'],
+    ['archived', 'Marcadas como archivadas', 'El frontmatter dice que están archivadas; considera mover el archivo.'],
   ];
   let total = 0;
   $('inv-health').innerHTML = flagDefs.filter(([key]) => ['stale','orphan','stub','broken-links'].includes(key)).map(([key, title, blurb]) => {
@@ -771,17 +775,17 @@ function renderInventory() {
     total += ids.length;
     const rows = ids.map((id) => nodesById.get(id)).filter(Boolean)
       .sort((a, b) => (key === 'not-ingested' ? (b.updated || 0) - (a.updated || 0) : (a.updated || 0) - (b.updated || 0)))
-      .map((n) => `<div class="hrow" data-id="${esc(n.id)}"><i style="background:${colorOf(n)}"></i><span class="t">${esc(n.title)}</span><span class="a">${key === 'broken-links' ? n.broken.length + ' dead' : key === 'not-ingested' ? fmtDate(n.meetingDate) : n.updated ? ago(n.updated) : ''}</span></div>`)
+      .map((n) => `<div class="hrow" data-id="${esc(n.id)}"><i style="background:${colorOf(n)}"></i><span class="t">${esc(n.title)}</span><span class="a">${key === 'broken-links' ? n.broken.length + ' rotos' : key === 'not-ingested' ? fmtDate(n.meetingDate) : n.updated ? ago(n.updated) : ''}</span></div>`)
       .join('');
-    return `<details class="health"><summary><span>${esc(title)}<small>${esc(blurb)}</small></span><span class="n ${ids.length ? '' : 'ok'}">${ids.length}</span></summary><div class="rows">${rows || '<div class="muted small-text" style="padding:6px 8px">Nothing here.</div>'}</div></details>`;
+    return `<details class="health"><summary><span>${esc(title)}<small>${esc(blurb)}</small></span><span class="n ${ids.length ? '' : 'ok'}">${ids.length}</span></summary><div class="rows">${rows || '<div class="muted small-text" style="padding:6px 8px">Nada por aquí.</div>'}</div></details>`;
   }).join('');
-  $('inv-attention-count').textContent = `${num(total)} items`;
+  $('inv-attention-count').textContent = `${num(total)} ${total === 1 ? 'elemento' : 'elementos'}`;
 
   const nav = inv.navigation || [];
   $('inv-nav-count').textContent = String(nav.length);
   $('inv-nav').innerHTML = nav.map((n) => `<div class="nav-row" data-path="${esc(n.path)}"><span>${esc(n.title)}</span><span class="a">${esc(n.path.split('/').pop())} · ${n.updated ? ago(n.updated) : ''}</span></div>`).join('');
 
-  $('inv-foot').innerHTML = `<span>graph built ${new Date(inv.generatedAt).toLocaleString()}</span><button class="link-btn" id="btn-rebuild">Rebuild from disk</button>`;
+  $('inv-foot').innerHTML = `<span>grafo generado el ${new Date(inv.generatedAt).toLocaleString('es')}</span><button class="link-btn" id="btn-rebuild">Reconstruir desde el disco</button>`;
 }
 
 function shortPath(p) {
@@ -826,7 +830,7 @@ function renderSearch(list, q) {
   const box = $('search-results');
   if (!q.trim()) { box.hidden = true; return; }
   box.hidden = false;
-  if (!list.length) { box.innerHTML = '<div class="result-empty">No notes match. Try a person, a tool, or a video title.</div>'; return; }
+  if (!list.length) { box.innerHTML = '<div class="result-empty">Ninguna nota coincide. Prueba con una persona, una herramienta o el título de un video.</div>'; return; }
   box.innerHTML = list.map((n, i) => `
     <div class="result ${i === searchActive ? 'active' : ''}" data-id="${esc(n.id)}">
       <span class="result-dot" style="background:${colorOf(n)}"></span>
@@ -849,7 +853,7 @@ function stopDemo() {
   graph.controls().autoRotateSpeed = .45;
   graph.camera().position.setLength(overviewDistance());
   graph.cooldownTicks(0).nodeVisibility(displayNode).d3ReheatSimulation();
-  $('btn-demo').textContent = 'Play demo';
+  $('btn-demo').textContent = 'Reproducir demo';
   $('btn-demo').setAttribute('aria-pressed', 'false');
   $('demo-caption').hidden = true;
   document.body.classList.remove('demo-playing','growth-playing');
@@ -861,13 +865,13 @@ function toggleDemo() {
   clearSelection(); hovered = null;
   $('inventory').hidden = true;
   const eligible = data.nodes.filter(isVisible);
-  if (!eligible.length) { toast('Choose a source with notes to play its growth.'); return; }
+  if (!eligible.length) { toast('Elige una fuente con notas para ver cómo crece.'); return; }
   growth = planGrowth(eligible, data.links);
   demo = true; demoStart = elapsed - (motionPreference.matches ? growth.duration : 0); demoStep = -1;
   growthVisible = -1; growthTime = 0; growthLastPaint = -1;
   growthCameraManual = false;
   for (const {node} of growth.records) { node.x = node.fx = 0; node.y = node.fy = 0; node.z = node.fz = 0; }
-  $('btn-demo').textContent = 'Stop demo';
+  $('btn-demo').textContent = 'Detener demo';
   $('btn-demo').setAttribute('aria-pressed', 'true');
   $('demo-caption').hidden = false;
   document.body.classList.add('demo-playing','growth-playing');
@@ -903,13 +907,13 @@ function updateDemo() {
     graph.nodeVisibility(displayNode).linkVisibility(displayLink).linkColor(linkColor).linkDirectionalParticles(particlesFor);
     const sourceCount = new Set(live.map((r) => r.node.source)).size;
     $('growth-count').textContent = num(live.length);
-    $('demo-source').textContent = `The growth of ${data.brain.name}`;
-    $('demo-title').textContent = growthTime < 1.2 ? 'It starts with one idea.' : growthTime < 4 ? 'Then, a connection.' : growthTime < 12 ? 'Ideas become branches.' : growthTime < 22 ? 'Knowledge compounds.' : progress < 1 ? 'A second brain takes shape.' : 'Your entire brain. Connected.';
-    $('demo-detail').textContent = `${sourceCount} ${sourceCount === 1 ? 'source' : 'sources'} · ${num(live.length)} of ${num(growth.records.length)} saved notes`;
+    $('demo-source').textContent = `Así creció ${data.brain.name}`;
+    $('demo-title').textContent = growthTime < 1.2 ? 'Todo empieza con una idea.' : growthTime < 4 ? 'Luego, una conexión.' : growthTime < 12 ? 'Las ideas se ramifican.' : growthTime < 22 ? 'El conocimiento se multiplica.' : progress < 1 ? 'Un Segundo Cerebro toma forma.' : 'Todo tu cerebro. Conectado.';
+    $('demo-detail').textContent = `${sourceCount} ${sourceCount === 1 ? 'fuente' : 'fuentes'} · ${num(live.length)} de ${num(growth.records.length)} notas guardadas`;
     $('demo-progress').style.setProperty('--progress',`${progress*100}%`);
     $('demo-progress').setAttribute('aria-valuenow',String(Math.round(progress*100)));
     $('demo-caption').style.setProperty('--demo-color','#67e8f9');
-    $('visible-status').textContent = `${num(live.length)} notes in view`;
+    $('visible-status').textContent = `${num(live.length)} notas a la vista`;
   }
   if (progress === 1) {
     growth.complete = true;
@@ -917,7 +921,7 @@ function updateDemo() {
     for (const r of growth.records) { const n=r.node; n.x=n.fx=r.home.x; n.y=n.fy=r.home.y; n.z=n.fz=r.home.z; }
     graph.cooldownTicks(0).d3ReheatSimulation();
     graph.controls().autoRotateSpeed = .45;
-    $('btn-demo').textContent = 'Replay demo';
+    $('btn-demo').textContent = 'Repetir demo';
     $('btn-demo').setAttribute('aria-pressed','false');
     restyleAll();
   }
@@ -928,14 +932,14 @@ function setMotion(value) {
   graph.controls().autoRotate = value && !selected && !motionPreference.matches;
   graph.linkDirectionalParticleSpeed(value && !motionPreference.matches ? .004 : 0);
   $('btn-rotate').setAttribute('aria-pressed', String(value));
-  $('btn-rotate').title = value ? 'Pause motion' : 'Resume motion';
+  $('btn-rotate').title = value ? 'Pausar movimiento' : 'Reanudar movimiento';
   graph.linkDirectionalParticles(particlesFor);
   document.body.classList.toggle('motion-paused', !value);
 }
 function toggleCinema() {
   cinematic = !cinematic;
   document.body.classList.toggle('cinematic', cinematic);
-  $('btn-cinema').textContent = cinematic ? 'Exit cinema' : 'Cinema';
+  $('btn-cinema').textContent = cinematic ? 'Salir del modo cine' : 'Modo cine';
   $('btn-cinema').setAttribute('aria-pressed', String(cinematic));
   if (cinematic) { if (selected) clearSelection(); $('inventory').hidden = true; }
 }
@@ -994,9 +998,9 @@ function wireUi() {
   motionPreference.addEventListener('change', () => { stopDemo(); setMotion(!motionPreference.matches); });
   $('btn-rotate').addEventListener('click', () => {
     setMotion(!autoRotate);
-    toast(autoRotate ? 'Motion on' : 'Motion paused');
+    toast(autoRotate ? 'Movimiento activado' : 'Movimiento en pausa');
   });
-  $('toggle-attention').addEventListener('change', (e) => { attentionOnly = e.target.checked; applyVisibility(); if (attentionOnly) toast('Showing only notes that need attention'); });
+  $('toggle-attention').addEventListener('change', (e) => { attentionOnly = e.target.checked; applyVisibility(); if (attentionOnly) toast('Mostrando solo las notas que requieren atención'); });
   $('toggle-labels').addEventListener('change', (e) => { allLabels = e.target.checked; for (const n of data.nodes) applyNodeStyle(n); });
 
   $('d-read').addEventListener('click', () => selected && readNote(selected, 'note'));
@@ -1005,7 +1009,7 @@ function wireUi() {
   $('d-reveal').addEventListener('click', async () => {
     if (!selected) return;
     await fetch(`/api/reveal?id=${encodeURIComponent(selected.id)}`);
-    toast('Opened in File Explorer');
+    toast('Abierto en el explorador de archivos');
   });
   $('drawer').addEventListener('click', (e) => {
     const c = e.target.closest('.conn[data-id], a.wikilink[data-id]');
@@ -1017,7 +1021,7 @@ function wireUi() {
     const nav = e.target.closest('.nav-row');
     if (nav) { toast(nav.dataset.path, 3500); return; }
     if (e.target.id === 'btn-rebuild') {
-      e.target.textContent = 'Rebuilding…';
+      e.target.textContent = 'Reconstruyendo…';
       await fetch('/api/graph?rebuild=1');
       location.reload();
     }
@@ -1026,5 +1030,5 @@ function wireUi() {
 
 main().catch((err) => {
   console.error(err);
-  $('splash-stats').textContent = `Failed to load: ${err.message}`;
+  $('splash-stats').textContent = `No se pudo cargar: ${err.message}`;
 });

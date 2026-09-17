@@ -1,32 +1,32 @@
-# Portable 3D Brain specification
+# Especificación portable del Cerebro 3D
 
-This package preserves a working application rather than relying on a prose-only recreation. The portable runtime has a configurable ingestion layer and the same spherical renderer, growth planner, orbital scene, and interaction behavior as the reference implementation.
+Este paquete conserva una aplicación que ya funciona, en lugar de depender de una recreación descrita solo en texto. El runtime portable tiene una capa de ingesta configurable y el mismo renderer esférico, planificador de crecimiento, escena orbital y comportamiento de interacción que la implementación de referencia.
 
-## Files and contracts
+## Archivos y contratos
 
-- `assets/template/config.mjs`: validates names, category IDs, paths, colors, and limits.
-- `assets/template/build.mjs`: reads only the selected local sources; creates graph nodes, evidence-based edges, health flags, inventory, and an internal file registry.
-- `assets/template/serve.mjs`: zero-dependency Node server. Loopback only; static assets are allowlisted. Note IDs resolve through the file registry, never an arbitrary URL path.
-- `assets/template/codex-memory.mjs`: read-only curated memory importer with exact topic section bounds.
-- `assets/template/src/app.js`: search, graph interactions, source controls, drawers, sanitized note rendering, Cinema, and growth playback.
-- `assets/template/src/constellation.js`: deterministic spherical placement, central orb, and restrained orbital accents.
-- `assets/template/src/growth.js`: a spanning forest using only existing edges, limited branching per step, spring motion, and exact final positions.
-- `assets/template/dist/app.js`: prebuilt renderer. No package installation is necessary to run the generated app.
-- `scripts/discover.mjs`: lists candidate paths without reading their contents.
-- `scripts/scaffold.mjs`: copies an explicit file allowlist into a new app folder, refuses replacement, and writes local config.
+- `assets/template/config.mjs`: valida nombres, IDs de categoría, rutas, colores y límites.
+- `assets/template/build.mjs`: lee solo las fuentes locales seleccionadas. Crea los nodos del grafo, aristas basadas en evidencia, indicadores de salud, el inventario y un registro interno de archivos.
+- `assets/template/serve.mjs`: servidor Node sin dependencias. Escucha solo en loopback y sirve únicamente los recursos estáticos permitidos. Los IDs de nota se resuelven mediante el registro de archivos, nunca desde una ruta arbitraria de la URL.
+- `assets/template/codex-memory.mjs`: importador de solo lectura para la memoria curada, con límites exactos por sección temática.
+- `assets/template/src/app.js`: búsqueda, interacción con el grafo, controles de fuentes, paneles, renderizado seguro de notas, modo cine y reproducción del crecimiento. Aquí están los textos de runtime de la interfaz, en español.
+- `assets/template/src/constellation.js`: ubicación esférica determinista, orbe central y acentos orbitales sutiles.
+- `assets/template/src/growth.js`: un bosque de expansión que usa solo aristas existentes, con ramificación limitada por paso, movimiento con resorte y posiciones finales exactas.
+- `assets/template/dist/app.js`: renderer precompilado. No hace falta instalar paquetes para ejecutar la app generada. **Después de editar `src/`, recompila con `npm run build:js`**; de lo contrario, la app seguirá mostrando los textos anteriores.
+- `scripts/discover.mjs`: lista rutas candidatas sin leer su contenido.
+- `scripts/scaffold.mjs`: copia una lista explícita de archivos permitidos a una carpeta nueva para la app, no sobrescribe carpetas existentes y escribe la configuración local.
 
-## Visual and interaction contract
+## Contrato visual y de interacción
 
-Near-black space, one color per category, a spherical silhouette from every angle, a central wire orb, and two quiet orbital tracks. White particles accent selected paths; background links are sampled. Labels have collision detection and explicit cleanup when graph nodes are removed or rebuilt.
+Espacio casi negro, un color por categoría, una silueta esférica desde cualquier ángulo, un orbe central de alambre y dos órbitas sutiles. Las partículas blancas resaltan los caminos seleccionados; las conexiones de fondo se muestran por muestreo. Las etiquetas detectan colisiones y se limpian de forma explícita cuando los nodos se eliminan o se reconstruyen.
 
-Growth begins with one node at the orb and the first real edge. New nodes spring from their actual parent nodes; a limited branching queue creates outward growth instead of a starburst from a single hub. Growth accelerates, finishes in roughly 29 seconds, restores every node to its deterministic globe position, and offers Replay. Disconnected components have independent roots.
+El crecimiento empieza con un nodo en el orbe y la primera arista real. Los nodos nuevos brotan de sus nodos padre reales, y una cola de ramificación limitada hace que el grafo crezca hacia afuera en vez de estallar desde un solo nodo central. El crecimiento se acelera, termina en unos 29 segundos, devuelve cada nodo a su posición determinista en el globo y ofrece repetir la demo. Los componentes desconectados tienen raíces independientes.
 
-Camera orbit and zoom continue to work during growth. User input takes over from the automatic pullback without stopping the timeline. The orb is present from frame one; the rings fade and expand in later. Cinema puts the counter beside the globe. Reduced-motion preferences produce a static completed state rather than forced motion.
+La órbita y el zoom de la cámara siguen funcionando durante el crecimiento. La interacción del usuario reemplaza el alejamiento automático sin detener la línea de tiempo. El orbe está visible desde el primer fotograma; los anillos aparecen y se expanden después. El modo cine muestra el contador junto al globo. Con la preferencia de movimiento reducido se muestra directamente el estado final estático, sin forzar movimiento.
 
-The overview draws sampled paths. Selection shows up to 72 paths and 24 particle paths; full graph counts remain available in inventory. Default labels are limited to one hub per category and a small selected neighborhood. Mobile layouts retain filters through the Sources button.
+La vista general dibuja caminos por muestreo. Al seleccionar un nodo se muestran hasta 72 caminos y 24 con partículas; los totales completos siguen disponibles en el inventario. Por defecto, las etiquetas se limitan a un nodo central por categoría y a un vecindario seleccionado pequeño. En móvil, los filtros siguen disponibles con el botón Fuentes.
 
-## Data integrity and boundaries
+## Integridad de datos y límites
 
-IDs include category and file identity, so duplicate basenames do not collide. Wikilinks resolve only when unambiguous. Explicit file links take precedence over mention inference. Full-title mentions are labeled separately and are not claims of semantic certainty. The replay represents connectivity, never invented creation dates.
+Los IDs incluyen la categoría y la identidad del archivo, así que dos archivos con el mismo nombre no chocan. Los wikilinks se resuelven solo cuando no son ambiguos. Los enlaces explícitos a archivos tienen prioridad sobre las menciones inferidas. Las menciones por título completo se etiquetan aparte y no implican certeza semántica. La repetición representa conectividad, nunca fechas de creación inventadas.
 
-No bundled user content, graph snapshots, credentials, API keys, real memory exports, or absolute author-machine paths. User configs and generated data remain local and ignored by git. The skill makes no deployment, universal-format, exact-history, or virality promise.
+No se incluye contenido de usuarios, instantáneas de grafos, credenciales, claves de API, exportaciones reales de memoria ni rutas absolutas del equipo del autor. Las configuraciones de usuario y los datos generados quedan en el equipo local y git los ignora. El skill no promete despliegue, compatibilidad universal de formatos, historial exacto ni viralidad.

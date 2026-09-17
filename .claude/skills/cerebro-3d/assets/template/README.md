@@ -1,22 +1,29 @@
-# Your 3D Brain
+# Tu Cerebro 3D
 
-A local, read-only view of the knowledge sources selected in `brain.config.json`.
+Una vista local y de solo lectura de las fuentes de conocimiento seleccionadas en `brain.config.json`. Forma parte de Andromeda AI, una adaptación de AIS-OS en español.
 
-Run `node serve.mjs` from this folder, then open the printed localhost link. Node.js 22 or newer is required. The prebuilt renderer is included, so no installation is needed to run it. To edit the renderer, run `npm ci`, edit `src/`, and run `npm run build:js`.
+Ejecuta `node serve.mjs` desde esta carpeta y abre el enlace localhost que aparece en la consola. Requiere Node.js 22 o superior. El renderer ya viene compilado, así que no hace falta instalar nada para usarlo. Para modificarlo, ejecuta `npm ci`, edita `src/` y luego `npm run build:js`.
 
-The name, categories, colors, source paths, and port come from `brain.config.json`. Rebuild from disk refreshes notes and connections. Restart the server after changing code or the port. Missing or inaccessible sources appear as notices in the inventory, not invented notes.
+El nombre, las categorías, los colores, las rutas de origen y el puerto se definen en `brain.config.json`. **Reconstruir desde el disco** (en el inventario) actualiza las notas y las conexiones. Si cambias el código o el puerto, reinicia el servidor. Si una fuente falta o no se puede leer, aparece como aviso en el inventario; nunca se inventan notas.
 
-- Drag to orbit, scroll to zoom, and click a node to read it. `/` focuses search.
-- Source buttons toggle categories. Shift-click solos one; click the last active source to restore all.
-- Play demo (`D`) grows the graph through real connections over about 29 seconds. Orbit and zoom still work during growth. The central orb is visible immediately. Replay starts again after completion.
-- Cinema (`C`) hides surrounding UI. Escape exits it.
-- Pause motion freezes rotation and animated accents. Reduced-motion settings are honored.
-- Only selected neighborhoods get bright paths; overview links are sampled to stay readable. The inventory retains full counts.
+- Arrastra para girar, desplázate para hacer zoom y haz clic en un nodo para leerlo. La tecla `/` activa la búsqueda.
+- Los botones de fuente activan o desactivan categorías. Con Shift + clic ves solo una; si haces clic en la última fuente activa, vuelven a mostrarse todas.
+- **Reproducir demo** (`D`) hace crecer el grafo siguiendo conexiones reales durante unos 29 segundos. Mientras crece puedes seguir girando y haciendo zoom. El orbe central es visible desde el inicio. Al terminar, puedes repetirla.
+- **Modo cine** (`C`) oculta la interfaz alrededor. Escape lo cierra.
+- El botón de movimiento pausa la rotación y los acentos animados. Se respeta la preferencia de movimiento reducido del sistema.
+- Solo los vecindarios seleccionados muestran caminos resaltados; en la vista general, las conexiones se muestran por muestreo para que se lean bien. El inventario conserva los totales completos.
 
-The replay shows connectivity, not historical creation dates. Unknown relationships remain disconnected. Exact-title mentions are labeled `mention`; explicit Markdown links and wikilinks take precedence. Duplicate basenames with ambiguous links are reported instead of silently assigned.
+La repetición muestra cómo se conectan las notas, no cuándo se crearon. Las relaciones desconocidas quedan sin conectar. Las coincidencias exactas de título se etiquetan como "mención"; los enlaces Markdown explícitos y los wikilinks tienen prioridad. Si hay archivos con el mismo nombre y un enlace ambiguo, se informa en lugar de asignarlo en silencio.
 
-Markdown and text files are supported directly, including local meeting notes, wiki pages, project notes, skills, and Claude memory. The Codex adapter reads curated memory summaries, topic groups, recaps, and workflow notes. It excludes raw session logs and duplicate raw-memory exports. Remote systems, PDFs, databases, and raw meeting JSON need an explicit local export or an additional adapter; this app does not claim to ingest them automatically.
+Lee directamente archivos Markdown y de texto, incluidas notas locales de reuniones, páginas de wiki, notas de proyectos, skills y la memoria de Claude. El adaptador de Codex lee resúmenes de memoria curados, grupos temáticos, recapitulaciones y notas de flujos de trabajo; excluye los registros de sesión sin procesar y las exportaciones duplicadas de memoria. Los sistemas remotos, PDFs, bases de datos y el JSON sin procesar de reuniones necesitan una exportación local explícita o un adaptador adicional: esta app no los procesa automáticamente.
 
-The server binds to `127.0.0.1`. It exposes only indexed note IDs and approved static assets, rejects cross-origin API requests, and sanitizes rendered Markdown. Native pointer lock and cursor capture are disabled. Source files are never modified. The local config and generated graph are gitignored. Cinema hides controls, not private information; review the visible notes before recording or sharing screenshots.
+El servidor escucha en `127.0.0.1`:
+- Solo expone los IDs de las notas indexadas y los recursos estáticos aprobados.
+- Rechaza solicitudes de API de otros orígenes y sanea el Markdown que muestra.
+- El bloqueo nativo del puntero y la captura del cursor están desactivados.
+- Nunca modifica los archivos de origen.
+- La configuración local y el grafo generado están en `.gitignore`.
 
-Third-party dependency licenses are included in `THIRD-PARTY-NOTICES.txt`.
+El modo cine oculta los controles, no la información privada: revisa las notas visibles antes de grabar o compartir capturas.
+
+Las licencias de las dependencias de terceros están en `THIRD-PARTY-NOTICES.txt`.

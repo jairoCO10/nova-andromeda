@@ -1,47 +1,49 @@
-# Personalization and source configuration
+# Personalización y configuración de fuentes
 
-Create a JSON object like this after the user chooses the name and categories:
+Cuando el usuario elija el nombre y las categorías, crea un objeto JSON como este:
 
 ```json
 {
-  "name": "Atlas Brain",
+  "name": "Cerebro de Atlas",
   "port": 4640,
   "sources": [
-    {"id":"knowledge","label":"Business knowledge","paths":["context","wiki"],"color":"#38BDF8","staleDays":75},
-    {"id":"meetings","label":"Meetings","paths":["meetings"],"color":"#FB923C","staleDays":null},
-    {"id":"projects","label":"Projects","paths":["projects"],"color":"#34D399"}
+    {"id":"conocimiento","label":"Conocimiento del negocio","paths":["context","wiki"],"color":"#38BDF8","staleDays":75},
+    {"id":"reuniones","label":"Reuniones","paths":["meetings"],"color":"#FB923C","staleDays":null},
+    {"id":"proyectos","label":"Proyectos","paths":["projects"],"color":"#34D399"}
   ]
 }
 ```
 
-This is a schema example, not permission to assume those folders exist. Include only verified and chosen paths. The scaffold computes `root` relative to the generated app, so the AIOS can move between folders or machines without breaking its in-repo paths. A local `brain.config.json` is gitignored.
+Es un ejemplo del esquema, no una autorización para suponer que esas carpetas existen. Incluye solo rutas verificadas y elegidas. El scaffold calcula `root` en relación con la app generada, así el AIOS puede moverse de carpeta o de equipo sin romper sus rutas internas. El `brain.config.json` local está en `.gitignore`.
 
-Fields:
+Las claves del JSON (`name`, `sources`, `paths`, etc.) se mantienen en inglés porque forman parte del formato de datos. Los valores visibles (`name`, `label`) pueden ir en español.
 
-| Field | Meaning |
+Campos:
+
+| Campo | Significado |
 |---|---|
-| `name` | Exact display name, 1–64 characters. All personal branding is derived from it. |
-| `root` | AIOS root relative to the installed app's config. Scaffold sets this automatically. |
-| `port` | Local port, 1024–65535, default 4640. Check for conflicts. |
-| `maxNodes` | Scan cap, default 3000, maximum 10000. Reaching it produces an inventory notice. |
-| `sources` | 1–12 categories. |
-| `sources[].id` | Unique lowercase ID beginning with a letter; letters, digits, and hyphens. |
-| `sources[].label` | User-facing category name. |
-| `sources[].paths` | Approved files/folders, relative to the AIOS root or explicit absolute/`~/` paths. No glob patterns. |
-| `sources[].type` | `markdown` (default) or `codex-memory`. |
-| `sources[].color` | Optional six-digit hex color; otherwise a distinct palette color is assigned. |
-| `sources[].exclude` | Optional relative path prefixes beneath each selected directory. |
-| `sources[].staleDays` | Positive number, default 90. `null` disables stale flags for historical records. |
-| `sources[].obsidianVault` | Optional existing Obsidian vault name. Only use when the node paths are valid vault-relative paths. |
+| `name` | Nombre exacto que se muestra, de 1 a 64 caracteres. Todo el branding personal sale de aquí. |
+| `root` | Raíz del AIOS, relativa a la configuración de la app instalada. El scaffold la define automáticamente. |
+| `port` | Puerto local, entre 1024 y 65535. Por defecto, 4640. Revisa que no esté ocupado. |
+| `maxNodes` | Límite de escaneo. Por defecto, 3000; máximo, 10000. Si se alcanza, aparece un aviso en el inventario. |
+| `sources` | Entre 1 y 12 categorías. |
+| `sources[].id` | ID único en minúsculas que empieza con una letra. Solo letras (sin tildes ni ñ), dígitos y guiones. |
+| `sources[].label` | Nombre de la categoría que ve el usuario. |
+| `sources[].paths` | Archivos o carpetas aprobados, relativos a la raíz del AIOS, o rutas absolutas o con `~/` explícitas. No acepta patrones glob. |
+| `sources[].type` | `markdown` (por defecto) o `codex-memory`. |
+| `sources[].color` | Opcional. Color hexadecimal de seis dígitos; si no se indica, se asigna un color distinto de la paleta. |
+| `sources[].exclude` | Opcional. Prefijos de rutas relativas dentro de cada carpeta seleccionada. |
+| `sources[].staleDays` | Número positivo; por defecto, 90. `null` desactiva el aviso de desactualización para registros históricos. |
+| `sources[].obsidianVault` | Opcional. Nombre de una bóveda de Obsidian existente. Úsalo solo si las rutas de los nodos son válidas dentro de la bóveda. |
 
-## Supported sources
+## Fuentes compatibles
 
-**Markdown:** recursively scans `.md` and `.txt`, reads simple scalar frontmatter (`title`, `name`, `description`, `type`, `updated`, `created`, `tags`), and resolves Markdown file links and wikilinks. The source's folder structure determines what is included, not an author's hardcoded wiki layout. Project index entries remain note text; actual project folders need to be selected to include their saved notes.
+**Markdown:** escanea `.md` y `.txt` de forma recursiva, lee el frontmatter escalar simple (`title`, `name`, `description`, `type`, `updated`, `created`, `tags`) y resuelve enlaces Markdown a archivos y wikilinks. Lo que se incluye depende de la estructura de carpetas de la fuente, no de una organización de wiki fija. Las entradas del índice de proyectos quedan como texto de la nota: para incluir las notas de un proyecto, hay que seleccionar su carpeta.
 
-Hidden directories, git, dependencies, archives, scratch, audit outputs, generated data, and the generated app itself are excluded. Symlinks are skipped during discovery scans. Files over 1 MB produce a notice. Navigation notes are listed in inventory rather than drawn. Choosing the same file twice does not duplicate its node.
+Se excluyen las carpetas ocultas, git, las dependencias, los archivos archivados, las carpetas temporales, las salidas de auditoría, los datos generados y la propia app generada. Los enlaces simbólicos se omiten durante el escaneo. Los archivos de más de 1 MB generan un aviso. Las notas de navegación se listan en el inventario en lugar de dibujarse. Elegir el mismo archivo dos veces no duplica su nodo.
 
-**Claude memory:** use `markdown` with the approved project-specific Claude memory directory. Do not invent its encoded directory name; verify it on the current machine. Discovery offers the exact current-root match when it exists.
+**Memoria de Claude:** usa `markdown` con la carpeta de memoria de Claude del proyecto, previamente aprobada. No inventes el nombre codificado de esa carpeta: verifícalo en el equipo actual. El descubrimiento ofrece la coincidencia exacta con la raíz actual, si existe.
 
-**Codex Memory:** use `codex-memory` and an explicitly chosen memory root. Discovery honors `CODEX_HOME`, otherwise checks `~/.codex/memories`. The adapter reads `memory_summary.md`, sections of `MEMORY.md`, Markdown `rollout_summaries/`, memory `skills/`, and `extensions/ad_hoc/notes/`. It does not scan raw chat logs, `.env`, credentials, hidden files, or duplicate `raw_memories.md`. The store can contain memories from several projects, so the user must know that scope when choosing it.
+**Memoria de Codex:** usa `codex-memory` con una raíz de memoria elegida explícitamente. El descubrimiento respeta `CODEX_HOME`; si no existe, revisa `~/.codex/memories`. El adaptador lee `memory_summary.md`, las secciones de `MEMORY.md`, los `rollout_summaries/` en Markdown, los `skills/` de la memoria y `extensions/ad_hoc/notes/`. No escanea conversaciones sin procesar, `.env`, credenciales, archivos ocultos ni el duplicado `raw_memories.md`. Esa memoria puede contener recuerdos de varios proyectos, así que el usuario debe conocer ese alcance antes de elegirla.
 
-**Other formats:** unsupported by default. Ask for or create an authorized local Markdown export, or implement a documented adapter. Do not synthesize missing business content or claim remote API coverage.
+**Otros formatos:** no son compatibles por defecto. Pide o crea una exportación local en Markdown autorizada, o implementa un adaptador documentado. No inventes contenido de negocio faltante ni digas que hay cobertura de APIs remotas.
