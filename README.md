@@ -2,7 +2,7 @@
 
 A free, MIT-licensed starter kit that turns Claude Code or Codex into your personal **AI Operating System (AI OS)**. Audience: anyone building automations — solopreneurs, small business operators, managers, creators, AI consultants. Pairs with a companion masterclass video.
 
-The kit personalizes itself to you via an `/onboard` interview. Use `/grill-me` whenever you want to deepen its understanding of your business, preferences, or plans. Use `/link` to make new information findable, `/audit` to verify the system, `/level-up` to close one useful gap at a time, and `/3d-brain` to explore your saved knowledge as an interactive globe.
+The kit personalizes itself to you via an `/empezar` interview. Use `/entrevistame` whenever you want to deepen its understanding of your business, preferences, or plans. Use `/conectar` to make new information findable, `/auditar` to verify the system, `/subir-nivel` to close one useful gap at a time, and `/cerebro-3d` to explore your saved knowledge as an interactive globe.
 
 > **AIS-OS** stands for **AI Automation Society OS** — the way Nate designed this AI OS to be set up for members of his community, [AI Automation Society](https://www.skool.com/ai-automation-society). The kit is universal (it works for anyone), but the structure mirrors how AIS members run their own businesses on top of it.
 
@@ -50,7 +50,7 @@ The kit teaches two complementary frameworks. **Three Ms first, Four Cs second.*
 | **Method** | Find Constraint → EAD (Eliminate, Automate, Delegate) → Map Process → Pick Autonomy Level → Tie to KPI. |
 | **Machine** | Lego Principle, Validation Chain, Bike Method, Intern Rule, Kill Switch. *Boring is beautiful. Workflows beat agents.* |
 
-Full breakdown in `references/3ms-framework.md`. The `/level-up` skill walks you through all three weekly.
+Full breakdown in `references/3ms-framework.md`. The `/subir-nivel` skill walks you through all three weekly.
 
 > *The Three Ms of AI™ is a trademark of Nate Herk. © 2026 Nate Herk.*
 
@@ -77,22 +77,22 @@ The kit includes setup, ongoing context interviews, routing, verification, a wee
 
 | Skill | Type | When to run |
 |---|---|---|
-| `/onboard` | Setup wizard (one-time) | Day 1, immediately after clone. 7-question interview. Generates the Day-1 file set and fills the shared `CLAUDE.md` and `AGENTS.md` manuals. |
-| `/grill-me` | Saved context interview | Any time you want to unpack a plan or add more context. Asks one question at a time and saves every answer to `brainstorms/`. |
-| `/audit` | Evidence-based check | After setup, after a meaningful fix, and weekly while building. Checks routing, freshness, and Claude/Codex compatibility, scores verified reliability, and automatically saves a dated report. |
-| `/link` | Routing helper | When adding a project, file, folder, or important source. Adds the smallest useful manual/index route and checks it resolves. |
-| `/level-up` | Recurring thinking skill | Day 14, then weekly. Three Ms interview (Mindset → Method → Machine). One run = one shipped artifact. |
-| `/3d-brain` | Interactive knowledge explorer | Choose your brain's name and categories. Builds a local 3D globe from your selected files, with search, note reading, Cinema, and a branching growth replay. |
+| `/empezar` | Setup wizard (one-time) | Day 1, immediately after clone. 7-question interview. Generates the Day-1 file set and fills the shared `CLAUDE.md` and `AGENTS.md` manuals. |
+| `/entrevistame` | Saved context interview | Any time you want to unpack a plan or add more context. Asks one question at a time and saves every answer to `brainstorms/`. |
+| `/auditar` | Evidence-based check | After setup, after a meaningful fix, and weekly while building. Checks routing, freshness, and Claude/Codex compatibility, scores verified reliability, and automatically saves a dated report. |
+| `/conectar` | Routing helper | When adding a project, file, folder, or important source. Adds the smallest useful manual/index route and checks it resolves. |
+| `/subir-nivel` | Recurring thinking skill | Day 14, then weekly. Three Ms interview (Mindset → Method → Machine). One run = one shipped artifact. |
+| `/cerebro-3d` | Interactive knowledge explorer | Choose your brain's name and categories. Builds a local 3D globe from your selected files, with search, note reading, Cinema, and a branching growth replay. |
 
-`/audit` checks whether the AI OS can find its information and perform useful work reliably. Rubric v2 awards points for evidence, not folder counts, API keys, or skills named "daily." Missing or unverified layers cap the total; installed skills cannot compensate for absent connections or execution history. The report includes five retrieval probes, stale-cache and source-authority checks, operating-manual differences, skill-package compatibility, and up to three prioritized improvements. It separates confirmed defects, verification gaps, intentional runtime differences, and optional improvements. The score measures verified operational reliability, not overall usefulness. Old rubric scores need a new baseline.
+`/auditar` checks whether the AI OS can find its information and perform useful work reliably. Rubric v2 awards points for evidence, not folder counts, API keys, or skills named "daily." Missing or unverified layers cap the total; installed skills cannot compensate for absent connections or execution history. The report includes five retrieval probes, stale-cache and source-authority checks, operating-manual differences, skill-package compatibility, and up to three prioritized improvements. It separates confirmed defects, verification gaps, intentional runtime differences, and optional improvements. The score measures verified operational reliability, not overall usefulness. Old rubric scores need a new baseline.
 
-**Automatic audit history:** Every `/audit` saves a unique dated Markdown report in `audits/` and compares it with relevant prior reports. Findings retain their IDs and are tracked as new, still open, resolved, reopened, not rechecked, or no longer applicable. Resolution requires fresh evidence. Score comparisons distinguish actual fixes from better evidence and changed coverage. Earlier reports are preserved; the inspected system is unchanged apart from the new local report. Audit reports are gitignored because they may contain private project context. An explicit request not to save overrides this default.
+**Automatic audit history:** Every `/auditar` saves a unique dated Markdown report in `audits/` and compares it with relevant prior reports. Findings retain their IDs and are tracked as new, still open, resolved, reopened, not rechecked, or no longer applicable. Resolution requires fresh evidence. Score comparisons distinguish actual fixes from better evidence and changed coverage. Earlier reports are preserved; the inspected system is unchanged apart from the new local report. Audit reports are gitignored because they may contain private project context. An explicit request not to save overrides this default.
 
-`/link path/to/project "use for this purpose"` makes a new source findable without copying its contents into the manual. It follows the project's existing `AGENTS.md`/`CLAUDE.md` conventions and asks only when the target or intended use is unclear. A hot cache is optional and is never created by these skills.
+`/conectar path/to/project "use for this purpose"` makes a new source findable without copying its contents into the manual. It follows the project's existing `AGENTS.md`/`CLAUDE.md` conventions and asks only when the target or intended use is unclear. A hot cache is optional and is never created by these skills.
 
-`/grill-me "help me explain how my business works"` turns what is in your head into saved context. Each answer is checkpointed immediately in a dated Markdown file under `brainstorms/`, so you can pause and resume. When you ask to build or update AI OS context, confirmed facts are added to the appropriate context pages with links back to the interview. Tentative ideas stay labeled. Captures are gitignored by default. Use `/onboard` for initial setup, then `/grill-me` as your business and thinking evolve.
+`/entrevistame "help me explain how my business works"` turns what is in your head into saved context. Each answer is checkpointed immediately in a dated Markdown file under `brainstorms/`, so you can pause and resume. When you ask to build or update AI OS context, confirmed facts are added to the appropriate context pages with links back to the interview. Tentative ideas stay labeled. Captures are gitignored by default. Use `/empezar` for initial setup, then `/entrevistame` as your business and thinking evolve.
 
-`/level-up` carries the audit evidence into one improvement. A verified repair to an existing workflow counts; another new skill is not always needed. Run `/audit` again after the fix. Repeated-use and scheduled-run credit comes from real execution over time.
+`/subir-nivel` carries the audit evidence into one improvement. A verified repair to an existing workflow counts; another new skill is not always needed. Run `/auditar` again after the fix. Repeated-use and scheduled-run credit comes from real execution over time.
 
 ---
 
@@ -106,13 +106,13 @@ Turn your growing collection of notes, projects, and assistant memories into one
 
 The preview above plays the full growth sequence. **[Download the original 36-second video](https://github.com/nateherkai/AIS-OS/raw/refs/heads/main/docs/media/3d-brain-demo.mp4)** for full-resolution playback. This recording shows Nate's HerkBrain. The skill builds yours with the name, categories, and saved knowledge you choose.
 
-Run `/3d-brain` in Claude Code or `$3d-brain` in Codex. It asks what to call your brain and which categories to show, with suggested source folders. Then it creates `apps/3d-brain/` using the included application template. Your name, categories, colors, and paths live in a local config.
+Run `/cerebro-3d` in Claude Code or `$cerebro-3d` in Codex. It asks what to call your brain and which categories to show, with suggested source folders. Then it creates `apps/3d-brain/` using the included application template. Your name, categories, colors, and paths live in a local config.
 
 Use **Play demo** to watch the brain grow from a single idea into connected branches. You can drag to orbit and scroll to zoom throughout playback. **Cinema** provides a clean presentation view. The replay follows actual note connections; it is not a historical timeline.
 
 Requires Node.js 22 or newer. The renderer is prebuilt, so the app runs with `node serve.mjs` without installing dependencies. It reads local Markdown/text and optional curated Codex memory. Claude memory, meeting notes, and video knowledge can use selected Markdown folders. Other formats or online services require an export or a tested adapter. The app stays on localhost; personal config and generated data are gitignored.
 
-The complete [skill package](.claude/skills/3d-brain/README.md) includes source code, the browser bundle, configuration docs, license notices, and a fictional-data validation script.
+The complete [skill package](.claude/skills/cerebro-3d/README.md) includes source code, the browser bundle, configuration docs, license notices, and a fictional-data validation script.
 
 ### Using the kit in Codex
 
@@ -123,11 +123,11 @@ The six skills are also installed under `.agents/skills/`. Use the skill picker 
 ### First-time setup
 
 1. **Clone the repo** to a working folder on your machine.
-2. **Open it in Claude Code or Codex.** Run `/onboard` in Claude Code, or select `$onboard` in Codex. Answer the 7 questions honestly. Voice samples must be pasted, not described. Takes ~15 minutes. Day-1 file set drops at the end.
+2. **Open it in Claude Code or Codex.** Run `/empezar` in Claude Code, or select `$empezar` in Codex. Answer the 7 questions honestly. Voice samples must be pasted, not described. Takes ~15 minutes. Day-1 file set drops at the end.
 3. **Use it for a week.** Bring real questions. Make real decisions. Ask your assistant to record meaningful decisions in `decisions/log.md`.
-4. **Day 7:** run `/audit`. Read the Four-Cs gap report. Pick one gap to close.
-5. **Day 14:** run `/level-up`. The Three Ms interview surfaces one automation worth building. Build it.
-6. **As you grow:** use `/grill-me` to capture new context, `/link` new sources, use `/level-up` for one improvement, and rerun `/audit` to verify it.
+4. **Day 7:** run `/auditar`. Read the Four-Cs gap report. Pick one gap to close.
+5. **Day 14:** run `/subir-nivel`. The Three Ms interview surfaces one automation worth building. Build it.
+6. **As you grow:** use `/entrevistame` to capture new context, `/conectar` new sources, use `/subir-nivel` for one improvement, and rerun `/auditar` to verify it.
 
 ---
 
@@ -143,13 +143,13 @@ AIS-OS/
 ├── .gitignore
 ├── aios-intake.md                   ← Source-of-truth for /onboard. Edit + re-run any time.
 ├── connections.md                   ← Registry of every system your AI OS can reach
-├── context/                         ← About you, your business (filled by /onboard)
+├── context/                         ← About you, your business (filled by /empezar)
 ├── references/
 │   └── 3ms-framework.md             ← The operator brain
 ├── decisions/
 │   └── log.md                       ← Append-only record of what was decided and why
 ├── archives/                        ← Old stuff. Don't delete. Move here.
-├── brainstorms/                     ← Created by /grill-me; saved interviews (gitignored)
+├── brainstorms/                     ← Created by /entrevistame; saved interviews (gitignored)
 ├── audits/                          ← Created on first audit; dated private reports (gitignored)
 ├── scripts/sync-codex-skills.sh      ← Regenerates the Codex skill copies
 ├── .agents/skills/                  ← Codex copies of all six skills and supporting files

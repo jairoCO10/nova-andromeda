@@ -1,8 +1,8 @@
 # AIS-OS Intake
 
-This is the source-of-truth file for your AIOS. Fill it in by typing, voice-pasting (Wispr Flow / OS dictation), or running `/onboard` for a guided conversation. Whichever mode, this file is what `/onboard` reads to scaffold your Day-1 setup.
+This is the source-of-truth file for your AIOS. Fill it in by typing, voice-pasting (Wispr Flow / OS dictation), or running `/empezar` for a guided conversation. Whichever mode, this file is what `/empezar` reads to scaffold your Day-1 setup.
 
-**Hard cap: 7 questions.** Each answerable in under 60 seconds. Don't overthink — you can edit and re-run `/onboard` any time.
+**Hard cap: 7 questions.** Each answerable in under 60 seconds. Don't overthink — you can edit and re-run `/empezar` any time.
 
 ---
 
@@ -82,4 +82,4 @@ The single biggest time-suck or recurring drudgery. Plus where tasks/projects li
 
 ---
 
-When this file is filled, run `/onboard` (or re-run it) and the wizard will scaffold your Day-1 file set: `context/`, `references/voice.md`, populated `connections.md`, and a filled `CLAUDE.md`.
+When this file is filled, run `/empezar` (or re-run it) and the wizard will scaffold your Day-1 file set: `context/`, `references/voice.md`, populated `connections.md`, and a filled `CLAUDE.md`.
