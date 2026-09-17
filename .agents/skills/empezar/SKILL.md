@@ -1,111 +1,120 @@
 ---
 name: empezar
-description: Use on Day 1 of an AIS-OS install, when someone says "set me up", "onboard me", "let's get started", "fill in my AIOS", or has just cloned the kit. Combined wizard — runs the 7-question intake AND scaffolds the Day-1 file set at the end. Idempotent — re-run any time after editing aios-intake.md.
+description: Úsalo el Día 1 de una instalación de Andromeda AI (AIS-OS), cuando alguien diga "configúrame", "empecemos", "llena mi AIOS", "set me up" u "onboard me", o si acaba de clonar el kit. Es un asistente todo en uno que hace el cuestionario de 7 preguntas Y al final genera los archivos del Día 1. Es idempotente, así que puedes volver a ejecutarlo cuando quieras después de editar aios-intake.md.
 ---
 
-## What this skill does
+## Qué hace este skill
 
-Single combined wizard. Reads or writes `aios-intake.md` (the canonical intake), conducts the 7-question interview if the file isn't filled, then scaffolds the Day-1 file set inline at the end of the run. No separate `/scaffold-from-intake` skill — this is one flow.
+Es un solo asistente que:
+- lee o escribe `aios-intake.md` (el cuestionario canónico);
+- hace la entrevista de 7 preguntas si el archivo no está completo;
+- al final genera en el mismo flujo los archivos del Día 1.
 
-**The wow moment:** at the end, suggest the closing prompt *"Try this — ask me: what should I focus on this week?"* The user runs it once. That's the wow. There's no `/today` skill to save — the prompt itself plants the Mindset framework (Default Shift) for them to internalize.
+No existe un skill `/scaffold-from-intake` aparte: todo es un solo flujo.
 
-## When NOT to run this
+Habla con el usuario en español latinoamericano neutro, salvo que prefiera otro idioma.
 
-- If the user has already onboarded and wants to refresh: still run, but skip questions already answered (idempotent).
-- If the user wants to add a new connection: that's not onboarding — point them at `connections.md` to edit directly, or schedule a `/subir-nivel` Phase 2 walk.
+**El momento "wow":** al final, sugiere el prompt de cierre *"Prueba esto, pregúntame: ¿en qué debería enfocarme esta semana?"*. El usuario lo ejecuta una vez y ahí está el efecto. No hace falta guardar un skill `/hoy`: el prompt mismo siembra el marco de Mentalidad (el Default Shift) para que el usuario lo interiorice.
 
-## Execution
+## Cuándo NO ejecutarlo
 
-### Existing projects and portable installation
+- Si el usuario ya hizo el onboarding y quiere actualizarlo: ejecútalo igual, pero salta las preguntas ya respondidas (es idempotente).
+- Si el usuario quiere agregar una conexión nueva: eso no es onboarding. Indícale que edite `connections.md` directamente o que haga la Fase 2 de `/subir-nivel`.
 
-Read the applicable `AGENTS.md` and `CLAUDE.md` first. The paths below are starter-kit defaults; use an established project's equivalent canonical context, voice, and connection sources instead of creating parallel sources of truth. Preserve unrelated operating rules and routing, and synchronize shared manual edits where required. Onboarding updates selected personal context, not the entire operating manual.
+## Ejecución
 
-If `aios-intake.md` is missing, use the bundled [intake template](assets/aios-intake.md). Populate only answers explicitly supported by existing sources, with references; leave unknowns for the interview. Installing this skill does not itself run onboarding or change the user's context.
+### Proyectos existentes e instalación portable
 
-### Step 1: Read the intake
+Lee primero el `AGENTS.md` y el `CLAUDE.md` que correspondan. Las rutas de abajo son las del kit base. En un proyecto ya establecido, usa sus fuentes canónicas equivalentes de contexto, voz y conexiones, en lugar de crear fuentes de verdad paralelas. Conserva las reglas operativas y el enrutamiento que no tengan relación, y sincroniza las ediciones del manual compartido cuando haga falta. El onboarding actualiza el contexto personal seleccionado, no todo el manual operativo.
 
-Read `aios-intake.md`. Check which Q1-Q7 sections have content vs. `[Your answer here]` placeholders.
+Si falta `aios-intake.md`, usa la [plantilla del cuestionario](assets/aios-intake.md) incluida. Completa solo las respuestas que estén respaldadas explícitamente por fuentes existentes, con sus referencias, y deja lo desconocido para la entrevista. Instalar este skill no ejecuta el onboarding ni cambia el contexto del usuario.
 
-- **All filled** → skip Step 2, jump to Step 3 (scaffold).
-- **Some filled** → ask the user: "I see Q1, Q3, Q4 are answered. Want to fill the rest now, or scaffold from what's there?" Their call.
-- **None filled (fresh clone)** → run Step 2 conversationally.
+### Paso 1: Lee el cuestionario
 
-### Step 2: The interview (7 questions, hard cap)
+Lee `aios-intake.md`. Revisa qué secciones P1–P7 tienen contenido y cuáles siguen con los marcadores `[Tu respuesta aquí]`. En instalaciones anteriores pueden aparecer como Q1–Q7 y `[Your answer here]`: trátalos igual.
 
-Ask one at a time. Write each answer into `aios-intake.md` as you go (so the user can resume if interrupted).
+- **Todas completas:** salta el Paso 2 y ve al Paso 3 (generar archivos).
+- **Algunas completas:** pregunta: "Veo que P1, P3 y P4 ya tienen respuesta. ¿Quieres completar el resto ahora o genero los archivos con lo que hay?". El usuario decide.
+- **Ninguna completa (clon nuevo):** haz el Paso 2 como conversación.
 
-**Q1 — Who are you, what do you sell, who do you sell it to?**
-Identity, offer, ICP. One paragraph each is fine.
+### Paso 2: La entrevista (7 preguntas, límite estricto)
 
-**Q2 — Paste 1-2 things you've written recently. Don't edit them.**
-*This is the only question with a hard rule.* Voice samples MUST be pasted, not typed mid-conversation. If the user starts typing fresh prose, refuse:
+Haz una pregunta a la vez. Escribe cada respuesta en `aios-intake.md` sobre la marcha, para que el usuario pueda retomar si se interrumpe.
 
-> *"Stop — paste it raw. If you type it here while we're talking, the sample is already shaped by our conversation. Open your last email or LinkedIn post in another tab and paste the unedited text. This is the one rule I can't bend."*
+**P1 — ¿Quién eres, qué vendes y a quién se lo vendes?**
+Identidad, oferta y cliente ideal (ICP). Basta con un párrafo para cada uno.
 
-Ask for two samples. One email, one post. Or two of either.
+**P2 — Pega uno o dos textos que hayas escrito hace poco. No los edites.**
+*Es la única pregunta con una regla estricta.* Las muestras de voz DEBEN pegarse, no escribirse en medio de la conversación. Si el usuario empieza a redactar un texto nuevo, recházalo:
 
-**Q3 — What are your 2-3 biggest priorities for the next 90 days?**
-Quarterly priorities. Push back if they say "grow my business" — make them name a number, a deadline, or a deliverable.
+> *"Espera: pégalo tal cual. Si lo escribes aquí mientras hablamos, la muestra ya queda moldeada por la conversación. Abre tu último correo o tu última publicación en otra pestaña y pega el texto sin editar. Esta es la única regla que no puedo flexibilizar."*
 
-**Q4 — Where does revenue actually land, and where is it tracked?**
-Multiple answers OK. Map to Tier-1 Domain 1 (Revenue/Financials).
+Pide dos muestras: un correo y una publicación, o dos de cualquiera de los dos.
 
-**Q5 — Where do you talk to customers, your team, and the outside world day-to-day?**
-Email (Gmail/Outlook), Slack/Teams/Discord, DMs. Map to Domains 2 + 4.
+**P3 — ¿Cuáles son tus 2 o 3 prioridades más importantes para los próximos 90 días?**
+Prioridades del trimestre. Si dicen "hacer crecer mi negocio", insiste: que nombren una cifra, una fecha límite o un entregable.
 
-**Q6 — Where do meeting recordings, notes, and important docs live?**
-Map to Domains 6 + 7.
+**P4 — ¿Dónde entran realmente tus ingresos y dónde los registras?**
+Puede haber varias respuestas. Corresponde al Dominio 1 del Nivel 1 (Ingresos/Finanzas).
 
-**Q7 — What's the one task that eats your week, and where do you currently track work?**
-Capture top_pain (used by `/subir-nivel` Day-14) + Domain 5 (tasks).
+**P5 — ¿Dónde hablas a diario con tus clientes, tu equipo y el resto del mundo?**
+Correo (Gmail/Outlook), WhatsApp, Slack/Teams/Discord, DMs. Corresponde a los Dominios 2 y 4.
 
-Domain 3 (Calendar) is auto-inferred from Q5: Gmail → Google Cal; Outlook → Outlook Cal. Confirm in Step 3.
+**P6 — ¿Dónde guardas las grabaciones de reuniones, las notas y los documentos importantes?**
+Corresponde a los Dominios 6 y 7.
 
-### Step 3: Scaffold the Day-1 file set
+**P7 — ¿Cuál es la tarea que más tiempo te consume en la semana y dónde llevas hoy el control de tu trabajo?**
+Registra `top_pain` (lo usa `/subir-nivel` el Día 14) y el Dominio 5 (tareas).
 
-Once the intake is complete, generate these files (or update if re-running). Back up originals to `archives/intake-{YYYY-MM-DD-HHMM}/` if any exist.
+El Dominio 3 (Calendario) se deduce de P5: Gmail → Google Calendar; Outlook → calendario de Outlook. Confírmalo en el Paso 3.
 
-1. **`context/about-me.md`** — from Q1 (identity, role) + Q7 (top_pain). One short paragraph each.
-2. **`context/about-business.md`** — from Q1 (offer, ICP) + Q4 (revenue model). One paragraph.
-3. **`context/priorities.md`** — from Q3. Numbered list, one line per priority.
-4. **`references/voice.md`** — from Q2. Paste samples verbatim with a short header explaining their use ("Match this register when drafting; don't fake voice on external content without showing me first").
-5. **`connections.md`** — populate the 7-row table from Q4-Q7 answers. Each row gets `mechanism: not yet connected`, `auth: —`, `last checked: —`. The user wires connections on Day 2.
-6. **Operating manual (`AGENTS.md` / `CLAUDE.md`)**: fill applicable `{{...}}` placeholders with the user's name, priority, voice summary, and connections summary. In an established manual, update only the selected context or its route; preserve other instructions. Keep shared guidance synchronized when required by the project.
+### Paso 3: Genera los archivos del Día 1
 
-### Step 4: The closing screen
+Cuando el cuestionario esté completo, genera estos archivos (o actualízalos si es una nueva ejecución). Si ya existen, respalda los originales en `archives/intake-{YYYY-MM-DD-HHMM}/`.
 
-Print one screen. Three lines max:
+1. **`context/about-me.md`**: a partir de P1 (identidad, rol) y P7 (`top_pain`). Un párrafo corto para cada tema.
+2. **`context/about-business.md`**: a partir de P1 (oferta, cliente ideal) y P4 (modelo de ingresos). Un párrafo.
+3. **`context/priorities.md`**: a partir de P3. Lista numerada, una línea por prioridad.
+4. **`references/voice.md`**: a partir de P2. Pega las muestras textualmente, con un encabezado breve que explique su uso ("Imita este registro al redactar; no finjas mi voz en contenido externo sin mostrármelo primero").
+5. **`connections.md`**: llena la tabla de 7 filas con las respuestas de P4 a P7. Cada fila lleva `mecanismo: aún no conectado`, `autenticación: —` y `última revisión: —`. El usuario configura las conexiones el Día 2.
+6. **Manual operativo (`AGENTS.md` / `CLAUDE.md`)**: reemplaza los marcadores `{{...}}` que correspondan con el nombre del usuario, su prioridad, un resumen de su voz y un resumen de sus conexiones. En un manual ya establecido, actualiza solo el contexto seleccionado o su ruta, y conserva las demás instrucciones. Mantén sincronizada la guía compartida cuando el proyecto lo requiera.
+
+Los nombres de archivos y carpetas (`context/about-me.md`, etc.) se mantienen en inglés por compatibilidad con los demás skills. El contenido va en el idioma del usuario.
+
+### Paso 4: La pantalla de cierre
+
+Muestra una sola pantalla, de tres líneas como máximo:
 
 ```
-✓ Day 1 done. Your AIOS knows who you are, what you sell, what matters this quarter, and how you sound.
+✓ Día 1 listo. Tu AIOS ya sabe quién eres, qué vendes, qué importa este trimestre y cómo suenas.
 
-Today: ask me — "what should I focus on this week?"
-Tomorrow: pick one tool from connections.md and wire it up (manual MCP install or write a small API script + save references/{tool}-api.md).
-Day 7: run /auditar to see your score.
+Hoy: pregúntame "¿en qué debería enfocarme esta semana?"
+Mañana: elige una herramienta de connections.md y conéctala (instalación manual de un MCP o un script pequeño de API + guardar references/{herramienta}-api.md).
+Día 7: ejecuta /auditar para ver tu puntaje.
 ```
 
-When the user runs the closing prompt ("what should I focus on this week?"), respond using only the new context files. Hit:
-- 3-bullet priority list, in their voice register from Q2
-- Each bullet ties back to a stated 90-day priority from Q3
-- Final line: *"If I had to pick one thing for Monday, it'd be [X], because [reason from priorities]. Want me to draft the first email? And — where could the Default Shift apply here? To what extent could AI be leveraged on this task?"*
+Cuando el usuario use el prompt de cierre ("¿en qué debería enfocarme esta semana?"), responde usando solo los nuevos archivos de contexto. Incluye:
+- una lista de 3 prioridades, en el registro de voz de P2;
+- que cada punto se relacione con una prioridad de 90 días de P3;
+- esta línea final: *"Si tuviera que elegir una sola cosa para el lunes, sería [X], porque [razón según tus prioridades]. ¿Quieres que redacte el primer correo? Y una pregunta: ¿dónde podrías aplicar aquí el Default Shift? ¿Hasta qué punto podría la IA encargarse de esta tarea?"*
 
-The Default Shift question seeds the Mindset framework before `/subir-nivel` formally introduces it on Day 14.
+La pregunta del Default Shift siembra el marco de Mentalidad antes de que `/subir-nivel` lo presente formalmente el Día 14.
 
-## Critical implementation rules
+## Reglas críticas de implementación
 
-1. **The 7-question cap is non-negotiable.** Don't add Q8 in conversation.
-2. **Voice paste cannot be skipped.** If the user types samples mid-chat, refuse and tell them to paste from real writing.
-3. **One-shot scaffold.** After Step 2 ends, write Step 3 files in a single batch. No multi-turn confirmation. The user iterates by editing `aios-intake.md` and re-running.
-4. **Idempotent.** Re-running with an edited intake refreshes context files; backs up originals to `archives/intake-{ts}/`. Skips questions already answered unless the user wants to revise.
-5. **Closing screen is three lines.** Not a menu.
-6. **No extra skills generated.** Don't scaffold `/today`, `/draft`, `/connect`, etc. The kit ships four skills: `/empezar`, `/auditar`, `/subir-nivel`, and `/conectar`; the user authors more via `/subir-nivel`.
-7. **Read-only on `references/3ms-framework.md`.** It already ships in the kit. Don't overwrite.
-8. **No `.env` writes.** Don't ask for API keys on Day 1. Connections come Day 2.
+1. **El límite de 7 preguntas no se negocia.** No agregues una P8 en la conversación.
+2. **No se puede saltar la muestra de voz pegada.** Si el usuario escribe muestras en el chat, recházalas y pídele que pegue textos reales.
+3. **Generación en un solo paso.** Al terminar el Paso 2, escribe todos los archivos del Paso 3 de una vez, sin confirmaciones en varios turnos. El usuario itera editando `aios-intake.md` y volviendo a ejecutar el skill.
+4. **Idempotente.** Volver a ejecutarlo con el cuestionario editado actualiza los archivos de contexto y respalda los originales en `archives/intake-{ts}/`. Salta las preguntas ya respondidas, salvo que el usuario quiera revisarlas.
+5. **La pantalla de cierre tiene tres líneas.** No es un menú.
+6. **No generes skills extra.** No crees `/hoy`, `/redactar`, `/conectar-herramienta`, etc. El kit trae seis skills: `/empezar`, `/auditar`, `/entrevistame`, `/conectar`, `/subir-nivel` y `/cerebro-3d`. El usuario crea los demás con `/subir-nivel`.
+7. **`references/3ms-framework.md` es de solo lectura.** Ya viene en el kit. No lo sobrescribas.
+8. **No escribas en `.env`.** No pidas claves de API el Día 1: las conexiones llegan el Día 2.
 
-## Verification (for the implementer)
+## Verificación (para quien implementa)
 
-- Cold-test: clone a fresh kit, run `/empezar`, fill 7 answers, scaffold runs, ask the wow prompt, response cites Q1 + Q3 + Q7 specifically. Generic = fail.
-- Idempotency: re-run `/empezar` with one Q3 priority changed. Expected: only `context/priorities.md` and `CLAUDE.md`'s priority section update; backup created in `archives/intake-{ts}/`.
-- Voice rejection: type a sample mid-chat. Expected: skill refuses, asks for paste.
+- **Prueba en frío:** clona un kit nuevo, ejecuta `/empezar`, responde las 7 preguntas, deja que genere los archivos y haz el prompt "wow". La respuesta debe citar específicamente P1, P3 y P7. Si es genérica, falla.
+- **Idempotencia:** vuelve a ejecutar `/empezar` cambiando una prioridad de P3. Resultado esperado: solo se actualizan `context/priorities.md` y la sección de prioridades de `CLAUDE.md`, y se crea un respaldo en `archives/intake-{ts}/`.
+- **Rechazo de voz:** escribe una muestra en el chat. Resultado esperado: el skill la rechaza y pide que la pegues.
 
-> *Adapted from The Three Ms of AI™ © 2026 Nate Herk. The Mindset language used in the closing screen comes from `references/3ms-framework.md`.*
+> *Adaptado de The Three Ms of AI™ © 2026 Nate Herk. El lenguaje de Mentalidad de la pantalla de cierre viene de `references/3ms-framework.md`. Traducción al español: Andromeda AI.*

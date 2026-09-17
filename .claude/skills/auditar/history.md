@@ -1,65 +1,128 @@
-# Automatic audit history
+# Historial automático de auditorías
 
-Read this at the start of every AIOS audit. The dated reports are the durable history; each new report carries the finding ledger forward. Do not maintain a separate editable score database or depend on this conversation. Writing reports does not schedule future audits or repair the inspected system.
+Lee este archivo al inicio de cada auditoría del AIOS. Los reportes fechados son el historial durable, y cada reporte nuevo arrastra el registro de hallazgos. No mantengas una base de puntajes editable aparte ni dependas de esta conversación. Escribir reportes no programa auditorías futuras ni repara el sistema inspeccionado.
 
-## 1. Select prior evidence
+**Compatibilidad con reportes anteriores:** las claves y los valores del frontmatter YAML (`audit_kind: aios`, `report_status: complete` / `partial`, `rubric_version: v2`, etc.) se mantienen en inglés porque son datos. Los reportes generados antes de la traducción pueden tener encabezados y estados en inglés; usa la tabla de equivalencias de la sección 2 para interpretarlos.
 
-1. Resolve the audited project's root and its existing `audits/` directory. Inspect report names and metadata first, not every audit's full contents. The folder may also contain cost, code, or security audits: these are not AIOS baselines.
-2. Use `audit_kind: aios`, project identity, run timestamp, report status, rubric version, and coverage to select reports. For legacy reports without metadata, read their headings/scope and identify them explicitly as legacy; never guess scores, IDs, or dates from memory. Do not change historical files to match the new format.
-3. Read the latest applicable report's ledger, plus the most recent complete comparable report if different. Start with at most two full reports. Follow older links only for unresolved identity/evidence or older comparable scope; note limits if that is not possible. Exclude fixture/example reports. Inspect overlapping/parallel runs when present so one branch's unresolved findings do not disappear.
-4. Compare scores only for the same project, rubric, and materially equivalent scope: runtimes, domains, workflows, and retrieval probes. A moved checkout of the same project may qualify when identity is verified. Different projects, changed scoring anchors, narrower/broader samples, and partial reports do not support a simple score delta. Finding-level comparisons can still be valid where targets/checks match.
-5. Record the previous report link(s) and separately the score baseline, if any. No eligible saved report means **first recorded baseline**. Do not treat any unsaved audit as freshly verified evidence. Historical imports require an explicit request and a clearly labeled source/date.
+## 1. Selecciona la evidencia previa
 
-## 2. Maintain finding identity and status
+1. **Ubica la raíz del proyecto auditado y su carpeta `audits/` existente.** Revisa primero los nombres y metadatos de los reportes, no el contenido completo de cada auditoría. La carpeta también puede contener auditorías de costos, de código o de seguridad: esas no sirven como línea base del AIOS.
+2. **Elige los reportes** según `audit_kind: aios`, la identidad del proyecto, la marca de tiempo de la ejecución, el estado del reporte, la versión de la rúbrica y la cobertura.
+   - Si un reporte antiguo no tiene metadatos, lee sus encabezados y su alcance, e identifícalo explícitamente como antiguo. Nunca adivines puntajes, IDs ni fechas de memoria.
+   - No modifiques archivos históricos para ajustarlos al formato nuevo.
+3. **Lee los reportes base.**
+   - Lee el registro del último reporte aplicable y, si es distinto, el del reporte completo y comparable más reciente. Empieza con dos reportes completos como máximo.
+   - Sigue enlaces más antiguos solo si hay una identidad o evidencia sin resolver, o un alcance comparable más antiguo. Si no es posible, anota la limitación.
+   - Excluye los reportes de fixtures o de ejemplo.
+   - Si hay ejecuciones superpuestas o paralelas, revísalas para que los hallazgos sin resolver de una rama no desaparezcan.
+4. **Compara puntajes solo** en el mismo proyecto, con la misma rúbrica y un alcance materialmente equivalente: runtimes, dominios, flujos de trabajo y pruebas de recuperación.
+   - Una copia movida del mismo proyecto puede calificar si se verifica su identidad.
+   - Los proyectos distintos, los criterios de puntuación modificados, las muestras más estrechas o más amplias y los reportes parciales no permiten una diferencia simple de puntaje.
+   - Las comparaciones a nivel de hallazgo pueden seguir siendo válidas cuando los destinos y las comprobaciones coinciden.
+5. **Registra el enlace a los reportes previos y, por separado, la línea base de puntaje,** si existe.
+   - Si no hay un reporte guardado elegible, es la **primera línea base registrada**.
+   - No trates una auditoría no guardada como evidencia recién verificada.
+   - Importar historial requiere una solicitud explícita, con la fuente y la fecha claramente indicadas.
 
-Give each new underlying finding a stable ID such as `AIOS-<run-id>-01`. Preserve the original ID on later runs, matching by affected route/workflow, runtime, and failure mode. Record verified renames/moves instead of minting duplicate findings. If identity is ambiguous, explain it before merging. Class (defect, verification gap, opportunity, intentional difference), evidence confidence, and progress status are separate fields.
+## 2. Mantén la identidad y el estado de los hallazgos
 
-Carry the previous report's complete tracked ledger into the new report, including unresolved items outside today's sample and compact entries for previously closed items. Keep original first-seen and last-verified timestamps. An item omitted from the three recommended actions is not closed. Use these progress labels:
+Da a cada hallazgo de fondo nuevo un ID estable, como `AIOS-<run-id>-01`.
+- **ID original:** consérvalo en las ejecuciones siguientes. Para reconocer el mismo hallazgo, compara la ruta o el flujo afectado, el runtime y el modo de falla.
+- **Renombres y movimientos:** registra los verificados en lugar de crear hallazgos duplicados.
+- **Identidad ambigua:** explícala antes de fusionar.
+- **Campos separados:** la clase (defecto, brecha de verificación, oportunidad, diferencia intencional), la confianza en la evidencia y el estado de avance.
 
-| Status | Evidence required |
+Arrastra al reporte nuevo el registro completo del reporte anterior:
+- los asuntos sin resolver que quedaron fuera de la muestra de hoy;
+- entradas compactas para los asuntos ya cerrados.
+
+Conserva las marcas de tiempo originales de primera detección y última verificación. Que un asunto no esté entre las tres acciones recomendadas no significa que esté cerrado. Usa estas etiquetas de avance:
+
+| Estado (equivalente en reportes antiguos) | Evidencia requerida |
 |---|---|
-| New | First observed in this history. Say newly detected, not newly introduced, unless prior evidence establishes the latter. |
-| Still open | Rechecked and the defect/verification gap remains, or a tracked opportunity is confirmed pending. |
-| Resolved | The original completion check passes with current evidence. A proposed edit, changed timestamp, installed copy, or self-reported success alone does not establish resolution. |
-| Reopened | Previously resolved; the same failure is demonstrated again. Keep the ID and reference its prior closure. |
-| Not rechecked | Not covered, inaccessible, or insufficient evidence today. Preserve last verified state; never imply resolution or a new failure. |
-| No longer applicable | Explicitly changed requirements, retired workflow, or other evidenced scope change. Explain why; this is not a successful repair. |
+| Nuevo (New) | Es la primera vez que aparece en este historial. Di "detectado por primera vez", no "introducido recientemente", salvo que la evidencia previa lo demuestre. |
+| Sigue abierto (Still open) | Se revisó de nuevo y el defecto o la brecha de verificación continúa, o se confirmó que una oportunidad sigue pendiente. |
+| Resuelto (Resolved) | La comprobación de cierre original pasa con evidencia actual. Una edición propuesta, una marca de tiempo cambiada, una copia instalada o un éxito autodeclarado no bastan para declararlo resuelto. |
+| Reabierto (Reopened) | Estaba resuelto y se demuestra otra vez la misma falla. Conserva el ID y referencia su cierre anterior. |
+| Sin revisar (Not rechecked) | No se cubrió, no fue accesible o la evidencia de hoy es insuficiente. Conserva el último estado verificado; nunca des a entender que se resolvió ni que hay una falla nueva. |
+| Ya no aplica (No longer applicable) | Cambiaron explícitamente los requisitos, se retiró el flujo de trabajo o hay otro cambio de alcance con evidencia. Explica por qué; esto no es una reparación exitosa. |
 
-A previously resolved finding not checked today is `Not rechecked` with last verified state `Resolved`, not a reopened defect. If a prior suspected defect is disproved or found intentional, record the correction and evidence in the new report; do not call it a repair or erase the old observation.
+Casos especiales:
+- Un hallazgo resuelto antes y no revisado hoy queda como `Sin revisar`, con último estado verificado `Resuelto`. No es un defecto reabierto.
+- Si un supuesto defecto anterior se descarta o resulta intencional, registra la corrección y su evidencia en el reporte nuevo. No lo llames reparación ni borres la observación anterior.
 
-For each tracked finding record: ID, class, affected target/runtime, first seen, prior status, current status, last verified timestamp/state, evidence link(s), and completion check. The current state is always as of this run, not guaranteed live between audits.
+Para cada hallazgo registra:
+- ID y clase;
+- destino y runtime afectados;
+- primera detección, estado anterior y estado actual;
+- marca de tiempo y estado de la última verificación;
+- enlaces a la evidencia;
+- comprobación de cierre.
 
-## 3. Explain progress honestly
+El estado actual siempre corresponde a esta ejecución; no se garantiza que siga igual entre auditorías.
 
-Use a compact transition table and short narrative:
+## 3. Explica el avance con honestidad
 
-| Finding ID | Prior state | This run | Evidence / practical change | Next check |
+Usa una tabla de transiciones compacta y una narrativa breve:
+
+| ID del hallazgo | Estado anterior | Esta ejecución | Evidencia / cambio práctico | Próxima comprobación |
 |---|---|---|---|---|
-| Existing stable ID | Prior recorded state | One status above | Current evidence, or reason not rechecked | Original acceptance check or justified revision |
+| ID estable existente | Estado registrado antes | Uno de los estados de arriba | Evidencia actual, o motivo por el que no se revisó | Comprobación de aceptación original o una revisión justificada |
 
-- Separate **actual fixes**, **newly verified evidence**, **regressions**, and **coverage or rubric changes**. More logs can justify more credit without any system improvement; a newly discovered defect may lower the score without a recent regression.
-- For a valid score comparison, show prior/current four subtotals, raw totals, caps, and final totals. Explain which criterion evidence changed and any cap effect. Otherwise say **scores not directly comparable** and explain why; do not show a misleading delta or trend.
-- Show unique finding counts by progress state, with rechecked versus carried-forward coverage. Treat no-longer-applicable and corrected classifications separately from verified repairs. Do not claim improvement merely because the score rose or the open count shrank.
-- Prioritize the next checks by user impact, including important unresolved prior items. Do not rerun paid workflows, send alerts, or make repairs just to earn resolution credit.
+- **Separa los tipos de cambio:** **arreglos reales**, **evidencia recién verificada**, **regresiones** y **cambios de cobertura o de rúbrica**.
+  - Más registros pueden justificar más puntaje sin que el sistema haya mejorado.
+  - Un defecto recién descubierto puede bajar el puntaje sin que haya una regresión reciente.
+- **Comparación de puntajes:**
+  - Si la comparación es válida, muestra los cuatro subtotales anteriores y actuales, los totales brutos, los topes y los totales finales. Explica qué evidencia de qué criterio cambió y el efecto de cualquier tope.
+  - Si no lo es, di **los puntajes no son directamente comparables** y explica por qué. No muestres una diferencia ni una tendencia engañosa.
+- **Conteos de hallazgos:** muestra los hallazgos únicos por estado de avance, distinguiendo lo que se revisó de nuevo de lo que solo se arrastró.
+  - Trata "ya no aplica" y las clasificaciones corregidas por separado de las reparaciones verificadas.
+  - No declares una mejora solo porque subió el puntaje o bajó la cantidad de asuntos abiertos.
+- **Próximas comprobaciones:** priorízalas según el impacto en el usuario, incluidos los asuntos previos importantes sin resolver. No vuelvas a ejecutar flujos pagados, no envíes alertas ni hagas reparaciones solo para ganar el estado de resuelto.
 
-## 4. Save every run safely
+## 4. Guarda cada ejecución de forma segura
 
-1. Use [the report template](templates/report.md). Generate a real UTC timestamp and collision-resistant run ID, for example a timestamp plus random suffix. Default filename: `audits/audit-YYYY-MM-DD-HHMMSS-<suffix>.md`, using UTC. Include timezone-aware timestamps and the exact audited root in metadata. These are local records, not public uploads.
-2. Fill every required report section with actual evidence, or an explicit not-checked/partial explanation. Keep full criterion arithmetic, the current finding ledger, prior-report links, comparison limits, and proposed completion checks. Do not leave sample placeholders or invented results.
-3. Create the file without overwriting an existing path; use exclusive creation or equivalent collision protection, retrying with a fresh suffix if necessary. Never silently replace an earlier same-day run. Preserve parallel runs. Do not rewrite historical reports when a later run resolves an issue; later reports document the transition.
-4. Read back the saved report. Verify metadata, links to prior reports, score arithmetic, finding IDs/statuses, redaction, and that the saved content agrees with the reported result. Resolve relative links from the report's directory. Link the saved absolute file path in chat, with a concise progress summary.
-5. If the audit stops early, save observed evidence as `report_status: partial`, with unavailable scores set to `null`, reasons, and unchecked findings carried forward. A partial run is not a full-score baseline. Unexpected process termination may prevent saving; never claim otherwise.
-6. If the filesystem cannot be written, say **report not saved**, return the report in chat, and describe the specific blocker. Do not substitute a secret-bearing log dump, silently save elsewhere, or claim history was updated. An explicit user instruction not to save takes precedence; say **not saved at your request**.
+1. **Nombra el archivo.** Usa [la plantilla de reporte](templates/report.md). Genera una marca de tiempo UTC real y un ID de ejecución resistente a colisiones (por ejemplo, la marca de tiempo más un sufijo aleatorio).
+   - Nombre de archivo por defecto: `audits/audit-YYYY-MM-DD-HHMMSS-<sufijo>.md`, en UTC.
+   - Incluye en los metadatos marcas de tiempo con zona horaria y la raíz auditada exacta.
+   - Son registros locales, no publicaciones.
+2. **Completa cada sección obligatoria** con evidencia real, o con una explicación explícita de "no revisado" o "parcial".
+   - Conserva la aritmética completa de los criterios, el registro de hallazgos actual, los enlaces a reportes previos, los límites de la comparación y las comprobaciones de cierre propuestas.
+   - No dejes marcadores de ejemplo ni resultados inventados.
+3. **Crea el archivo sin sobrescribir** una ruta existente: usa creación exclusiva o una protección equivalente contra colisiones, y reintenta con un sufijo nuevo si hace falta.
+   - Nunca reemplaces en silencio una ejecución anterior del mismo día y conserva las ejecuciones paralelas.
+   - No reescribas reportes históricos cuando una ejecución posterior resuelva un asunto: los reportes posteriores documentan la transición.
+4. **Relee el reporte guardado.** Verifica:
+   - los metadatos y los enlaces a reportes previos;
+   - la aritmética del puntaje;
+   - los IDs y estados de los hallazgos;
+   - que lo sensible esté redactado;
+   - que el contenido guardado coincida con el resultado informado.
 
-The audited workspace remains unchanged apart from the new report and its directory. Do not add an audit entry to business memory, alter `decisions/log.md` on each audit, or update the manuals automatically. Existing reports are point-in-time evidence, never canonical current business facts.
+   Resuelve los enlaces relativos desde la carpeta del reporte. En el chat, enlaza la ruta absoluta del archivo guardado con un resumen breve del avance.
+5. **Si la auditoría termina antes de tiempo,** guarda la evidencia observada con `report_status: partial`:
+   - los puntajes no disponibles en `null`, con sus razones;
+   - los hallazgos no revisados, arrastrados.
 
-## Calibration checks
+   Una ejecución parcial no es una línea base de puntaje completa. Si el proceso termina de forma inesperada, quizá no se pueda guardar; nunca afirmes lo contrario.
+6. **Si no se puede escribir en el sistema de archivos,** di **reporte no guardado**, entrega el reporte en el chat y describe el bloqueo específico.
+   - No lo reemplaces por un volcado de registros con secretos, no lo guardes en silencio en otro lugar y no digas que se actualizó el historial.
+   - Una instrucción explícita del usuario de no guardar tiene prioridad; en ese caso di **no se guardó, a pedido tuyo**.
 
-- First run: one real report saved; no invented baseline, score delta, or repaired finding.
-- Second run: original report unchanged; carry IDs forward; resolve only with passing evidence.
-- Same-second or parallel runs: distinct filenames; neither replaces the other.
-- Reduced scope: omitted prior findings remain visible as not rechecked; no automatic resolution.
-- Scope/rubric change: finding transitions may be shown; whole-score improvement is not claimed.
-- Previously resolved finding fails again: reopened with the original ID and current evidence.
-- Permission failure or explicit no-save: no false saved confirmation.
-- Partial report or fixture: never used as a completed score baseline.
+El espacio de trabajo auditado queda sin cambios, salvo el reporte nuevo y su carpeta.
+- No agregues una entrada de auditoría a la memoria del negocio.
+- No modifiques `decisions/log.md` en cada auditoría.
+- No actualices los manuales automáticamente.
+
+Los reportes existentes son evidencia de un momento dado, nunca hechos actuales y canónicos del negocio.
+
+## Comprobaciones de calibración
+
+- **Primera ejecución:** se guarda un reporte real, sin línea base inventada, sin diferencia de puntaje y sin hallazgos reparados.
+- **Segunda ejecución:** el reporte original queda sin cambios, los IDs se arrastran y solo se resuelve con evidencia que pase la comprobación.
+- **Ejecuciones en el mismo segundo o en paralelo:** nombres de archivo distintos; ninguna reemplaza a la otra.
+- **Alcance reducido:** los hallazgos previos omitidos siguen visibles como sin revisar; no se resuelven automáticamente.
+- **Cambio de alcance o de rúbrica:** se pueden mostrar las transiciones de hallazgos, pero no se declara una mejora del puntaje total.
+- **Un hallazgo resuelto vuelve a fallar:** se reabre con el ID original y la evidencia actual.
+- **Falla de permisos o pedido explícito de no guardar:** no hay confirmación falsa de guardado.
+- **Reporte parcial o de fixture:** nunca se usa como línea base de puntaje completa.

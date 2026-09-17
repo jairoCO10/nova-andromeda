@@ -1,6 +1,6 @@
 interface:
-  display_name: "Grill Me"
-  short_description: "Build context through saved, one-question interviews"
-  default_prompt: "Use $entrevistame to explore this topic and save each answer."
+  display_name: "Entrevístame"
+  short_description: "Construye contexto con entrevistas de una pregunta a la vez, guardadas"
+  default_prompt: "Usa $entrevistame para explorar este tema y guardar cada respuesta."
 policy:
   allow_implicit_invocation: false

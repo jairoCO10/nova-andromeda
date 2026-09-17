@@ -1,172 +1,183 @@
 ---
 name: subir-nivel
-description: Use when someone asks to level up their AIOS, close an audit gap, find what to automate next, or improve one workflow. Walks the 3Ms from choosing the constraint to shipping one useful artifact or verified repair.
+description: Úsalo cuando alguien pida subir de nivel su AIOS, cerrar una brecha de la auditoría, encontrar qué automatizar después o mejorar un flujo de trabajo (también "level up"). Recorre las 3 M (Mentalidad, Método, Máquina), desde elegir la restricción hasta entregar un artefacto útil o una reparación verificada.
 ---
 
-> *Adapted from The Three Ms of AI™. © 2026 Nate Herk. All rights reserved.*
-> *The Three Ms of AI™ is a trademark of Nate Herk.*
+> *Adaptado de The Three Ms of AI™. © 2026 Nate Herk. Todos los derechos reservados.*
+> *The Three Ms of AI™ es una marca registrada de Nate Herk.*
+> *En esta traducción, "las 3 M" = Mentalidad (Mindset), Método (Method) y Máquina (Machine).*
 
-## What this skill does
+## Qué hace este skill
 
-Walks the user through the 3Ms each week to surface and ship one new automation. **One interview = one artifact.** It also installs the 3Ms framework into the user's head over time — after 4-6 runs, the user starts spotting opportunities mid-week without prompting because the questions have become internal defaults.
+Guía al usuario por las 3 M cada semana para encontrar y entregar una automatización nueva. **Una entrevista = un artefacto.** Además, con el tiempo instala el marco de las 3 M en la cabeza del usuario: después de 4 a 6 ejecuciones, el usuario empieza a detectar oportunidades a mitad de semana sin que nadie se lo pida, porque las preguntas ya se volvieron su forma natural de pensar.
 
-This is the brain-rewire mechanism. The kit doesn't need cron jobs to anchor behavior; it needs `/subir-nivel` running every Friday.
+Este es el mecanismo para reentrenar el cerebro. El kit no necesita tareas programadas para anclar el hábito; necesita que `/subir-nivel` se ejecute todos los viernes.
 
-## What `/subir-nivel` is NOT
+Habla con el usuario en español latinoamericano neutro, salvo que prefiera otro idioma. Los nombres de los principios del framework (Default Shift, Lego Principle, Bike Method, etc.) pueden citarse en inglés, con su explicación en español.
 
-- Not `/auditar`. `/auditar` is structural ("is the AIOS built right?"). `/subir-nivel` is functional ("what business leverage am I missing?"). Run `/auditar` first if structure is messy.
-- Not a multi-candidate planner. One run = one shipped artifact.
-- Not a coach. The user does the thinking. The skill conducts the interview.
+## Qué NO es `/subir-nivel`
 
-## When `/subir-nivel` runs
+- No es `/auditar`. `/auditar` es estructural ("¿el AIOS está bien construido?"). `/subir-nivel` es funcional ("¿qué palanca de negocio estoy desaprovechando?"). Si la estructura está desordenada, ejecuta primero `/auditar`.
+- No es un planificador de varias opciones a la vez: una ejecución = un artefacto entregado.
+- No es un coach. El usuario piensa; el skill conduce la entrevista.
 
-- **First run: Day 14.** After the user has connected ≥1 MCP/script and run `/auditar` once. Earlier yields trivial output.
-- **Cadence: weekly, Friday afternoon.** Review the week, surface one automation, ship Monday.
-- **On-demand any time.** Mid-week if a manual task itches.
+## Cuándo se ejecuta `/subir-nivel`
 
-## Inputs the skill reads
+- **Primera ejecución: Día 14.** Después de que el usuario conectó al menos un MCP o script y ejecutó `/auditar` una vez. Antes de eso, el resultado es trivial.
+- **Frecuencia: semanal, el viernes por la tarde.** Revisa la semana, encuentra una automatización y entrégala el lunes.
+- **A pedido, en cualquier momento.** A mitad de semana, si una tarea manual está molestando.
 
-First read the applicable operating manual. The paths below are starter-kit defaults: resolve priorities, identity, and connections through the current project's declared routes when it uses different locations. Do not create duplicate context files because these defaults are absent. Use `references/3ms-framework.md` if present; otherwise read the bundled [3Ms framework](references/3ms-framework.md). Ask only for information unavailable in the existing sources.
+## Qué lee el skill
 
-- `context/priorities.md` — what the user said matters
-- `context/about-me.md` — top_pain, role
-- `connections.md` — what's reachable, by what mechanism
-- `references/3ms-framework.md` — the framework (used to quote principles back)
-- `decisions/log.md` — recent decisions (what's already shipped or considered)
-- `.claude/skills/*/SKILL.md` frontmatter — what capabilities exist
-- Recent `audits/audit-{date}.md` if present
+Primero lee el manual operativo que corresponda. Las rutas de abajo son las del kit base: si el proyecto usa otras ubicaciones, busca las prioridades, la identidad y las conexiones en sus rutas declaradas. No crees archivos de contexto duplicados solo porque falten estas rutas por defecto. Usa `references/3ms-framework.md` si existe; si no, lee el [framework de las 3 M](references/3ms-framework.md) incluido. Pregunta solo por la información que no esté en las fuentes existentes.
 
-## Execution — three phases
+- `context/priorities.md`: lo que el usuario dijo que importa.
+- `context/about-me.md`: `top_pain` y rol.
+- `connections.md`: qué se puede alcanzar y con qué mecanismo.
+- `references/3ms-framework.md`: el framework (para citar sus principios).
+- `decisions/log.md`: decisiones recientes (qué ya se entregó o se consideró).
+- El frontmatter de `.claude/skills/*/SKILL.md`: qué capacidades existen.
+- Los `audits/audit-{fecha}.md` recientes, si existen.
 
-### Coming from an audit
+## Ejecución: tres fases
 
-If the user supplies an `/auditar` finding or a recent report is available, carry its evidence, affected route/workflow, and completion check into Phase 1. Use that gap as the first candidate; ask only for missing context instead of restarting a generic interview. Do not chase points or assume an unverified connection is broken.
+### Si vienes de una auditoría
 
-For a routing-only fix, use `/conectar` when available and the user has requested the edit. For a selected workflow repair, improve that existing workflow rather than creating a duplicate skill. A verified repair counts as the one artifact for this run. Preserve the Method reasoning, relevant scope/permissions, and validation steps. A practical measure can be fewer failed retrievals, fewer missed runs, or less time finding a source.
+Si el usuario trae un hallazgo de `/auditar`, o hay un reporte reciente, lleva a la Fase 1:
+- su evidencia;
+- la ruta o el flujo de trabajo afectado;
+- la comprobación de cierre.
 
-For repairs, skip creation-only scaffolding. The scaffold headers below apply to new workflow artifacts, never to operating manuals or routing indexes.
+Usa esa brecha como primera candidata y pregunta solo por el contexto que falte, en lugar de reiniciar una entrevista genérica. No persigas puntos ni supongas que una conexión sin verificar está rota.
 
-Close with the repair's acceptance evidence and recommend `/auditar` again. Do not claim a higher score until the new audit verifies it; repeated-use and due-run evidence must accumulate through actual use.
+**Qué hacer según el tipo de brecha:**
+- **Arreglo solo de enrutamiento:** usa `/conectar` si está disponible y el usuario pidió la edición.
+- **Reparación de un flujo de trabajo seleccionado:** mejora ese flujo existente en lugar de crear un skill duplicado. Una reparación verificada cuenta como el artefacto de esta ejecución.
+  - Conserva el razonamiento del Método, el alcance y los permisos relevantes, y los pasos de validación.
+  - Una medida práctica puede ser: menos recuperaciones fallidas, menos ejecuciones perdidas o menos tiempo buscando una fuente.
+  - En las reparaciones, omite la estructura que solo aplica a creaciones: los encabezados de la Fase 3 son para artefactos de flujo de trabajo nuevos, nunca para manuales operativos ni índices de enrutamiento.
 
-### Phase 1 — Mindset interview (find the candidate)
+Cierra con la evidencia de aceptación de la reparación y recomienda volver a ejecutar `/auditar`. No declares un puntaje mayor hasta que la nueva auditoría lo verifique; la evidencia de uso repetido y de ejecuciones a tiempo se acumula solo con el uso real.
 
-Surface 1-3 candidates ranked by leverage. Ask these in order, conversationally:
+### Fase 1: Entrevista de Mentalidad (encontrar la candidata)
 
-1. *"Walk me through your week. What did you do 3+ times?"* (frequency)
-2. *"Anything that felt manual, boring, or copy-paste?"* (drudgery)
-3. *"Anything where you thought 'a smart intern could handle this'?"* (delegation)
-4. *"If 500 new clients showed up tomorrow, what would break first?"* (constraint)
-5. *"What would give you 500 more clients tomorrow?"* (growth lever)
+Encuentra de 1 a 3 candidatas, ordenadas por palanca. Haz estas preguntas en orden, de forma conversacional:
 
-Quote relevant Mindset principles when they fit:
-- *"Sounds like the Default Shift applies — to what extent could AI be leveraged here?"*
-- *"This is the Function Breakdown — you're not automating the whole job, just this one piece."*
-- *"AI is better than you think and improving faster than you think. If it couldn't do this last quarter, it might be ready now."*
+1. *"Cuéntame tu semana. ¿Qué hiciste 3 veces o más?"* (frecuencia)
+2. *"¿Algo se sintió manual, aburrido o de copiar y pegar?"* (trabajo pesado)
+3. *"¿En qué pensaste 'esto lo podría hacer un practicante listo'?"* (delegación)
+4. *"Si mañana llegaran 500 clientes nuevos, ¿qué se rompería primero?"* (restricción)
+5. *"¿Qué te daría 500 clientes más mañana?"* (palanca de crecimiento)
 
-**Output of Phase 1:** numbered list of 1-3 candidate opportunities, one-line "why this is leverage" per candidate. Ask: *"Pick one to scope."*
+Cita los principios de Mentalidad cuando encajen:
+- *"Parece que aplica el Default Shift: ¿hasta qué punto se podría aprovechar la IA aquí?"*
+- *"Esto es el Function Breakdown: no vas a automatizar todo el trabajo, solo esta parte."*
+- *"La IA es mejor de lo que crees y mejora más rápido de lo que crees. Si el trimestre pasado no podía hacer esto, quizá ahora sí."*
 
-### Phase 2 — Method interview (scope one)
+**Resultado de la Fase 1:** una lista numerada de 1 a 3 oportunidades, con una línea por candidata sobre "por qué esto es palanca". Pregunta: *"Elige una para definirla."*
 
-User picks one candidate. Walk the 5-step Method pipeline:
+### Fase 2: Entrevista de Método (definir una)
 
-**Step 1 — Find the constraint.** Which bottleneck does this solve, or which growth lever does it open? Tie back to Phase 1 answers.
+El usuario elige una candidata. Recorre los 5 pasos del Método:
 
-**Step 2 — EAD: Eliminate / Automate / Delegate.**
-- **Eliminate first:** *"What happens if we just stop doing this?"* If the answer is "nothing breaks" → skill exits cheerfully. *"Don't automate waste."* This is a win, log to `decisions/log.md` and stop.
-- **Automate second:** apply 60/30/10 framing. ~60% deterministic, ~30% AI-assisted, ~10% manual.
-- **Delegate third:** if too complex/variable/judgment-heavy → suggest a person. Skill exits with a delegation suggestion, log it.
+**Paso 1: Encuentra la restricción.** ¿Qué cuello de botella resuelve o qué palanca de crecimiento abre? Relaciónalo con las respuestas de la Fase 1.
 
-**Step 3 — Map the process.** Five elements:
-- Trigger (what kicks it off)
-- Data sources (where info comes from)
-- Data transformations (how data changes shape)
-- Decision points (where it branches)
-- Destination (where output goes)
+**Paso 2: EAD, es decir, Eliminar / Automatizar / Delegar.**
+- **Primero, eliminar:** *"¿Qué pasa si simplemente dejamos de hacer esto?"* Si la respuesta es "no se rompe nada", el skill termina con buen ánimo: *"No automatices el desperdicio."* Es un logro: regístralo en `decisions/log.md` y detente.
+- **Segundo, automatizar:** aplica la proporción 60/30/10: ~60 % determinista, ~30 % asistido por IA y ~10 % manual.
+- **Tercero, delegar:** si es demasiado complejo, variable o depende mucho del criterio, sugiere a una persona. El skill termina con una sugerencia de delegación y la registra.
 
-If the user can't articulate any of the five: *"If you can't explain it to a person, you can't explain it to an AI. Sketch it on paper first, then come back."* Skill stops.
+**Paso 3: Mapea el proceso.** Cinco elementos:
+- Disparador (qué lo inicia)
+- Fuentes de datos (de dónde viene la información)
+- Transformaciones de datos (cómo cambia la forma de los datos)
+- Puntos de decisión (dónde se ramifica)
+- Destino (a dónde va el resultado)
 
-**Step 4 — Pick the autonomy level.**
+Si el usuario no puede explicar alguno de los cinco: *"Si no se lo puedes explicar a una persona, no se lo puedes explicar a una IA. Dibújalo primero en papel y después vuelve."* El skill se detiene.
 
-| Level | Name | What happens |
+**Paso 4: Elige el nivel de autonomía.**
+
+| Nivel | Nombre | Qué pasa |
 |---|---|---|
-| L0 | Manual | No AI |
-| L1 | Suggested | AI suggests, human decides every step |
-| L2 | Drafted | AI drafts, human reviews and edits |
-| L3 | Supervised | AI runs, human validates periodically |
-| L4 | Autonomous | AI handles end-to-end |
+| L0 | Manual | Sin IA |
+| L1 | Sugerido | La IA sugiere; una persona decide cada paso |
+| L2 | Borrador | La IA redacta; una persona revisa y edita |
+| L3 | Supervisado | La IA ejecuta; una persona valida periódicamente |
+| L4 | Autónomo | La IA se encarga de principio a fin |
 
-**Default = lowest level that solves the problem.** Push back on L4 unless the user has explicitly run lower levels first. *"Workflows beat agents. If a decision doesn't HAVE to be made by AI, don't let AI make it."*
+**Por defecto = el nivel más bajo que resuelva el problema.** Cuestiona el L4, salvo que el usuario ya haya pasado explícitamente por los niveles inferiores. *"Los flujos de trabajo le ganan a los agentes. Si una decisión no TIENE que tomarla una IA, no dejes que la tome."*
 
-**Step 5 — Tie to a KPI.** Which of the Three Buckets does this move?
-- More customers
-- More value per customer
-- Less cost
+**Paso 5: Relaciónalo con un KPI.** ¿Qué categoría de los Tres Baldes (Three Buckets) mueve?
+- Más clientes
+- Más valor por cliente
+- Menos costo
 
-Plus a specific metric (response time, error rate, conversion rate, time-to-completion). **If the user can't name a bucket and a metric, skill stops.** *"If your automation doesn't move a number, why are you building it?"*
+Y una métrica específica (tiempo de respuesta, tasa de error, tasa de conversión, tiempo hasta completar). **Si el usuario no puede nombrar una categoría y una métrica, el skill se detiene.** *"Si tu automatización no mueve un número, ¿para qué la estás construyendo?"*
 
-**Output of Phase 2:** scoped automation spec written to `decisions/log.md` as a dated entry with all five answers + autonomy level + KPI. Durable record of what was decided and why.
+**Resultado de la Fase 2:** la especificación de la automatización, escrita en `decisions/log.md` como una entrada fechada con las cinco respuestas, el nivel de autonomía y el KPI. Es el registro durable de qué se decidió y por qué.
 
-### Phase 3 — Machine handoff (build it)
+### Fase 3: Entrega a la Máquina (construirlo)
 
-Ask: *"How do you want to ship this?"* Options ordered by Boring-is-Beautiful default:
+Pregunta: *"¿Cómo quieres entregar esto?"*. Las opciones van ordenadas según el principio Boring-is-Beautiful ("lo aburrido es bello"):
 
-1. **Prompt-only** — saved prompt template the user runs by hand. Zero infrastructure. Highest manual involvement.
-2. **Deterministic skill** — SKILL.md that runs a script (no AI step). Best for transformations with clear rules.
-3. **AI-assisted skill** — SKILL.md with one AI call inside. Drafts, classifies, summarizes.
-4. **Sub-agent** — multi-step agent. Last resort. Only if the work genuinely needs reasoning + tool use.
+1. **Solo prompt:** una plantilla de prompt guardada que el usuario ejecuta a mano. Cero infraestructura; la mayor participación manual.
+2. **Skill determinista:** un SKILL.md que ejecuta un script (sin paso de IA). Ideal para transformaciones con reglas claras.
+3. **Skill asistido por IA:** un SKILL.md con una llamada a la IA adentro. Redacta, clasifica o resume.
+4. **Subagente:** un agente de varios pasos. Último recurso: solo si el trabajo de verdad necesita razonamiento y uso de herramientas.
 
-**Default selected = highest non-AI option that solves the problem.** User has to explicitly choose more autonomy.
+**Opción por defecto = la opción sin IA más alta que resuelva el problema.** El usuario tiene que elegir explícitamente más autonomía.
 
-Once chosen, route to the appropriate scaffolder:
-- `skill-creator` if available globally (Anthropic-shipped)
-- `skill-builder` if user has it locally
-- Otherwise write a SKILL.md / agent file inline with frontmatter, location, and contents
+Una vez elegida, usa el generador que corresponda:
+- `skill-creator`, si está disponible de forma global (lo distribuye Anthropic);
+- `skill-builder`, si el usuario lo tiene localmente;
+- si no, escribe directamente un SKILL.md o archivo de agente con su frontmatter, su ubicación y su contenido. Nombra los skills nuevos en español, en minúsculas, sin tildes y con guiones.
 
-**Every scaffolded artifact ships with these two headers at top:**
+**Cada artefacto generado lleva estos dos encabezados al inicio** (las claves se mantienen en inglés por compatibilidad):
 
 ```markdown
 ---
-bike-method-phase: 1  # Phase 1 — Training wheels. Run manually first.
+bike-method-phase: 1  # Fase 1: rueditas de entrenamiento. Ejecútalo primero a mano.
 three-ms-attribution: |
-  Adapted from The Three Ms of AI™ © 2026 Nate Herk.
+  Adaptado de The Three Ms of AI™ © 2026 Nate Herk.
 ---
 ```
 
-This locks the user into Phase 1 of the Bike Method on first build. They can't silently skip manual validation. Phase advances only by explicit edit.
+Esto deja al usuario en la Fase 1 del Bike Method en la primera construcción, para que no se salte la validación manual sin darse cuenta. La fase solo avanza con una edición explícita.
 
-Surface the Machine principles when scaffolding:
-- **Lego Principle** — smallest steps, zero-AI first if possible
-- **Validation Chain** — test each step before chaining
-- **Iteration Mindset** — ship the POC, expand from real usage
+Menciona los principios de Máquina al generar el artefacto:
+- **Lego Principle:** los pasos más pequeños posibles; si se puede, primero sin IA.
+- **Validation Chain:** prueba cada paso antes de encadenarlo.
+- **Iteration Mindset:** entrega la prueba de concepto y amplíala según el uso real.
 
-## Output contract
+## Contrato de resultado
 
-Every `/subir-nivel` run produces:
+Cada ejecución de `/subir-nivel` produce:
 
-1. **One `decisions/log.md` entry** — dated, with the Method spec
-2. **One delivered improvement**: a prompt, skill, or agent file, or a verified repair of the selected existing workflow/routing
-3. **A one-screen close** — what was scoped, what was built, and the Bike Method Phase 1 reminder
+1. **Una entrada en `decisions/log.md`**, fechada, con la especificación del Método.
+2. **Una mejora entregada:** un prompt, un skill o un archivo de agente, o una reparación verificada del flujo de trabajo o del enrutamiento seleccionado.
+3. **Un cierre de una pantalla:** qué se definió, qué se construyó y el recordatorio de la Fase 1 del Bike Method.
 
-## Critical implementation rules
+## Reglas críticas de implementación
 
-1. **One interview = one artifact.** No multi-candidate parallel scoping.
-2. **Mindset phase always runs first.** Even if user comes in with a pre-formed idea.
-3. **EAD enforces "eliminate first."** If the answer is Eliminate, exit cheerfully — that's a win, not a failure.
-4. **Default to the lowest autonomy level that works.** Push back on L4.
-5. **Boring-is-Beautiful default in Machine handoff.** Default = highest non-AI option.
-6. **Tie-to-KPI is mandatory.** If user can't name bucket + metric, skill stops.
-7. **Bike Method ships into every artifact.** `bike-method-phase: 1` in frontmatter.
-8. **Limit edits to `decisions/log.md` and the selected artifact.** An explicitly selected audit repair may update its existing workflow or routing files; preserve unrelated content. Other files remain read-only.
-9. **Trademark + attribution on output.** Every report and every scaffolded artifact references the framework.
+1. **Una entrevista = un artefacto.** Nada de definir varias candidatas en paralelo.
+2. **La fase de Mentalidad siempre va primero.** Aunque el usuario llegue con una idea ya formada.
+3. **El EAD obliga a "eliminar primero".** Si la respuesta es Eliminar, termina con buen ánimo: es un logro, no un fracaso.
+4. **Por defecto, el nivel de autonomía más bajo que funcione.** Cuestiona el L4.
+5. **Boring-is-Beautiful por defecto en la entrega a la Máquina.** Por defecto, la opción sin IA más alta.
+6. **Relacionarlo con un KPI es obligatorio.** Si el usuario no puede nombrar categoría y métrica, el skill se detiene.
+7. **El Bike Method va en cada artefacto.** `bike-method-phase: 1` en el frontmatter.
+8. **Limita las ediciones a `decisions/log.md` y al artefacto seleccionado.** Una reparación de auditoría seleccionada explícitamente puede actualizar su flujo de trabajo o sus archivos de enrutamiento existentes; conserva el contenido que no tenga relación. Los demás archivos son de solo lectura.
+9. **Marca registrada y atribución en el resultado.** Cada reporte y cada artefacto generado hacen referencia al framework.
 
-## Verification (for the implementer)
+## Verificación (para quien implementa)
 
-- **Dry run on Nate's Herk-2** with no prompt. Expected: skill surfaces 2-3 candidates pulled from his recent activity, priorities, and top_pain. Generic output ("you should build a brief") = fail.
-- **Eliminate-first test.** Feed an obviously eliminate-able candidate. Expected: skill suggests Eliminate, exits, logs the win.
-- **L4 push-back test.** User asks for autonomous email-replier on first build. Expected: skill insists on L1/L2 first, won't ship L4 without explicit override.
-- **Boring-is-Beautiful test.** Candidate solvable with deterministic Python. Expected: skill recommends `(2) deterministic skill` as default.
-- **Bike Method anti-skip.** User scaffolds, asks to advance to Phase 4 immediately. Expected: skill makes them read what each phase means and confirm they've validated lower phases.
+- **Prueba en seco** en un AIOS con contexto real, sin prompt. En el original se probó con el AIOS Herk-2 de Nate Herk. Resultado esperado: el skill propone 2 o 3 candidatas tomadas de la actividad reciente, las prioridades y el `top_pain`. Un resultado genérico ("deberías crear un resumen") = falla.
+- **Prueba de "eliminar primero":** da una candidata que obviamente se puede eliminar. Resultado esperado: el skill sugiere Eliminar, termina y registra el logro.
+- **Prueba de freno al L4:** el usuario pide en la primera construcción un agente que responda correos de forma autónoma. Resultado esperado: el skill insiste en empezar por L1/L2 y no entrega un L4 sin una anulación explícita.
+- **Prueba de Boring-is-Beautiful:** una candidata que se resuelve con Python determinista. Resultado esperado: el skill recomienda por defecto `(2) skill determinista`.
+- **Prueba contra saltarse el Bike Method:** el usuario genera un artefacto y pide pasar de inmediato a la Fase 4. Resultado esperado: el skill le hace leer qué significa cada fase y confirmar que validó las fases anteriores.
 
 ---
 
-> *The Three Ms of AI™ is a trademark of Nate Herk. © 2026 Nate Herk. All rights reserved.*
+> *The Three Ms of AI™ es una marca registrada de Nate Herk. © 2026 Nate Herk. Todos los derechos reservados.*

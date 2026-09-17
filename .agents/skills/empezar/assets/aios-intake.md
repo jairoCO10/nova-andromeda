@@ -1,85 +1,85 @@
-# AIS-OS Intake
+# Cuestionario inicial de Andromeda AI
 
-This is the source-of-truth file for your AIOS. Fill it in by typing, voice-pasting (Wispr Flow / OS dictation), or running `/empezar` for a guided conversation. Whichever mode, this file is what `/empezar` reads to scaffold your Day-1 setup.
+Este es el archivo fuente de verdad de tu AIOS. Puedes llenarlo escribiendo, dictando (con Wispr Flow o el dictado de tu sistema) o ejecutando `/empezar` para una conversación guiada. Sin importar cómo lo hagas, `/empezar` lee este archivo para preparar tu configuración del Día 1.
 
-**Hard cap: 7 questions.** Each answerable in under 60 seconds. Don't overthink — you can edit and re-run `/empezar` any time.
-
----
-
-## Q1 — Who are you, what do you sell, who do you sell it to?
-
-Identity, offer, ICP. One paragraph each is fine.
-
-```
-[Your answer here]
-```
+**Límite estricto: 7 preguntas.** Cada una se responde en menos de 60 segundos. No lo pienses demasiado: puedes editarlo y volver a ejecutar `/empezar` cuando quieras.
 
 ---
 
-## Q2 — Paste 1-2 things you've written recently. Don't edit them.
+## P1 — ¿Quién eres, qué vendes y a quién se lo vendes?
 
-An email, a LinkedIn post, a DM, a doc — anything that sounds like you when you're not trying. **Paste verbatim.** Do not type these mid-conversation with Claude — chat-shaped samples are worse than no samples (voice contamination).
-
-```
-[Sample 1 — paste raw]
-```
+Identidad, oferta y cliente ideal. Basta con un párrafo para cada uno.
 
 ```
-[Sample 2 — paste raw]
+[Tu respuesta aquí]
 ```
 
 ---
 
-## Q3 — What are your 2-3 biggest priorities for the next 90 days?
+## P2 — Pega uno o dos textos que hayas escrito hace poco. No los edites.
 
-Quarterly priorities. Not yearly aspirations. Things that, if not done by July, would make you say "I wasted Q2."
-
-```
-1. [Priority 1]
-2. [Priority 2]
-3. [Priority 3]
-```
-
----
-
-## Q4 — Where does revenue actually land, and where is it tracked?
-
-Multiple answers OK. Stripe? Skool? GoHighLevel? QuickBooks? A spreadsheet?
+Un correo, una publicación de LinkedIn, un DM, un documento: cualquier cosa que suene a ti cuando no te estás esforzando. **Pégalos tal cual.** No los escribas en medio de la conversación con la IA: las muestras que ya salen con el tono del chat son peores que no tener muestras (contaminan tu voz).
 
 ```
-[Your answer here]
+[Muestra 1: pega el texto sin editar]
+```
+
+```
+[Muestra 2: pega el texto sin editar]
 ```
 
 ---
 
-## Q5 — Where do you talk to customers, your team, and the outside world day-to-day?
+## P3 — ¿Cuáles son tus 2 o 3 prioridades más importantes para los próximos 90 días?
 
-Email (which one — Gmail / Outlook)? Slack? Teams? DMs (Skool / Discord / iMessage)? Phone?
-
-```
-[Your answer here]
-```
-
----
-
-## Q6 — Where do meeting recordings, notes, and important docs live?
-
-Granola? Otter? Fireflies? Google Drive? Notion? Dropbox? A folder on your desktop you keep meaning to organize?
+Prioridades del trimestre, no aspiraciones del año. Cosas que, si no están listas en tres meses, te harían decir: "Perdí el trimestre".
 
 ```
-[Your answer here]
+1. [Prioridad 1]
+2. [Prioridad 2]
+3. [Prioridad 3]
 ```
 
 ---
 
-## Q7 — What's the one task that eats your week, and where do you currently track work?
+## P4 — ¿Dónde entran realmente tus ingresos y dónde los registras?
 
-The single biggest time-suck or recurring drudgery. Plus where tasks/projects live (ClickUp / Asana / Linear / Notion / a notebook).
+Puedes dar varias respuestas. ¿Stripe? ¿Mercado Pago? ¿Hotmart? ¿Skool? ¿GoHighLevel? ¿QuickBooks? ¿Una hoja de cálculo?
 
 ```
-[Your answer here]
+[Tu respuesta aquí]
 ```
 
 ---
 
-When this file is filled, run `/empezar` (or re-run it) and the wizard will scaffold your Day-1 file set: `context/`, `references/voice.md`, populated `connections.md`, and a filled `CLAUDE.md`.
+## P5 — ¿Dónde hablas a diario con tus clientes, tu equipo y el resto del mundo?
+
+¿Correo (Gmail u Outlook)? ¿WhatsApp? ¿Slack? ¿Teams? ¿DMs (Instagram, Skool, Discord, iMessage)? ¿Teléfono?
+
+```
+[Tu respuesta aquí]
+```
+
+---
+
+## P6 — ¿Dónde guardas las grabaciones de reuniones, las notas y los documentos importantes?
+
+¿Granola? ¿Otter? ¿Fireflies? ¿Google Drive? ¿Notion? ¿Dropbox? ¿Una carpeta en el escritorio que siempre dices que vas a ordenar?
+
+```
+[Tu respuesta aquí]
+```
+
+---
+
+## P7 — ¿Cuál es la tarea que más tiempo te consume en la semana y dónde llevas hoy el control de tu trabajo?
+
+Esa tarea repetitiva o pesada que más horas te quita. Y dónde viven tus tareas y proyectos (ClickUp, Asana, Linear, Notion, Trello, una libreta).
+
+```
+[Tu respuesta aquí]
+```
+
+---
+
+Cuando termines de llenar este archivo, ejecuta `/empezar` (o vuelve a ejecutarlo) y el asistente preparará tus archivos del Día 1: `context/`, `references/voice.md`, `connections.md` completo y un `CLAUDE.md` con tus datos.

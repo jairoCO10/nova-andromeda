@@ -1,91 +1,118 @@
-# Four Cs rubric v2
+# Rúbrica de las Cuatro C, v2
 
-## Scoring rules
+Las Cuatro C (Four Cs) son Contexto (Context), Conexiones (Connections), Capacidades (Capabilities) y Cadencia (Cadence). Los IDs de criterio (C1…C5, N1…N5, P1…P5, D1…D5) se mantienen sin cambios para que los reportes sigan siendo comparables.
 
-There are five criteria per C, each worth 5 points. Use **0, 1, 3, or 5 only**: select the highest anchor fully supported by evidence. **0** means absent, contradicted, or not evidenced at even the 1-point level. Higher anchors retain the substantive checks below them; numerical coverage bands (such as N1) are alternatives, not simultaneous requirements. Never interpolate, start with full points and deduct, award points for irrelevant infrastructure, or replace missing evidence with optimism.
+## Reglas de puntuación
 
-For multi-part anchors, all parts are required. A bounded sample can establish the stated sample criterion, but does not prove whole-system coverage. Name the sample and unresolved scope. If no relevant workflows or connections can be identified, those evidence-dependent criteria are 0, not vacuously complete. Documentation may earn 1 where specified; it is not a working result.
+Cada C tiene cinco criterios, y cada criterio vale 5 puntos.
+- **Valores permitidos:** usa **solo 0, 1, 3 o 5**. Elige el nivel más alto que la evidencia respalde por completo.
+- **Qué significa 0:** el criterio está ausente, contradicho o sin evidencia ni siquiera para el nivel de 1 punto.
+- **Niveles acumulativos:** los niveles altos incluyen las comprobaciones sustantivas de los niveles inferiores. Las franjas de cobertura numérica (como en N1) son alternativas, no requisitos simultáneos.
+- **Prohibido:**
+  - interpolar;
+  - empezar con el puntaje completo e ir restando;
+  - dar puntos por infraestructura irrelevante;
+  - reemplazar la evidencia faltante con optimismo.
 
-## Context: can a fresh session understand and retrieve? (25)
+**Evidencia y muestras:**
+- En los niveles de varias partes, se requieren todas las partes.
+- Una muestra acotada puede cumplir el criterio de muestra indicado, pero no prueba la cobertura de todo el sistema: nombra la muestra y el alcance sin resolver.
+- Si no se pueden identificar flujos de trabajo o conexiones relevantes, los criterios que dependen de esa evidencia valen 0, no se consideran cumplidos por vacío.
+- La documentación puede dar 1 punto donde se indica, pero no es un resultado que funcione.
 
-| ID | Criterion | 1 point | 3 points | 5 points |
+## Contexto: ¿una sesión nueva puede entender y recuperar información? (25)
+
+| ID | Criterio | 1 punto | 3 puntos | 5 puntos |
 |---|---|---|---|---|
-| C1 | Personalized operating context | Non-placeholder identity and purpose exist | Identity, audience/stakeholders, priorities, and collaboration preferences have specific usable sources | All of those are consistent across the sampled current sources, with meaningful priorities and clear completion expectations |
-| C2 | Routing and findability | A manual or equivalent gives at least one specific usable route | At least 3 of the 5 probes succeed through declared routes, and the important project/knowledge indexes exist where needed | All 5 succeed through declared routes; immediate-folder comparison finds no unexplained important omissions or broken sampled routes |
-| C3 | Freshness | Changing facts have source/as-of dates | Sampled changing facts have appropriate refresh rules and current evidence, or are explicitly historical with a working current-source route | All sampled current facts are verified within their expected interval; optional caches are consistent, maintained, and optional, or absent |
-| C4 | Source authority | At least one canonical source is identified | Rules distinguish stable context, current status/metrics, and original records; sampled claims link to supporting sources | All sampled authority chains resolve; duplicates have explicit roles, and no unresolved material source/manual conflicts remain |
-| C5 | Continuity | An actual decision or project-state record exists | The sampled active project has a current deliverable, decision rationale, and next step accessible from its entry point | A second relevant project or knowledge thread can also be resumed from durable records, with current status and useful source links |
+| C1 | Contexto operativo personalizado | Existen una identidad y un propósito que no son marcadores de plantilla | La identidad, la audiencia o las partes interesadas, las prioridades y las preferencias de colaboración tienen fuentes específicas y utilizables | Todo lo anterior es coherente en las fuentes actuales muestreadas, con prioridades significativas y expectativas de cierre claras |
+| C2 | Enrutamiento y facilidad para encontrar | Un manual o equivalente da al menos una ruta específica y utilizable | Al menos 3 de las 5 pruebas funcionan por las rutas declaradas, y existen los índices importantes de proyectos o conocimiento donde hacen falta | Las 5 funcionan por las rutas declaradas; la comparación con las carpetas inmediatas no encuentra omisiones importantes sin explicar ni rutas muestreadas rotas |
+| C3 | Vigencia | Los datos que cambian tienen fuente y fecha de corte | Los datos cambiantes muestreados tienen reglas de actualización adecuadas y evidencia actual, o están marcados explícitamente como históricos con una ruta funcional a la fuente actual | Todos los datos actuales muestreados están verificados dentro de su intervalo esperado; las cachés opcionales son coherentes, se mantienen y son opcionales, o no existen |
+| C4 | Autoridad de las fuentes | Se identifica al menos una fuente canónica | Las reglas distinguen el contexto estable, el estado o las métricas actuales y los registros originales; las afirmaciones muestreadas enlazan a sus fuentes | Todas las cadenas de autoridad muestreadas se resuelven; los duplicados tienen roles explícitos y no quedan conflictos importantes sin resolver entre fuentes o manuales |
+| C5 | Continuidad | Existe un registro real de una decisión o del estado de un proyecto | El proyecto activo muestreado tiene un entregable actual, el razonamiento de sus decisiones y un siguiente paso accesibles desde su punto de entrada | Un segundo proyecto o hilo de conocimiento relevante también se puede retomar desde registros durables, con estado actual y enlaces útiles a las fuentes |
 
-A hot cache, particular wiki layout, memory folder, long manual, or extra project count is not required. For a genuinely single-project setup, C5's second thread can be a distinct prior decision within that project.
+No se exige una caché "caliente", una estructura de wiki específica, una carpeta de memoria, un manual largo ni una cantidad extra de proyectos. En una configuración que de verdad tiene un solo proyecto, el segundo hilo de C5 puede ser una decisión previa distinta dentro de ese proyecto.
 
-## Connections: can it reach the information it needs? (25)
+## Conexiones: ¿puede alcanzar la información que necesita? (25)
 
-Inventory applicable domains before scoring. Mark irrelevant domains with a reason grounded in the user's role/context. Do not reward connecting tools the user does not need.
+Antes de puntuar, inventaría los dominios aplicables. Marca los dominios irrelevantes con una razón basada en el rol o el contexto del usuario. No premies conectar herramientas que el usuario no necesita.
 
-| ID | Criterion | 1 point | 3 points | 5 points |
+| ID | Criterio | 1 punto | 3 puntos | 5 puntos |
 |---|---|---|---|---|
-| N1 | Relevant domain access | At least one relevant domain has successful-read evidence, but fewer than half do | At least half, but not all, applicable domains have successful-read evidence | Every applicable domain has successful-read evidence within its expected interval |
-| N2 | Useful retrieval | A specific query and expected answer are documented | One actual priority-related query returns the right record, date range, and source | Two distinct priority-related queries return adequate results, with pagination/completeness or documented export limits checked |
-| N3 | Reproducible access routes | One connection has a tool/script path and purpose documented | All applicable domains have a documented route or explicit missing-connection status, and connected routes include safe auth instructions and query examples | The documented sampled access route is successfully reproduced without relying on hidden chat context; all connected domains have usable guides |
-| N4 | Appropriate action boundaries | Required read/write scopes and approval boundaries are documented | For a needed write workflow, a prior authorized successful write or faithful sandbox result is recorded; alternatively, the user's deliberately read-only scope is documented and verified | Sampled operations respect intended permissions and have verified failure/duplicate safeguards; do not perform a live write just to earn points |
-| N5 | Freshness and failure visibility | Source timestamps and freshness expectations are documented | Sampled reads/exports are within those expectations and failures are surfaced rather than replaced by unlabeled old data | Every applicable domain has recent success evidence plus demonstrated expired-auth/stale-data handling for at least one representative connection |
+| N1 | Acceso a los dominios relevantes | Al menos un dominio relevante tiene evidencia de lectura exitosa, pero menos de la mitad la tienen | Al menos la mitad de los dominios aplicables, pero no todos, tienen evidencia de lectura exitosa | Cada dominio aplicable tiene evidencia de lectura exitosa dentro de su intervalo esperado |
+| N2 | Recuperación útil | Hay documentadas una consulta específica y su respuesta esperada | Una consulta real relacionada con una prioridad devuelve el registro, el rango de fechas y la fuente correctos | Dos consultas distintas relacionadas con prioridades devuelven resultados adecuados, y se revisaron la paginación y la completitud, o los límites de exportación documentados |
+| N3 | Rutas de acceso reproducibles | Una conexión tiene documentados la ruta de la herramienta o el script y su propósito | Todos los dominios aplicables tienen una ruta documentada o un estado explícito de conexión faltante, y las rutas conectadas incluyen instrucciones de autenticación seguras y ejemplos de consulta | La ruta de acceso documentada muestreada se reproduce con éxito sin depender de contexto oculto del chat; todos los dominios conectados tienen guías utilizables |
+| N4 | Límites de acción apropiados | Están documentados los permisos de lectura y escritura necesarios y los límites de aprobación | Para un flujo de escritura necesario, hay registrada una escritura previa autorizada y exitosa o un resultado fiel en un entorno de prueba; o bien está documentado y verificado que el usuario eligió un alcance de solo lectura | Las operaciones muestreadas respetan los permisos previstos y tienen protecciones verificadas contra fallas y duplicados; no hagas una escritura real solo para ganar puntos |
+| N5 | Vigencia y visibilidad de fallas | Están documentadas las marcas de tiempo de las fuentes y las expectativas de vigencia | Las lecturas o exportaciones muestreadas cumplen esas expectativas, y las fallas se muestran en lugar de reemplazarse por datos viejos sin etiquetar | Cada dominio aplicable tiene evidencia reciente de éxito y, al menos en una conexión representativa, se demostró el manejo de autenticación vencida o datos desactualizados |
 
-N1: if there is exactly one applicable domain, its successful read meets the 5-point coverage anchor, not the other criteria automatically. Local files and exports can satisfy relevant domains when they are the real source and sufficiently current. No hidden bonus for MCPs, API keys, provider count, or write access the user does not need.
+**Notas sobre las conexiones:**
+- **N1 con un solo dominio:** si hay exactamente un dominio aplicable, su lectura exitosa cumple el nivel de cobertura de 5 puntos de N1; eso no cumple automáticamente los demás criterios.
+- **Archivos locales y exportaciones:** pueden cubrir dominios relevantes cuando son la fuente real y están suficientemente al día.
+- **Sin bonificaciones ocultas** por MCPs, claves de API, cantidad de proveedores ni permisos de escritura que el usuario no necesita.
 
-## Capabilities: do relevant workflows produce usable results? (25)
+## Capacidades: ¿los flujos de trabajo relevantes producen resultados utilizables? (25)
 
-Use up to three priority workflows chosen before inspecting their outputs. If only one exists, assess it honestly; do not require unnecessary skills. If an identified priority needs a missing workflow, retain that gap in the sample.
+Usa hasta tres flujos de trabajo prioritarios, elegidos antes de inspeccionar sus resultados.
+- Si solo existe uno, evalúalo con honestidad; no exijas skills innecesarios.
+- Si una prioridad identificada necesita un flujo de trabajo que falta, mantén esa brecha en la muestra.
 
-| ID | Criterion | 1 point | 3 points | 5 points |
+| ID | Criterio | 1 punto | 3 puntos | 5 puntos |
 |---|---|---|---|---|
-| P1 | Fit and invocation | A workflow has a clear trigger tied to a stated need | One sampled workflow has a successful invocation with the intended inputs | All sampled priority workflows have successful invocation evidence, with clear boundaries between overlapping triggers |
-| P2 | Output quality | An example output and acceptance criteria exist | One actual output was checked against meaningful acceptance criteria | All sampled workflows have usable outputs verified against their acceptance criteria, not merely self-reported completion |
-| P3 | Failure handling | Expected missing-input/error cases and side effects are documented | At least one relevant missing-input, stale-source, or dependency-failure case was tested and handled correctly | Every sampled workflow has a relevant boundary-case result and respects authorization/side-effect limits |
-| P4 | Portability and discoverability | Required files/dependencies and invocation route are documented | Sampled entry points, references, and runtime registrations resolve; generated mirrors match required transforms where used | A recorded clean-session or equivalent isolated run reproduces the sampled workflow without hidden conversation state or undocumented dependencies |
-| P5 | Repeated useful use | At least one dated real use is evidenced | One sampled workflow has two distinct successful real uses with output references | All sampled workflows have repeated successful real uses; corrections are reflected in the current workflow with subsequent validation |
+| P1 | Adecuación e invocación | Un flujo de trabajo tiene un disparador claro relacionado con una necesidad declarada | Un flujo muestreado tiene una invocación exitosa con las entradas previstas | Todos los flujos prioritarios muestreados tienen evidencia de invocación exitosa, con límites claros entre disparadores que se superponen |
+| P2 | Calidad del resultado | Existen un resultado de ejemplo y criterios de aceptación | Un resultado real se revisó contra criterios de aceptación significativos | Todos los flujos muestreados tienen resultados utilizables verificados contra sus criterios de aceptación, no solo un "listo" autodeclarado |
+| P3 | Manejo de fallas | Están documentados los casos esperados de entradas faltantes o errores, y los efectos secundarios | Se probó al menos un caso relevante de entrada faltante, fuente desactualizada o falla de dependencia, y se manejó correctamente | Cada flujo muestreado tiene un resultado de caso límite relevante y respeta los límites de autorización y de efectos secundarios |
+| P4 | Portabilidad y descubrimiento | Están documentados los archivos y dependencias necesarios y la ruta de invocación | Los puntos de entrada, las referencias y los registros en el runtime muestreados se resuelven; donde se usan espejos generados, coinciden con las transformaciones requeridas | Una ejecución registrada en una sesión limpia (o un entorno aislado equivalente) reproduce el flujo muestreado sin estado oculto de la conversación ni dependencias no documentadas |
+| P5 | Uso útil repetido | Hay evidencia de al menos un uso real fechado | Un flujo muestreado tiene dos usos reales exitosos y distintos, con referencias a sus resultados | Todos los flujos muestreados tienen usos reales exitosos repetidos; las correcciones se reflejan en el flujo actual y se validaron después |
 
-Skill/agent count and file recency score zero by themselves. A deterministic script or simple prompt can score as highly as a complex agent. A newly created skill cannot prove repeated real use by running synthetic tests twice.
+La cantidad de skills o agentes y lo reciente de los archivos no dan puntos por sí solos. Un script determinista o un prompt simple puede puntuar tan alto como un agente complejo. Un skill recién creado no puede probar un uso real repetido ejecutando dos veces pruebas sintéticas.
 
-## Cadence: does useful work happen reliably over time? (25)
+## Cadencia: ¿el trabajo útil ocurre de forma confiable con el tiempo? (25)
 
-Use actual schedules and expected due times. A manually invoked ritual is useful but is not unattended execution. Configuration alone does not establish a successful run.
+Usa las programaciones reales y los momentos en que corresponde cada ejecución.
+- Un ritual que se ejecuta a mano es útil, pero no es una ejecución desatendida.
+- La configuración por sí sola no demuestra una ejecución exitosa.
 
-| ID | Criterion | 1 point | 3 points | 5 points |
+| ID | Criterio | 1 punto | 3 puntos | 5 puntos |
 |---|---|---|---|---|
-| D1 | Real trigger | An explicit human ritual or actual scheduler/trigger configuration exists | At least one enabled trigger has a verified runtime/host and expected output | That trigger has demonstrably run in its intended unattended environment, including runtime availability requirements |
-| D2 | Due executions | A dated manual completion or incomplete/failed automatic attempt is recorded | One due automatic execution completed with its expected output | At least two distinct due automatic executions completed; no unexplained missed due runs remain in the inspected period |
-| D3 | Observability | Run status/logging and failure-notification behavior are documented | Inspected executions have durable timestamps, outcomes, and a verified failure-reporting path | A real or safely simulated failure reached the intended reporting mechanism, and recovery is evidenced |
-| D4 | Control and recovery | Stop/disable, ownership, permissions, and recovery instructions exist | Configuration confirms those controls plus protection against inappropriate duplicate/overlapping actions | A prior or safe isolated test demonstrates stop/recovery and duplicate prevention without unintended side effects |
-| D5 | Maintenance loop | Review frequency and freshness/cleanup responsibilities are defined | One completed review repaired a real issue or verified no action was needed, with evidence | Two distinct scheduled review cycles are recorded, with follow-up verification of any fixes and maintained routing/context |
+| D1 | Disparador real | Existe un ritual humano explícito o una configuración real de programador o disparador | Al menos un disparador activado tiene un runtime o host verificado y un resultado esperado | Ese disparador se ejecutó de forma demostrable en su entorno desatendido previsto, incluidos los requisitos de disponibilidad del runtime |
+| D2 | Ejecuciones a tiempo | Está registrada una finalización manual fechada o un intento automático incompleto o fallido | Una ejecución automática que correspondía se completó con su resultado esperado | Al menos dos ejecuciones automáticas distintas que correspondían se completaron; no quedan ejecuciones perdidas sin explicar en el período inspeccionado |
+| D3 | Observabilidad | Están documentados el estado y el registro de las ejecuciones, y el comportamiento de notificación de fallas | Las ejecuciones inspeccionadas tienen marcas de tiempo y resultados durables, y una vía verificada para reportar fallas | Una falla real, o simulada de forma segura, llegó al mecanismo de reporte previsto, y hay evidencia de la recuperación |
+| D4 | Control y recuperación | Existen instrucciones para detener o desactivar, responsables, permisos e instrucciones de recuperación | La configuración confirma esos controles y protege contra acciones duplicadas o superpuestas inapropiadas | Una prueba previa, o una prueba aislada y segura, demuestra la detención, la recuperación y la prevención de duplicados sin efectos secundarios no deseados |
+| D5 | Ciclo de mantenimiento | Están definidos la frecuencia de revisión y los responsables de la vigencia y la limpieza | Una revisión completada reparó un problema real o verificó que no hacía falta actuar, con evidencia | Hay registrados dos ciclos de revisión programados distintos, con verificación posterior de cualquier arreglo y el enrutamiento y el contexto mantenidos |
 
-Do not trigger jobs, change schedules, send test alerts, or disable automation during a read-only audit. Use prior evidence or label the test unverified. A manual-only system has a maximum **10/25 for Cadence**, even if its review discipline is strong. A newly enabled routine must wait for due-run evidence; back-to-back manual test runs are not two due executions.
+**Durante una auditoría de solo lectura:**
+- No dispares tareas, no cambies programaciones, no envíes alertas de prueba ni desactives automatizaciones. Usa evidencia previa o marca la prueba como no verificada.
+- Un sistema solo manual tiene un máximo de **10/25 en Cadencia**, aunque su disciplina de revisión sea muy buena.
+- Una rutina recién activada debe esperar evidencia de ejecuciones a tiempo: dos ejecuciones manuales de prueba seguidas no son dos ejecuciones que correspondían.
 
-## Gates and stages
+## Topes y etapas
 
-1. Sum criterion points within each C. If the five retrieval probes cannot recover either the user's main purpose or any authoritative priority/status source, **Context is capped at 10**. Show its raw subtotal and the cap.
-2. Apply the manual-only Cadence cap of 10 when no enabled automatic trigger is verified. This includes a system with no triggers at all; the cap never awards points.
-3. Sum the four resulting C subtotals as the **raw total**.
-4. Apply every relevant total cap; the lowest wins:
-   - Any C below 10: total capped at **49**.
-   - Any C below 15, or fewer than two verified due automatic successes: total capped at **69**.
-   - Any C below 20, or a material unresolved routing/source-authority conflict: total capped at **84**.
-5. Final score = min(raw total, applicable caps). Report each applied cap and why; never silently alter arithmetic.
+1. Suma los puntos de los criterios de cada C. Si las cinco pruebas de recuperación no logran recuperar ni el propósito principal del usuario ni ninguna fuente autorizada de prioridades o estado, **Contexto tiene un tope de 10**. Muestra su subtotal bruto y el tope.
+2. Aplica el tope de 10 en Cadencia para sistemas solo manuales cuando no se verifique ningún disparador automático activado. Esto incluye un sistema sin ningún disparador; el tope nunca suma puntos.
+3. Suma los cuatro subtotales resultantes: ese es el **total bruto**.
+4. Aplica todos los topes de total que correspondan; gana el más bajo:
+   - Alguna C por debajo de 10: total con tope de **49**.
+   - Alguna C por debajo de 15, o menos de dos ejecuciones automáticas exitosas verificadas: total con tope de **69**.
+   - Alguna C por debajo de 20, o un conflicto importante sin resolver de enrutamiento o de autoridad de fuentes: total con tope de **84**.
+5. Puntaje final = mín(total bruto, topes aplicables). Informa cada tope aplicado y por qué; nunca alteres la aritmética en silencio.
 
-| Final score | Stage |
+| Puntaje final | Etapa |
 |---|---|
-| 0-24 | Unproven |
-| 25-49 | Foundation |
-| 50-69 | Working, with gaps |
-| 70-84 | Dependable in the verified scope |
-| 85-100 | Maintained and evidenced |
+| 0-24 | Sin comprobar |
+| 25-49 | Base |
+| 50-69 | Funciona, con brechas |
+| 70-84 | Confiable en el alcance verificado |
+| 85-100 | Mantenido y con evidencia |
 
-Never label a high score universally autonomous, safe, or complete. State what was sampled. Unknown evidence is a verification gap, not proof that a system is broken. These gates intentionally prevent a large skill library from compensating for absent connections or cadence.
+**Cómo presentar un puntaje alto:**
+- Nunca lo presentes como universalmente autónomo, seguro o completo; indica qué se muestreó.
+- La evidencia desconocida es una brecha de verificación, no una prueba de que el sistema esté roto.
+- Estos topes impiden a propósito que una gran biblioteca de skills compense la falta de conexiones o de cadencia.
 
-## Calibration checks
+## Comprobaciones de calibración
 
-- Fresh template, named daily skills, API keys, and recent file timestamps: no execution/output/domain-access credit. A fresh clone should remain Unproven, not jump to 70+.
-- Personalized manual, useful references, 60 skills, and 10 agents but no observed outputs or runs: presence cannot earn full Capabilities or Cadence.
-- Excellent Context/Connections/Capabilities at 25 each and manual-only Cadence at 10: raw 85, final 69. No automatic success evidence means the 69 cap applies.
-- All Cs at 21 with two due successes and no material conflicts: raw/final 84. At 23 each under the same conditions: raw/final 92.
-- A stale required hot cache that contradicts a canonical source lowers freshness/authority credit and prevents a score above 84 until resolved. No hot cache incurs no penalty.
-- A monthly routine with two evidenced due executions can earn repeat-run credit; a newly configured daily job with no executions cannot.
+- **Plantilla recién clonada:** con skills diarios con nombre, claves de API y marcas de tiempo recientes, no recibe puntos por ejecución, resultados ni acceso a dominios. Un clon nuevo debe quedar como "Sin comprobar", no saltar a 70 o más.
+- **Mucha presencia, cero evidencia:** un manual personalizado, referencias útiles, 60 skills y 10 agentes, pero sin resultados ni ejecuciones observadas. La presencia no alcanza para el puntaje completo en Capacidades ni en Cadencia.
+- **Cadencia solo manual:** Contexto, Conexiones y Capacidades excelentes con 25 cada una, y Cadencia solo manual con 10. Bruto 85, final 69: sin evidencia de éxitos automáticos aplica el tope de 69.
+- **Sin conflictos:** todas las C en 21, con dos ejecuciones a tiempo exitosas y sin conflictos importantes, dan bruto y final de 84. Con 23 cada una en las mismas condiciones, bruto y final de 92.
+- **Caché obligatoria desactualizada:** una caché "caliente" que contradice una fuente canónica baja los puntos de vigencia y autoridad, e impide un puntaje mayor a 84 hasta que se resuelva. No tener caché no se penaliza.
+- **Rutinas nuevas frente a probadas:** una rutina mensual con dos ejecuciones a tiempo con evidencia puede recibir puntos por repetición; una tarea diaria recién configurada y sin ejecuciones, no.

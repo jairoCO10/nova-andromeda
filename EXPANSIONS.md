@@ -1,78 +1,81 @@
-# EXPANSIONS — what to add as you grow
+# EXPANSIONES: qué agregar a medida que creces
 
-The kit ships lean on purpose: six skills and a small set of context and reference files. As you grow, use `/conectar` to add new sources to the right route, and `/auditar` to check that the information remains findable and current.
+El kit viene liviano a propósito: seis skills y un pequeño conjunto de archivos de contexto y referencia. A medida que crezcas, usa `/conectar` para agregar fuentes nuevas en la ruta correcta y `/auditar` para comprobar que la información siga siendo fácil de encontrar y esté al día.
 
-The AIOS structure should look like a small, well-run business. Not a hoarder's basement.
+La estructura del AIOS debe parecerse a un negocio pequeño y bien administrado, no a un sótano donde se acumula de todo.
+
+Los nombres de carpetas (`context/`, `references/`, `projects/`, etc.) se mantienen en inglés porque los skills y el Cerebro 3D los reconocen así.
 
 ---
 
-## What ships in the kit (don't remove)
+## Qué trae el kit (no lo quites)
 
-| Folder / file | Purpose |
+| Carpeta / archivo | Propósito |
 |---|---|
-| `context/` | About you, your business, your priorities. Filled by `/empezar`. |
-| `references/` | Frameworks, voice samples, API guides, SOPs as you build them. |
-| `decisions/log.md` | Append-only record of what was decided and why. |
-| `brainstorms/` | Saved `/entrevistame` interviews; created on first use. Confirmed context is linked back to its capture. |
-| `archives/` | Old files. Don't delete — move here. |
-| `connections.md` | Registry of every system your AIOS can reach. |
-| `.claude/skills/` | Your skills: `/empezar`, `/auditar`, `/subir-nivel`, `/conectar`, `/entrevistame`, `/cerebro-3d`. Add more only when they solve a real need. |
-| `aios-intake.md` | Source-of-truth for `/empezar`. Edit and re-run any time. |
-| `CLAUDE.md` | Root operating manual. Filled by `/empezar`. Edit when your role/voice changes. |
+| `context/` | Sobre ti, tu negocio y tus prioridades. Lo llena `/empezar`. |
+| `references/` | Frameworks, muestras de voz, guías de API y procedimientos a medida que los construyes. |
+| `references/andromeda/` | Espacio reservado para los frameworks y el conocimiento propios de Andromeda AI. |
+| `decisions/log.md` | Registro de solo anexar con lo que se decidió y por qué. |
+| `brainstorms/` | Entrevistas guardadas de `/entrevistame`; se crea la primera vez que lo usas. El contexto confirmado enlaza a su captura. |
+| `archives/` | Archivos viejos. No los borres: muévelos aquí. |
+| `connections.md` | Registro de todos los sistemas a los que puede acceder tu AIOS. |
+| `.claude/skills/` | Tus skills: `/empezar`, `/auditar`, `/subir-nivel`, `/conectar`, `/entrevistame` y `/cerebro-3d`. Agrega más solo si resuelven una necesidad real. |
+| `aios-intake.md` | Fuente de verdad para `/empezar`. Edítalo y vuelve a ejecutarlo cuando quieras. |
+| `CLAUDE.md` | Manual operativo raíz. Lo llena `/empezar`. Edítalo cuando cambien tu rol o tu voz. |
 
 ---
 
-## What to add as you grow
+## Qué agregar a medida que creces
 
-| Folder / file | Add when | Why |
+| Carpeta / archivo | Agrégalo cuando | Por qué |
 |---|---|---|
-| `projects/` | You start running 2+ ongoing workstreams that have their own context | Active projects need scoped context separate from the evergreen `context/` files |
-| `templates/` | You catch yourself copy-pasting the same prompts or doc scaffolds | Reusable, parameterized starting points; reduces drift |
-| `brand-assets/` | You generate visual content (carousels, slides, thumbnails, images) | Centralizes logos, palettes, fonts, voice/tone — the AIOS reaches in instead of guessing |
-| `references/sops/` | You document how recurring processes run | Standard operating procedures the AIOS reads to run things consistently |
-| `references/{tool}-api.md` | You connect a new API or MCP and figure out how it works | Researched-once-saved-forever. `/auditar` rewards this; future skills don't re-research. |
-| `scripts/` | You write Python or Bash to hit APIs not covered by MCPs | Most people's second connection is a script, not an MCP |
-| `.claude/agents/` | You need a sub-assistant for repeatable, multi-step research/writing | Agents run on cheaper models in their own context — keep your main session lean |
-| Sub-OS folders (e.g. `youtube-os/`) | You have a vertical with its own data, sheets, transcripts, scripts | Isolation pattern — vertical workflows get their own scoped operating manual + skills |
+| `projects/` | Tengas 2 o más frentes de trabajo continuos con su propio contexto | Los proyectos activos necesitan contexto propio, separado de los archivos permanentes de `context/` |
+| `templates/` | Te sorprendas copiando y pegando los mismos prompts o estructuras de documentos | Puntos de partida reutilizables y parametrizados; evitan que las versiones se desvíen |
+| `brand-assets/` | Generes contenido visual (carruseles, diapositivas, miniaturas, imágenes) | Centraliza logos, paletas, fuentes, voz y tono; el AIOS los consulta en vez de adivinar |
+| `references/sops/` | Documentes cómo funcionan los procesos recurrentes | Procedimientos operativos estándar que el AIOS lee para ejecutar las cosas de forma consistente |
+| `references/{herramienta}-api.md` | Conectes una API o un MCP nuevo y entiendas cómo funciona | Se investiga una vez y queda guardado para siempre. `/auditar` lo valora y los skills futuros no tienen que volver a investigar. |
+| `scripts/` | Escribas Python o Bash para consultar APIs que ningún MCP cubre | Para la mayoría, la segunda conexión es un script, no un MCP |
+| `.claude/agents/` | Necesites un subasistente para investigación o redacción repetible de varios pasos | Los agentes corren en modelos más económicos y con su propio contexto, así tu sesión principal queda liviana |
+| Carpetas de sub-OS (por ejemplo, `youtube-os/`) | Tengas una vertical con sus propios datos, hojas, transcripciones y scripts | Patrón de aislamiento: cada vertical tiene su propio manual operativo y sus skills |
 
 ---
 
-## Suggested cadences
+## Frecuencias sugeridas
 
-When each surface gets routinely touched:
+Cada cuánto conviene revisar cada parte:
 
-- `decisions/log.md` — every meaningful decision (`/subir-nivel` Phase 2 captures these automatically)
-- `archives/` — quarterly cleanup; move stale projects, deprecated skills, old intake versions
-- `references/sops/` — when a process gets re-run by someone new, write the SOP
-- `connections.md` — every time a new tool gets wired in, add a row
-- `references/{tool}-api.md` — same time as `connections.md` update; capture the API once
-- `CLAUDE.md` — quarterly review; rewrite the persona/priorities section after `/subir-nivel` Q90
-
----
-
-## What NOT to add
-
-Anti-patterns. These look helpful but rot the structure:
-
-- **Don't dump raw email/Slack archives into `references/`.** The wiki is not a doc dump. Interpreted facts only.
-- **Don't build folder-of-folders for organization theater.** Flat with good naming beats deep nesting. If you need a folder hierarchy to find something, you have a search problem, not an organization problem.
-- **Don't add `notes/`, `misc/`, `tmp/`, or `inbox/`.** Graveyards. Use `archives/` if it's old, write a real file in the right place if it's new.
-- **Don't pre-create folders you don't need yet.** Empty folders are noise. The AIOS will tell you when it's time.
-- **Don't have parallel `decisions.md` and `decisions/log.md`.** Pick one. The kit ships `decisions/log.md`.
-- **Don't fork your operating manual.** One `CLAUDE.md` at the root. Sub-OS folders can have their own scoped CLAUDE.md, but the root is canonical.
+- `decisions/log.md`: con cada decisión importante (la Fase 2 de `/subir-nivel` las registra automáticamente).
+- `archives/`: limpieza trimestral; mueve proyectos inactivos, skills en desuso y versiones viejas del cuestionario.
+- `references/sops/`: cuando alguien nuevo vuelva a ejecutar un proceso, escribe el procedimiento.
+- `connections.md`: cada vez que conectes una herramienta nueva, agrega una fila.
+- `references/{herramienta}-api.md`: al mismo tiempo que actualizas `connections.md`; documenta la API una sola vez.
+- `CLAUDE.md`: revisión trimestral; reescribe la sección de perfil y prioridades después de la revisión de 90 días de `/subir-nivel`.
 
 ---
 
-## How to tell when it's time to add a folder
+## Qué NO agregar
 
-Ask three questions:
+Antipatrones. Parecen útiles, pero deterioran la estructura:
 
-1. **Is this conceptually new?** Or does it fit somewhere existing?
-2. **Will I touch this 3+ times in the next month?** If not, it's premature.
-3. **Could `/subir-nivel` route a future skill into here naturally?** If yes, the AIOS will use it. If no, you're organizing for yourself, not for the system.
-
-Two yeses = add. One yes = wait.
+- **No vuelques archivos completos de correo o Slack en `references/`.** La wiki no es un depósito de documentos: solo hechos interpretados.
+- **No armes carpetas dentro de carpetas para aparentar orden.** Una estructura plana con buenos nombres le gana a un anidamiento profundo. Si necesitas una jerarquía de carpetas para encontrar algo, tienes un problema de búsqueda, no de organización.
+- **No agregues `notes/`, `misc/`, `tmp/` ni `inbox/`.** Terminan siendo cementerios. Si algo es viejo, usa `archives/`; si es nuevo, escribe un archivo real en el lugar correcto.
+- **No crees de antemano carpetas que todavía no necesitas.** Las carpetas vacías son ruido. El AIOS te dirá cuándo es el momento.
+- **No tengas `decisions.md` y `decisions/log.md` al mismo tiempo.** Elige uno. El kit trae `decisions/log.md`.
+- **No dupliques tu manual operativo.** Hay un solo `CLAUDE.md` en la raíz. Las carpetas de sub-OS pueden tener su propio CLAUDE.md con alcance limitado, pero el de la raíz es el canónico.
 
 ---
 
-> *Your AIOS structure should look like a small, well-run business — not a hoarder's basement. When you can't find something, that's a signal to consolidate, not to add another folder.*
+## Cómo saber cuándo agregar una carpeta
+
+Hazte tres preguntas:
+
+1. **¿Es algo conceptualmente nuevo?** ¿O cabe en algo que ya existe?
+2. **¿Lo voy a usar 3 o más veces en el próximo mes?** Si no, es prematuro.
+3. **¿Podría `/subir-nivel` dirigir naturalmente un skill futuro hacia aquí?** Si sí, el AIOS lo va a usar. Si no, estás organizando para ti, no para el sistema.
+
+Dos respuestas afirmativas: agrégala. Una sola: espera.
+
+---
+
+> *La estructura de tu AIOS debe parecerse a un negocio pequeño y bien administrado, no a un sótano donde se acumula de todo. Si no encuentras algo, es señal de consolidar, no de agregar otra carpeta.*

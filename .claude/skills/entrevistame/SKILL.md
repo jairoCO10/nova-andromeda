@@ -1,80 +1,105 @@
 ---
 name: entrevistame
-description: Interview the user relentlessly about a plan, design, or topic, checkpointing every answer to a brainstorm file so nothing is lost. Use when the user wants to stress-test a plan, get grilled on a design, run a brainstorm or discovery session, extract what's in their head into a doc, build up their AI OS context over time, or says "grill me".
+description: Entrevista al usuario a fondo sobre un plan, un diseño o un tema, y guarda cada respuesta en un archivo de brainstorm para que nada se pierda. Úsalo cuando el usuario quiera poner a prueba un plan, que lo cuestionen sobre un diseño, hacer una sesión de lluvia de ideas o descubrimiento, sacar a un documento lo que tiene en la cabeza, construir con el tiempo el contexto de su AIOS, o diga "entrevístame", "hazme preguntas", "ponme a prueba" o "grill me".
 ---
 
-# Grill Me
+# Entrevístame
 
-Relentlessly interview the user about every aspect of the topic until you reach shared understanding. Walk down each branch of the decision tree, resolving dependencies one by one. The real goal is to **extract what's in their head into a durable, organized markdown file** so nothing is lost as context fills up.
+Entrevista al usuario a fondo sobre cada aspecto del tema hasta llegar a un entendimiento compartido. Recorre cada rama del árbol de decisiones y resuelve las dependencias una por una. El objetivo real es **sacar lo que el usuario tiene en la cabeza y llevarlo a un archivo Markdown durable y ordenado**, para que nada se pierda a medida que se llena el contexto.
 
-## The capture file is the whole point
+Habla con el usuario en español latinoamericano neutro, salvo que prefiera otro idioma.
 
-Long interviews fill up context. If you hold answers only in your head, you will eventually misremember, conflate, or drop something. So you **checkpoint to disk after every single answer**. The file, not your context, is the source of truth. Never make the user ask you to save progress.
+## El archivo de captura es lo más importante
 
-## Existing context and scope
+Las entrevistas largas llenan el contexto. Si solo guardas las respuestas en tu memoria de trabajo, tarde o temprano vas a recordar algo mal, mezclar respuestas u olvidar algo. Por eso **guardas en disco después de cada respuesta**. La fuente de verdad es el archivo, no tu contexto. Nunca hagas que el usuario te pida guardar el avance.
 
-Read the applicable `AGENTS.md` and `CLAUDE.md`, then only the context pages and prior captures relevant to the topic. Starter-kit context lives in `context/`, but follow an established project's declared routes instead of creating a duplicate knowledge store. Reuse facts already supplied; ask about gaps, changes, decisions, and tradeoffs. Installing the skill does not start an interview.
+## Contexto existente y alcance
 
-## Setup (do this BEFORE the first question)
+- Lee el `AGENTS.md` y el `CLAUDE.md` que correspondan, y después solo las páginas de contexto y las capturas anteriores relacionadas con el tema.
+- El contexto del kit base vive en `context/`. En un proyecto establecido, sigue sus rutas declaradas en lugar de crear un almacén de conocimiento duplicado.
+- Reutiliza los datos que ya te dieron y pregunta por los vacíos, los cambios, las decisiones y las ventajas y desventajas de cada opción.
+- Instalar el skill no inicia una entrevista.
 
-1. **Create the capture file** at `brainstorms/{YYYY-MM-DD}-{topic-slug}.md` (create the `brainstorms/` folder if it doesn't exist). Every brainstorm capture lives here. One predictable home, regardless of topic. Do NOT scatter captures into project folders. If a session later produces a polished deliverable (a plan, a map, a spec), that artifact can move into the relevant `projects/` folder, but the raw capture always stays in `brainstorms/`.
-   - Get today's actual date using the available clock or shell (`Get-Date -Format yyyy-MM-dd` in PowerShell, `date +%F` in Bash).
-   - Never overwrite an existing capture. For a new session with the same date/topic, add a time or unique suffix and create exclusively. Resume an existing capture only when the user requests or clearly refers to that session; read it first and continue its question numbering.
-   - If no topic is supplied or inferable, create an `untitled-discovery` capture with goal pending, then ask what to explore. Record the chosen topic and goal in that same file.
-2. **Create the file immediately** with a header: title, date, the goal of the session, and an empty "Open flags" section.
-3. **Tell the user where you're saving**, in one line. Then ask Q1.
+## Preparación (hazla ANTES de la primera pregunta)
 
-## The checkpoint rule (non-negotiable)
+1. **Crea el archivo de captura** en `brainstorms/{AAAA-MM-DD}-{tema-en-slug}.md`. Si la carpeta `brainstorms/` no existe, créala.
+   - Todas las capturas viven aquí, en un solo lugar predecible sin importar el tema. NO las repartas en carpetas de proyectos.
+   - Si una sesión produce después un entregable pulido (un plan, un mapa, una especificación), ese artefacto puede moverse a la carpeta de `projects/` que corresponda, pero la captura original siempre queda en `brainstorms/`.
+   - Obtén la fecha real de hoy con el reloj o la terminal disponibles (`Get-Date -Format yyyy-MM-dd` en PowerShell, `date +%F` en Bash).
+   - Nunca sobrescribas una captura existente. Si es una sesión nueva con la misma fecha y tema, agrega la hora o un sufijo único y crea el archivo en modo exclusivo.
+   - Retoma una captura existente solo si el usuario lo pide o se refiere claramente a esa sesión. En ese caso, léela primero y continúa su numeración de preguntas.
+   - Si no hay un tema indicado ni deducible, crea una captura `descubrimiento-sin-titulo` con el objetivo pendiente y pregunta qué explorar. Registra el tema y el objetivo elegidos en ese mismo archivo.
+2. **Crea el archivo de inmediato** con un encabezado: título, fecha, objetivo de la sesión y una sección vacía de "Pendientes abiertos".
+3. **Dile al usuario dónde vas a guardar**, en una línea. Después haz la P1.
 
-After EVERY user answer, BEFORE you ask the next question:
-- Append a structured entry to the capture file: the question topic, the key facts and decisions from their answer (in their words where the wording matters), and any flags (things they couldn't answer plus who should).
-- Update the running summary when a later answer changes it. Preserve the original Q&A entry, mark it superseded, and link to the correcting answer so the reasoning remains traceable.
-- Read back the saved entry before continuing. If saving fails, explain the failure and keep the answer visible in chat; do not claim it was saved or continue collecting answers without a working checkpoint.
-- Only then ask the next question.
+## La regla de guardado (no se negocia)
 
-Never batch multiple answers into one write. Checkpoint one answer at a time. The point is that if context is lost at any moment, the file already holds everything said so far.
+Después de CADA respuesta del usuario, ANTES de hacer la siguiente pregunta:
+- Agrega al archivo de captura una entrada estructurada con:
+  - el tema de la pregunta;
+  - los datos y decisiones clave de la respuesta (con sus palabras cuando la redacción importe);
+  - los pendientes: lo que no pudo responder y quién debería hacerlo.
+- Actualiza el resumen general cuando una respuesta posterior lo cambie. Conserva la entrada original, márcala como reemplazada y enlázala a la respuesta que la corrige, para que el razonamiento se pueda rastrear.
+- Relee la entrada guardada antes de continuar. Si falla el guardado, explica el error y deja la respuesta visible en el chat. No digas que se guardó ni sigas recopilando respuestas sin un guardado que funcione.
+- Solo entonces haz la siguiente pregunta.
 
-## Interview method
+Nunca juntes varias respuestas en una sola escritura: guarda una respuesta a la vez. Así, si se pierde el contexto en cualquier momento, el archivo ya tiene todo lo dicho hasta ahí.
 
-- Ask **one question at a time**. For decisions, provide a suggested answer grounded in context and label it as a suggestion. For personal or business facts, ask neutrally; do not lead the user with invented facts or save your inference as their answer.
-- Keep user-confirmed facts, tentative ideas, assistant suggestions, and unresolved questions distinguishable in the capture.
-- Resolve dependencies in order: settle the upstream decision before the ones that depend on it.
-- If a question can be answered by **exploring the codebase or reading a file/doc**, do that instead of asking. If the user hands you a doc (e.g. a Google Doc), read it and only surface what's net-new.
-- When the user **can't answer** something, capture it as a flag with the right owner and move on. Don't stall.
-- Keep going until the user says you're done, needs a pause, or you've covered the useful branches. Respect an explicit stop immediately; do not add a new question. Offer a completeness backstop near the end ("anything we haven't touched?").
+## Método de entrevista
 
-## Capture file structure
+- Haz **una pregunta a la vez**.
+  - En las decisiones, ofrece una respuesta sugerida basada en el contexto y márcala como sugerencia.
+  - En los datos personales o del negocio, pregunta de forma neutral: no induzcas al usuario con datos inventados ni guardes tu inferencia como si fuera su respuesta.
+- En la captura, mantén distinguibles los hechos confirmados por el usuario, las ideas tentativas, las sugerencias del asistente y las preguntas sin resolver.
+- Resuelve las dependencias en orden: define la decisión de base antes que las que dependen de ella.
+- Si una pregunta se puede responder **explorando el código o leyendo un archivo o documento**, hazlo en lugar de preguntar. Si el usuario te da un documento (por ejemplo, un Google Doc), léelo y menciona solo lo que sea nuevo.
+- Cuando el usuario **no pueda responder** algo, regístralo como pendiente con su responsable y sigue. No te estanques.
+- Continúa hasta que el usuario diga que terminaste, necesite una pausa o hayas cubierto las ramas útiles.
+  - Si el usuario pide parar explícitamente, respeta la pausa de inmediato y no agregues otra pregunta.
+  - Cerca del final, haz una pregunta de cierre: "¿Hay algo que no hayamos tocado?".
+
+## Estructura del archivo de captura
 
 ```
-# {Topic}: Brainstorm / Discovery Notes
-Date: {date} · Goal: {one line}
-Status: in progress / paused / complete
-Context sources: {relevant existing pages, if any}
+# {Tema}: notas de brainstorm / descubrimiento
+Fecha: {fecha} · Objetivo: {una línea}
+Estado: en curso / en pausa / completo
+Fuentes de contexto: {páginas existentes relevantes, si hay}
 
-## Summary / key decisions
-(running synthesis, updated as you go)
+## Resumen / decisiones clave
+(síntesis en curso, actualizada sobre la marcha)
 
-## Q&A log
-### Q1 - {topic}
-- Asked: {question}
-- Captured: {user-confirmed facts, decisions, in their words where it matters}
-- Tentative / suggested: {unconfirmed ideas, clearly labeled}
-- Flags: {open item -> owner}
+## Registro de preguntas y respuestas
+### P1 - {tema}
+- Pregunta: {pregunta}
+- Registrado: {hechos y decisiones confirmados por el usuario, con sus palabras cuando importe}
+- Tentativo / sugerido: {ideas no confirmadas, claramente marcadas}
+- Pendientes: {asunto abierto -> responsable}
 ...
 
-## Open flags (pending input)
-- {item} -> {who can answer}
+## Pendientes abiertos (esperan información)
+- {asunto} -> {quién puede responder}
 ```
 
-## At the end or on pause
-- Read the capture for contradictions or gaps. Mark unresolved conflicts explicitly; do not choose a business fact on the user's behalf. Update the session status and resume point.
-- For sessions explicitly about building or updating AI OS context, merge user-confirmed durable facts and preferences into the appropriate existing context page, with a dated link back to the capture. Preserve unrelated content. Record confirmed meaningful decisions in the existing decision log without duplicating entries. Unknowns, brainstorm ideas, and assistant suggestions stay labeled in the capture until confirmed.
-- For a plan/design interview without a request to update canonical context, keep the raw capture as the output. Suggest `/conectar` for routing a useful result, or `/subir-nivel` for turning a selected opportunity into one improvement. Do not run either automatically.
-- Ensure the operating manual or an existing index routes to `brainstorms/` when capture routing is absent, using the project's conventions and preserving shared manual parity. Individual captures do not each need a root-manual entry. Raw captures are dated interview evidence, not automatically current business truth.
-- Give a short recap with a clickable capture path, context pages actually updated, remaining flags, and the next step or resume point.
+## Al terminar o al pausar
 
-## Boundaries and verification
+- **Revisa la captura** buscando contradicciones o vacíos. Marca explícitamente los conflictos sin resolver; no elijas un dato del negocio en nombre del usuario. Actualiza el estado de la sesión y el punto para retomarla.
+- **Si la sesión era para construir o actualizar el contexto del AIOS:**
+  - integra los hechos y preferencias duraderos confirmados por el usuario en la página de contexto existente que corresponda, con un enlace fechado a la captura, y conserva el contenido que no tenga relación;
+  - registra las decisiones importantes confirmadas en el registro de decisiones existente, sin duplicar entradas;
+  - lo desconocido, las ideas del brainstorm y las sugerencias del asistente quedan marcados en la captura hasta que se confirmen.
+- **Si era una entrevista sobre un plan o un diseño y no pidieron actualizar el contexto canónico,** la captura original es el resultado. Sugiere `/conectar` para enrutar un resultado útil, o `/subir-nivel` para convertir una oportunidad elegida en una mejora. No ejecutes ninguno automáticamente.
+- **Enrutamiento:** si el manual operativo o un índice existente todavía no dirige a `brainstorms/`, agrega esa ruta siguiendo las convenciones del proyecto y manteniendo la paridad del manual compartido.
+  - Cada captura individual no necesita su propia entrada en el manual raíz.
+  - Las capturas originales son evidencia fechada de una entrevista, no la verdad actual del negocio de forma automática.
+- **Cierra con un resumen breve:**
+  - la ruta clicable de la captura;
+  - las páginas de contexto que realmente se actualizaron;
+  - los pendientes que quedan;
+  - el siguiente paso o punto para retomar.
 
-- Local interview capture and requested context updates are the scope. No global-memory edits, publication, messages, or external-system changes. Do not request or save credentials; use references or redactions for secrets.
-- The starter kit ignores `brainstorms/` in Git by default. This does not remove captures already tracked in an existing repository.
-- Validate a fresh session, same-day name collision, resume, a correcting answer, a stop request, and a failed write. Verify that only confirmed facts reach canonical context and that earlier answers remain traceable.
+## Límites y verificación
+
+- **Alcance:** la captura local de la entrevista y las actualizaciones de contexto solicitadas. No edites la memoria global, no publiques, no envíes mensajes ni cambies sistemas externos. No pidas ni guardes credenciales; usa referencias o redacta los secretos.
+- **Git:** el kit ignora `brainstorms/` en Git por defecto. Eso no quita las capturas que ya estén versionadas en un repositorio existente.
+- **Casos a validar:** una sesión nueva, un choque de nombres en el mismo día, retomar una sesión, una respuesta que corrige otra, una solicitud de parar y un guardado fallido. Verifica que solo los hechos confirmados lleguen al contexto canónico y que las respuestas anteriores sigan siendo rastreables.

@@ -1,11 +1,11 @@
 ---
 audit_kind: aios
 history_schema: 1
-run_id: "<UTC timestamp and random suffix>"
+run_id: "<marca de tiempo UTC y sufijo aleatorio>"
 started_at: "<ISO-8601 UTC>"
 completed_at: "<ISO-8601 UTC>"
-project_root: "<absolute audited root; use forward slashes in YAML paths>"
-project_identity: "<verified project identity, without credentials>"
+project_root: "<raíz auditada absoluta; usa barras / en las rutas YAML>"
+project_identity: "<identidad verificada del proyecto, sin credenciales>"
 report_status: complete
 rubric_version: v2
 previous_reports: []
@@ -20,43 +20,45 @@ scores:
   final: null
 ---
 
-# AIOS Audit: <project and date>
+<!-- Las claves y los valores del frontmatter se mantienen en inglés por compatibilidad con el historial de auditorías. report_status: complete | partial. -->
 
-## Conclusion and scope
+# Auditoría del AIOS: <proyecto y fecha>
 
-<What works, most consequential mismatch, inspected runtimes/workflows/domains/probes, counts, exclusions, and verification limits. Mark partial runs explicitly.>
+## Conclusión y alcance
 
-## AGENTS.md / CLAUDE.md findings
+<Qué funciona, la diferencia más importante, runtimes/flujos/dominios/pruebas inspeccionados, conteos, exclusiones y límites de verificación. Marca explícitamente las ejecuciones parciales.>
 
-<Exact checked/missing/not-checked manuals, shared guidance comparison, finding IDs and file references, scoped coverage, and whether manuals changed.>
+## Hallazgos de AGENTS.md / CLAUDE.md
 
-## Routing and migration compatibility
+<Manuales exactos revisados / faltantes / no revisados, comparación de la guía compartida, IDs de hallazgos y referencias a archivos, cobertura de manuales con alcance y si se modificaron los manuales.>
 
-<Compatibility matrix and unique findings grouped by confirmed defect, verification gap, intentional difference, and improvement opportunity. Include source/target evidence and discovery versus execution coverage.>
+## Enrutamiento y compatibilidad de migración
 
-## Routing probes
+<Matriz de compatibilidad y hallazgos únicos agrupados en defecto confirmado, brecha de verificación, diferencia intencional y oportunidad de mejora. Incluye evidencia de origen y destino, y la cobertura de descubrimiento frente a la de ejecución.>
 
-<Five selected questions, attempted routes, sources, and direct/fallback/unresolved results.>
+## Pruebas de enrutamiento
 
-## What works
+<Cinco preguntas seleccionadas, rutas intentadas, fuentes y resultado: directo / por búsqueda alternativa / sin resolver.>
 
-<Up to three evidenced strengths.>
+## Qué funciona
 
-## Verified operational reliability
+<Hasta tres fortalezas con evidencia.>
 
-<All 20 criterion IDs and awarded points, four subtotals, raw total, caps with reasons, final score, and stage. Distinguish defects from unverified evidence. This measures verified operational reliability, not overall usefulness. Partial/unscored entries remain null.>
+## Confiabilidad operativa verificada
 
-## Progress since the previous audit
+<Los 20 IDs de criterio con sus puntos, los cuatro subtotales, el total bruto, los topes con sus razones, el puntaje final y la etapa. Distingue los defectos de la evidencia no verificada. Mide la confiabilidad operativa verificada, no la utilidad general. Las entradas parciales o sin puntaje quedan en null.>
 
-<Clickable previous-report links and score baseline, or first recorded baseline. Show transitions, actual repairs versus evidence-only gains, regressions, and coverage/rubric changes. Include comparable score arithmetic only when justified.>
+## Avance desde la auditoría anterior
 
-## Finding ledger
+<Enlaces clicables a los reportes previos y línea base de puntaje, o primera línea base registrada. Muestra las transiciones, las reparaciones reales frente a las ganancias solo de evidencia, las regresiones y los cambios de cobertura o de rúbrica. Incluye la aritmética comparable de puntajes solo cuando esté justificada.>
 
-| ID | Class | Target / runtime | First seen | Prior status | Current status | Last verified date / state | Evidence | Completion check |
+## Registro de hallazgos
+
+| ID | Clase | Destino / runtime | Primera detección | Estado anterior | Estado actual | Última verificación (fecha / estado) | Evidencia | Comprobación de cierre |
 |---|---|---|---|---|---|---|---|---|
 
-<Populate current findings plus all carried findings, including not-rechecked items and compact prior closures. No findings is valid when supported by inspected scope.>
+<Completa con los hallazgos actuales y todos los arrastrados, incluidos los no revisados y los cierres anteriores en forma compacta. No tener hallazgos es válido si el alcance inspeccionado lo respalda.>
 
-## Top improvements and next run
+## Mejoras principales y próxima ejecución
 
-<Up to three prioritized repair/verify/optional actions with benefit, finding IDs, and acceptance checks. Include a scoped next-run prompt and unresolved verification limits.>
+<Hasta tres acciones priorizadas (reparar / verificar / opcional) con su beneficio, los IDs de hallazgos y las comprobaciones de aceptación. Incluye un prompt acotado para la próxima ejecución y los límites de verificación sin resolver.>

@@ -1,47 +1,61 @@
-# Decisions Log
+# Registro de decisiones
 
-Append-only record of meaningful decisions and why they were made. `/subir-nivel` Phase 2 (Method interview) writes scoped automation specs here. You can also append manually whenever you decide something worth remembering.
+Registro de solo anexar con las decisiones importantes y sus razones. La Fase 2 de `/subir-nivel` (entrevista de Método) escribe aquí las especificaciones de las automatizaciones definidas. También puedes agregar entradas a mano cada vez que decidas algo que valga la pena recordar.
 
-**Format per entry:**
+**Formato de cada entrada:**
 
 ```
-## YYYY-MM-DD — Short title
+## AAAA-MM-DD — Título corto
 
-**Decision:** what was decided.
+**Decisión:** qué se decidió.
 
-**Why:** the reasoning, constraints, and what would change your mind.
+**Por qué:** el razonamiento, las restricciones y qué te haría cambiar de opinión.
 
-**Alternatives considered:** what else was on the table.
+**Alternativas consideradas:** qué otras opciones había.
 
-**Owner:** who's accountable.
+**Responsable:** quién responde por la decisión.
 ```
 
-Keep it terse. Future-you will thank present-you for capturing the *why*, not just the *what*.
+Sé breve. Tu yo del futuro te agradecerá que hayas guardado el *por qué*, no solo el *qué*.
 
 ---
 
-## 2026-09-06 - Audit evidence and routing maintenance
+## 2026-09-17 - Adaptación Andromeda AI en español
 
-**Decision:** Ship audit rubric v2 and a small /conectar skill. Audit scores working evidence across the Four Cs, checks operating-manual routing and freshness, and passes one concrete gap into /level-up. A selected repair can improve an existing workflow instead of creating another skill.
+**Decisión:** Distribuir AIS-OS como Andromeda AI, localizado al español latinoamericano neutro. Los comandos se renombran (`/empezar`, `/auditar`, `/entrevistame`, `/conectar`, `/subir-nivel`, `/cerebro-3d`) y se conservan la arquitectura, los formatos de datos, las rutas internas y la carpeta generada `apps/3d-brain/`.
 
-**Why:** File counts, configured keys, named rituals, and recent edits do not prove an operational AIOS. Source findability and freshness need explicit checks.
+**Por qué:** Los comandos en español son más fáciles de recordar para la audiencia latinoamericana. Claude Code toma el nombre del comando de la carpeta del skill y no admite aliases, así que el cambio rompe los nombres anteriores; la tabla de equivalencias está en el README.
 
-**Alternatives considered:** Keeping presence-based scoring or requiring a hot cache. Neither reliably establishes retrieval quality or successful execution.
+**Alternativas consideradas:** Mantener los comandos en inglés y traducir solo la experiencia; tener skills duplicados como alias. El primero es menos memorable; el segundo agrega ambigüedad.
 
-## 2026-09-06 - Portable skills and automatic audit history
+**Responsable:** Miguel Silva (adaptación). El software original es de Nate Herk (ver `NOTICE.md`).
 
-**Decision:** Ship all four skills for Claude Code and Codex, with bundled resources, matching operating manuals, and a script for regenerating Codex copies. Audit reports are saved automatically, preserve previous runs, and track findings across comparable inspections.
+## Decisiones heredadas del proyecto original (AIS-OS)
 
-**Why:** Students need the same shared guidance when switching assistants and evidence of actual improvements over time. Intentional runtime adaptations, unknown verification, and confirmed defects are reported separately.
+Las siguientes entradas son del autor original y se conservan traducidas. Los nombres de comandos se actualizaron a los de esta adaptación.
 
-## 2026-09-06 - Portable 3D Brain skill
+## 2026-09-06 - Evidencia de auditoría y mantenimiento del enrutamiento
 
-**Decision:** Add `/cerebro-3d` for Claude Code and Codex. Ask for a name and categories, map selected local folders, and scaffold a bundled, configurable application with spherical placement, Cinema, and interactive growth replay.
+**Decisión:** Publicar la rúbrica de auditoría v2 y un skill pequeño, `/conectar`. La auditoría puntúa la evidencia de funcionamiento en las Cuatro C, revisa el enrutamiento del manual operativo y su vigencia, y pasa una brecha concreta a `/subir-nivel`. Una reparación seleccionada puede mejorar un flujo de trabajo existente en lugar de crear otro skill.
 
-**Why:** Shipping the working renderer preserves the intended appearance and interactions across AIOS installations. A prose-only prompt would produce inconsistent recreations. User config and graph data remain local; the public package includes only code, documentation, dependency notices, and fictional test inputs.
+**Por qué:** El número de archivos, las claves configuradas, los rituales con nombre y las ediciones recientes no prueban que un AIOS funcione. Encontrar las fuentes y saber si están al día requiere comprobaciones explícitas.
 
-## 2026-09-06 - Add ongoing context interviews
+**Alternativas consideradas:** Mantener la puntuación por presencia de archivos o exigir una caché "caliente". Ninguna de las dos garantiza la calidad de la recuperación ni una ejecución exitosa.
 
-**Decision:** Adapt Herk-2's grill-me skill for the student kit and ship matching Claude/Codex packages. Save every answer to brainstorms/, preserve resumable Q&A history, and update canonical context only with confirmed facts during requested context-building sessions.
+## 2026-09-06 - Skills portables e historial automático de auditorías
 
-**Why:** Onboarding is an initial snapshot. Ongoing interviews capture changing priorities, decisions, and preferences while keeping tentative ideas distinct from current business facts.
+**Decisión:** Publicar los skills para Claude Code y Codex, con sus recursos incluidos, manuales operativos equivalentes y un script para regenerar las copias de Codex. Los reportes de auditoría se guardan automáticamente, conservan las ejecuciones anteriores y dan seguimiento a los hallazgos entre revisiones comparables.
+
+**Por qué:** Los estudiantes necesitan la misma guía compartida al cambiar de asistente, y evidencia de mejoras reales con el tiempo. Las adaptaciones intencionales de cada runtime, lo que no se pudo verificar y los defectos confirmados se reportan por separado.
+
+## 2026-09-06 - Skill portable de Cerebro 3D
+
+**Decisión:** Agregar `/cerebro-3d` para Claude Code y Codex. Pide un nombre y categorías, relaciona carpetas locales seleccionadas y genera una aplicación incluida y configurable con ubicación esférica, modo cine y repetición interactiva del crecimiento.
+
+**Por qué:** Distribuir el renderer que ya funciona conserva la apariencia y las interacciones previstas en cualquier instalación del AIOS. Un prompt solo con texto produciría recreaciones inconsistentes. La configuración del usuario y los datos del grafo quedan en su equipo; el paquete público incluye solo código, documentación, avisos de dependencias y datos de prueba ficticios.
+
+## 2026-09-06 - Entrevistas continuas de contexto
+
+**Decisión:** Adaptar el skill grill-me de Herk-2 para el kit de estudiantes (en esta adaptación, `/entrevistame`) y publicar paquetes equivalentes para Claude y Codex. Guardar cada respuesta en `brainstorms/`, conservar un historial de preguntas y respuestas que se pueda retomar, y actualizar el contexto canónico solo con hechos confirmados durante las sesiones de construcción de contexto que se soliciten.
+
+**Por qué:** El onboarding es una foto inicial. Las entrevistas continuas capturan prioridades, decisiones y preferencias que cambian, y mantienen las ideas tentativas separadas de los hechos actuales del negocio.

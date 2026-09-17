@@ -1,4 +1,4 @@
 interface:
-  display_name: "AIOS Level Up"
-  short_description: "Turn one AIOS gap into a verified improvement"
-  default_prompt: "Use $subir-nivel to improve one workflow or close an audit gap."
+  display_name: "Subir de nivel"
+  short_description: "Convierte una brecha del AIOS en una mejora verificada"
+  default_prompt: "Usa $subir-nivel para mejorar un flujo de trabajo o cerrar una brecha de la auditoría."
