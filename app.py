@@ -1199,7 +1199,7 @@ PROFILE_FORM = (
 
 def _profile_markdown(title, sections, answers, captured_on):
     lines = [f"# {title}", "", f"Formulario de perfil completado el {captured_on}.", ""]
-    for section_title, fields in sections:
+    for _, section_title, fields in sections:
         lines.extend([f"## {section_title}", ""])
         for label, _ in fields:
             value = answers.get(label, "").strip()
