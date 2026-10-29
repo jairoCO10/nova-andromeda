@@ -4,6 +4,7 @@ import ipaddress
 import math
 import os
 import re
+import shutil
 import socket
 import sqlite3
 import unicodedata
@@ -1156,11 +1157,157 @@ def backup_database(connection, database_path=DB_PATH):
 def help_text():
     return (
         "Comandos: /recuerda <dato>, /memoria, /buscar <texto>, /planes, "
-        "/completa <id>, /corrige <id> <dato>, /olvida <id>, /exporta, /ayuda, /salir. "
+        "/completa <id>, /corrige <id> <dato>, /olvida <id>, /exporta, /mantenimiento, /ayuda, /salir. "
         "Los gustos explícitos de bajo riesgo pueden guardarse automáticamente; los datos sensibles no. "
-        "/planes lista pendientes y /completa cierra uno. En las confirmaciones manuales responde sí o no; /cancelar cancela.\n\n"
+        "/planes lista pendientes y /completa cierra uno. /mantenimiento abre el formulario del perfil; "
+        "los recuerdos de SQLite se conservan aparte. En las confirmaciones manuales responde sí o no; /cancelar cancela.\n\n"
         + andromeda_help_text()
     )
+
+
+def local_time_answer(query, now=None):
+    """Answer simple current-time questions from this machine's local clock."""
+    normalized = normalize_text(query).strip(" ¿?¡!.,")
+    if not re.fullmatch(r"(?:nova[,: ]+)?(?:que hora es|dime la hora|hora actual|me dices la hora)", normalized):
+        return None
+    current = (now or datetime.now().astimezone()).astimezone()
+    zone = current.tzname() or current.strftime("UTC%z")
+    return f"Son las {current:%H:%M} ({zone}, hora local de este equipo)."
+
+
+PROFILE_FORM = (
+    ("identidad.md", "Identidad y preferencias", (
+        ("Nombre y forma de trato", "¿Qué nombre y forma de trato prefieres?"),
+        ("País o ubicación general", "¿En qué país o región vives? No incluyas una dirección exacta."),
+        ("Idioma", "¿En qué idioma prefieres conversar?"),
+        ("Pronombres y trato", "¿Qué pronombres o trato prefieres que use NOVA?"),
+        ("Zona horaria", "¿Cuál es tu zona horaria? (por ejemplo, America/Bogota)"),
+        ("Estilo de respuesta", "¿Cómo prefieres que NOVA te responda? (tono, extensión, formato)"),
+        ("Preferencias técnicas", "¿Qué debería tener en cuenta al explicarte temas técnicos?"),
+    )),
+    ("vida_personal.md", "Intereses y contexto", (
+        ("Formación", "¿Qué formación quieres incluir?"),
+        ("Experiencia y tecnologías", "¿Qué experiencia o tecnologías quieres que tenga en cuenta?"),
+        ("Intereses y gustos", "¿Qué intereses o gustos quieres incluir?"),
+        ("Objetivos", "¿Qué objetivos quieres que NOVA tenga presentes?"),
+        ("Proyectos actuales", "¿En qué proyectos estás trabajando actualmente?"),
+        ("Equipo actual", "¿Qué equipo o dispositivos usas actualmente?"),
+        ("Otros datos útiles", "¿Qué otra información no sensible debería tener presente?"),
+    )),
+)
+
+
+def _profile_markdown(title, sections, answers, captured_on):
+    lines = [f"# {title}", "", f"Formulario de perfil completado el {captured_on}.", ""]
+    for section_title, fields in sections:
+        lines.extend([f"## {section_title}", ""])
+        for label, _ in fields:
+            value = answers.get(label, "").strip()
+            if value:
+                lines.append(f"- **{label}:** {value}")
+        lines.append("")
+    return "\n".join(lines).rstrip() + "\n"
+
+
+def run_profile_maintenance(read_fn=None, write_fn=None, profile_dir=PROFILE_DIR):
+    """Collect a fresh profile, then back up and replace only profile files."""
+    profile_dir = Path(profile_dir)
+    read_fn = read_fn or input
+    write_fn = write_fn or print
+    _write(write_fn, "MODO MANTENIMIENTO — Perfil personal")
+    _write(write_fn, "Responde cada campo con una frase. Pulsa Enter para dejarlo vacío; escribe /cancelar para salir sin cambios.")
+    _write(write_fn, "El perfil actual se respalda antes de reemplazarlo. Los recuerdos y planes de SQLite no se borran ni se modifican.")
+
+    answers = {}
+    for _, _, fields in PROFILE_FORM:
+        for label, prompt in fields:
+            value = _read(read_fn, f"{prompt} (Enter para omitir): ")
+            if value.casefold() == "/cancelar":
+                _write(write_fn, "NOVA: Cancelé el formulario. El perfil actual sigue intacto.")
+                return False
+            answers[label] = value.replace("\r", " ").replace("\n", " ").strip()
+
+    private_answers = {}
+    include_private = _read(read_fn, "¿Quieres completar también una sección privada opcional (correo, teléfono o cumpleaños)? (sí/no): ")
+    if include_private.casefold() == "/cancelar":
+        _write(write_fn, "NOVA: Cancelé el formulario. El perfil actual sigue intacto.")
+        return False
+    if normalize_confirmation(include_private):
+        for label, prompt in (
+            ("Correo electrónico", "¿Qué correo quieres guardar localmente?"),
+            ("Teléfono", "¿Qué teléfono quieres guardar localmente?"),
+            ("Cumpleaños", "¿Qué día y mes quieres guardar?"),
+            ("Otro dato privado", "¿Qué otro dato privado quieres tener disponible solo cuando sea pertinente? No incluyas contraseñas ni claves."),
+        ):
+            value = _read(read_fn, f"{prompt} (Enter para omitir): ")
+            if value.casefold() == "/cancelar":
+                _write(write_fn, "NOVA: Cancelé el formulario. El perfil actual sigue intacto.")
+                return False
+            private_answers[label] = value.replace("\r", " ").replace("\n", " ").strip()
+
+    if not any(answers.values()) and not any(private_answers.values()):
+        _write(write_fn, "NOVA: No registraste datos. No cambié el perfil.")
+        return False
+
+    _write(write_fn, "\nResumen del perfil nuevo:")
+    for label, value in answers.items():
+        if value:
+            _write(write_fn, f"- {label}: {value}")
+    for label, value in private_answers.items():
+        if value:
+            _write(write_fn, f"- {label}: [dato privado incluido]")
+    if not normalize_confirmation(_read(read_fn, "¿Confirmas respaldar y reemplazar el perfil actual? (sí/no): ")):
+        _write(write_fn, "NOVA: No hice cambios al perfil.")
+        return False
+
+    stamp = datetime.now().astimezone().strftime("%Y%m%d-%H%M%S-%f")
+    backup_dir = profile_dir / ".backups" / f"perfil-{stamp}"
+    managed_names = [name for name, _, _ in PROFILE_FORM] + [PRIVATE_PROFILE_FILE]
+    existing = [profile_dir / name for name in managed_names if (profile_dir / name).is_file()]
+    backup_files = {}
+    try:
+        profile_dir.mkdir(parents=True, exist_ok=True)
+        if existing:
+            backup_dir.mkdir(parents=True, exist_ok=False)
+            backup_dir.chmod(0o700)
+            for path in existing:
+                destination = backup_dir / path.name
+                shutil.copy2(path, destination)
+                backup_files[path] = destination
+
+        captured_on = datetime.now().astimezone().date().isoformat()
+        replacements = {
+            profile_dir / name: _profile_markdown(title, PROFILE_FORM, answers, captured_on)
+            for name, title, _ in PROFILE_FORM
+        }
+        private_lines = ["# Datos privados", "", f"Formulario completado el {captured_on}.", "", "Esta información permanece en el perfil local y solo se usa cuando resulta pertinente.", ""]
+        private_lines.extend(f"- **{label}:** {value}" for label, value in private_answers.items() if value)
+        private_path = profile_dir / PRIVATE_PROFILE_FILE
+        if any(private_answers.values()):
+            replacements[private_path] = "\n".join(private_lines).rstrip() + "\n"
+        for path, content in replacements.items():
+            temporary = path.with_name(f".{path.name}.{stamp}.tmp")
+            temporary.write_text(content, encoding="utf-8")
+            temporary.replace(path)
+        if not any(private_answers.values()):
+            private_path.unlink(missing_ok=True)
+    except OSError:
+        for path in managed_names:
+            target = profile_dir / path
+            backup = backup_files.get(target)
+            if backup and backup.exists():
+                shutil.copy2(backup, target)
+            elif target.exists() and target not in existing:
+                target.unlink()
+            (profile_dir / f".{path}.{stamp}.tmp").unlink(missing_ok=True)
+        raise
+
+    if existing:
+        _write(write_fn, f"NOVA: Perfil reemplazado. Copia anterior: {backup_dir.relative_to(profile_dir.parent)}")
+    else:
+        _write(write_fn, "NOVA: Perfil creado.")
+    _write(write_fn, "Los recuerdos y planes de SQLite permanecen intactos.")
+    return True
 
 
 def _read(read_fn, prompt):
@@ -1856,9 +2003,13 @@ def main():
     pending_user = None
     print(
         f"NOVA — memoria local | modelo: {MODEL}\n"
-        "Escribe /ayuda para comandos. NOVA puede guardar gustos explícitos de bajo riesgo y anotar planes futuros."
+        "Escribe /ayuda para comandos o /mantenimiento para configurar tu perfil. "
+        "NOVA puede guardar gustos explícitos de bajo riesgo y anotar planes futuros."
     )
     notify_upcoming_plans(connection)
+    if not any((PROFILE_DIR / filename).is_file() for filename in PROFILE_FILES):
+        print("NOVA: Aún no hay un perfil personal configurado. Completa el formulario; puedes cancelar sin guardar.")
+        run_profile_maintenance(read_fn=input, write_fn=print)
     while True:
         try:
             if pending_user is None:
@@ -1882,6 +2033,9 @@ def main():
                 continue
             if command == "/ayuda":
                 print(help_text())
+                continue
+            if command == "/mantenimiento":
+                run_profile_maintenance(read_fn=input, write_fn=print)
                 continue
             if command in {"/empezar", "/entrevistame", "/entrevístame", "/conectar", "/auditar", "/subir-nivel", "/cerebro-3d"}:
                 run_andromeda_command(command, argument, root=ROOT, read=input, write=print, ask=ask_ollama)
@@ -1933,6 +2087,13 @@ def main():
             if command == "/exporta":
                 export(connection)
                 print(f"NOVA: Exporté los recuerdos a {MEMORY_MD}.")
+                continue
+
+            time_answer = local_time_answer(user)
+            if time_answer:
+                print("\nNOVA: " + time_answer)
+                history.extend([{"role": "user", "content": user}, {"role": "assistant", "content": time_answer}])
+                history = history[-12:]
                 continue
 
             intent = analyze_natural_intent(connection, user, history) if SMART_MEMORY else None

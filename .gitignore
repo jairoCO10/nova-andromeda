@@ -5,6 +5,7 @@
 /perfil/*.md
 !/perfil/*.example.md
 !/perfil/README.md
+/perfil/.backups/
 /aios-intake.md
 /context/*
 !/context/.gitkeep

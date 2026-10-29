@@ -16,6 +16,7 @@ Los archivos privados y generados están cubiertos por `.gitignore`. Revisa `git
 
 ## Comandos
 
+- `/mantenimiento`: rehace el perfil personal mediante un formulario; respalda los archivos anteriores y deja intacta la memoria de SQLite.
 - `/empezar`: entrevista inicial de siete preguntas, guardada por respuesta, que prepara archivos en `context/`.
 - `/entrevistame [tema]`: entrevista adaptativa de una pregunta por turno; captura y resumen local en `brainstorms/`.
 - `/conectar <ruta> <propósito>`: valida y registra una fuente, sin copiar ni leer su contenido.
