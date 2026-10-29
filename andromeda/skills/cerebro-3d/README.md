@@ -6,7 +6,7 @@ Construye un globo interactivo, con el nombre que tú elijas, a partir del conoc
 - Codex: selecciona **Cerebro 3D** o escribe `$cerebro-3d`
 - Lenguaje natural: "Construye un cerebro 3D con mi AIOS."
 
-Requiere Node.js 22 o superior. El renderer ya viene compilado, así que la app generada funciona con `node serve.mjs` sin instalar nada con npm. Si modificas el renderer, ejecuta `npm ci` y `npm run build:js` en la app generada.
+Requiere Node.js 22.x. El renderer ya viene compilado. NOVA usa `scripts/node22` para construir el grafo y servir la app sin cambiar el Node global. En una app generada, ejecuta `../../scripts/node22 serve.mjs`. Si modificas el renderer, instala las dependencias y usa los scripts del `package.json`, que también seleccionan Node 22.
 
 La app incluye el globo, el orbe central, categorías con colores, búsqueda, lector de notas, filtros por fuente, inventario, modo cine y una repetición interactiva del crecimiento. Puedes arrastrar y hacer zoom mientras crece. Las conexiones salen de las notas seleccionadas: la animación muestra cómo se conectan, no cuándo se crearon.
 
@@ -14,6 +14,6 @@ Lee directamente Markdown y texto, y también la memoria curada de Codex. La mem
 
 Para instalarlo por separado, copia esta carpeta completa (incluidas `assets`, `scripts`, `references` y `agents`) en `.agents/skills/cerebro-3d/` del AIOS de destino. En este repositorio, ejecuta `bash scripts/sync-codex-skills.sh cerebro-3d` para generar la copia de Codex. No copies solo `SKILL.md` ni incluyas la configuración o los datos generados de otra persona.
 
-Validación del paquete: `node scripts/test-package.mjs`. Para una prueba visual más grande con datos ficticios, agrega `--keep --demo --out <carpeta-temporal>`.
+Validación del paquete desde la raíz del repositorio: `scripts/node22 andromeda/skills/cerebro-3d/scripts/test-package.mjs`. Para una prueba visual más grande con datos ficticios, agrega `--keep --demo --out <carpeta-temporal>`.
 
 Consulta [SKILL.md](SKILL.md) para ver el flujo, [la especificación portable](references/portable-spec.md) para el contrato de implementación y [la guía de configuración](references/config.md) para los adaptadores y límites.

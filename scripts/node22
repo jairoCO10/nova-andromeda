@@ -1,0 +1,48 @@
+#!/bin/sh
+set -eu
+
+NOVA_NODE22_TRY=""
+
+try_node22() {
+  NOVA_NODE22_TRY="$1"
+  shift
+  [ -n "$NOVA_NODE22_TRY" ] || return 1
+  [ -x "$NOVA_NODE22_TRY" ] || return 1
+  NOVA_NODE22_VERSION="$("$NOVA_NODE22_TRY" --version 2>/dev/null || true)"
+  case "$NOVA_NODE22_VERSION" in
+    v22.*) exec "$NOVA_NODE22_TRY" "$@" ;;
+  esac
+  return 1
+}
+
+if [ -n "${NOVA_NODE22:-}" ]; then
+  case "$NOVA_NODE22" in
+    */*) try_node22 "$NOVA_NODE22" "$@" || true ;;
+    *) try_node22 "$(command -v "$NOVA_NODE22" 2>/dev/null || true)" "$@" || true ;;
+  esac
+fi
+
+try_node22 "$(command -v node22 2>/dev/null || true)" "$@" || true
+
+if command -v brew >/dev/null 2>&1; then
+  NOVA_NODE22_BREW_PREFIX="$(brew --prefix node@22 2>/dev/null || true)"
+  if [ -n "$NOVA_NODE22_BREW_PREFIX" ]; then
+    try_node22 "$NOVA_NODE22_BREW_PREFIX/bin/node" "$@" || true
+  fi
+fi
+
+for NOVA_NODE22_CANDIDATE in \
+  "$HOME"/.nvm/versions/node/v22*/bin/node \
+  "$HOME"/.local/share/fnm/node-versions/v22*/installation/bin/node \
+  "$HOME"/.local/share/mise/installs/node/22*/bin/node \
+  "$HOME"/.asdf/installs/nodejs/22*/bin/node \
+  "$HOME"/.volta/tools/image/node/22*/bin/node \
+  /opt/homebrew/opt/node@22/bin/node \
+  /usr/local/opt/node@22/bin/node \
+  "$(command -v node 2>/dev/null || true)"
+do
+  try_node22 "$NOVA_NODE22_CANDIDATE" "$@" || true
+done
+
+printf '%s\n' 'NOVA requiere Node.js 22.x para el Cerebro 3D.' 'En macOS instala la fórmula aislada con: brew install node@22' 'También puedes definir NOVA_NODE22 con la ruta al ejecutable de Node 22.' >&2
+exit 127

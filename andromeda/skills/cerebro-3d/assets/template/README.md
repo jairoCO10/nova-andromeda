@@ -2,7 +2,7 @@
 
 Una vista local y de solo lectura de las fuentes que elijas en `brain.config.json`. En NOVA, el grafo muestra solo las categorías aprobadas; el perfil, SQLite y las copias de seguridad quedan fuera por defecto.
 
-Ejecuta `node serve.mjs` desde esta carpeta y abre el enlace localhost que aparece en la consola. Requiere Node.js 22 o superior. El renderer ya viene compilado, así que no hace falta instalar nada para usarlo. Para modificarlo, ejecuta `npm ci`, edita `src/` y luego `npm run build:js`.
+Ejecuta `../../scripts/node22 serve.mjs` desde esta carpeta y abre el enlace localhost que aparece en la consola. Requiere Node.js 22.x. El renderer ya viene compilado, así que no hace falta instalar dependencias para usarlo. Para modificarlo, usa los scripts del `package.json`, que seleccionan Node 22.
 
 El nombre, las categorías, los colores, las rutas de origen y el puerto se definen en `brain.config.json`. **Reconstruir desde el disco** (en el inventario) actualiza las notas y las conexiones. Si cambias el código o el puerto, reinicia el servidor. Si una fuente falta o no se puede leer, aparece como aviso en el inventario; nunca se inventan notas.
 

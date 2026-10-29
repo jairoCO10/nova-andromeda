@@ -11,4 +11,4 @@ Los seis paquetes de Andromeda AI se conservan bajo `skills/`. Las instrucciones
 | `/subir-nivel` | Entrevista de las 3 M y propuesta de un flujo medible. |
 | `/cerebro-3d` | Genera el grafo 3D incluido y lo sirve en loopback. |
 
-El Cerebro 3D lee solo las carpetas elegidas en el asistente de configuración. Para instalarlo necesita Node.js 22 o superior; el resto de NOVA funciona con Python y Ollama.
+El Cerebro 3D lee solo las carpetas elegidas en el asistente de configuración. Requiere Node.js 22.x; en macOS, instala la fórmula aislada con `brew install node@22`. El resto de NOVA funciona con Python y Ollama.

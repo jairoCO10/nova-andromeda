@@ -17,12 +17,12 @@ Habla con el usuario en español latinoamericano neutro, salvo que prefiera otro
 
 Lee el manual operativo local correspondiente y el índice relevante. Identifica la raíz real del AIOS; no escanees un directorio superior ajeno ni toda la carpeta personal del usuario. Ubica la carpeta de este skill a partir del `SKILL.md` cargado: todas las rutas del paquete de abajo son relativas a ella, ya sea que esté en `.claude/skills`, `.agents/skills` o en un plugin.
 
-Lee [la especificación portable](references/portable-spec.md) y [la guía de configuración](references/config.md). Verifica que haya Node.js 22 o superior, usando el runtime que el usuario ya tiene. Si no está disponible, explica que Node es necesario y sigue la política de instalación y aprobación del entorno.
+Lee [la especificación portable](references/portable-spec.md) y [la guía de configuración](references/config.md). NOVA requiere Node.js 22.x para el Cerebro 3D. Usa `scripts/node22`, que selecciona la versión fijada del proyecto; en macOS, la instalación recomendada es `brew install node@22`. No cambies la versión global de Node.
 
 Ejecuta el asistente de descubrimiento, que solo lista rutas:
 
 ```text
-node <carpeta-del-skill>/scripts/discover.mjs --root <raíz-del-AIOS>
+scripts/node22 <carpeta-del-skill>/scripts/discover.mjs --root <raíz-del-AIOS>
 ```
 
 Lista carpetas candidatas sin leer su contenido. Usa también las rutas explícitas del manual operativo para encontrar carpetas personalizadas de wiki, reuniones, videos o proyectos. No supongas que los nombres de carpeta o las cuentas del autor existen en este equipo.
@@ -53,7 +53,7 @@ Crea un archivo JSON de configuración en una carpeta temporal ignorada dentro d
 - Asigna a cada categoría un ID único, una etiqueta, un color, un adaptador y una o más rutas reales.
 
 ```text
-node <carpeta-del-skill>/scripts/scaffold.mjs --root <raíz-del-AIOS> --config <json-de-configuración> --out apps/3d-brain
+scripts/node22 <carpeta-del-skill>/scripts/scaffold.mjs --root <raíz-del-AIOS> --config <json-de-configuración> --out apps/3d-brain
 ```
 
 Esto copia una lista explícita de archivos de la aplicación, escribe la configuración personalizada local y se niega a usar una carpeta de destino existente.
@@ -63,8 +63,8 @@ El renderer viene precompilado: `node serve.mjs` funciona sin instalar nada con 
 En la carpeta de la app generada:
 
 ```text
-node build.mjs
-node serve.mjs
+../../scripts/node22 build.mjs
+../../scripts/node22 serve.mjs
 ```
 
 Inicia el servidor con el mecanismo normal del entorno para procesos en segundo plano. En Windows, esos procesos deben iniciarse ocultos. El puerto por defecto es 4640:

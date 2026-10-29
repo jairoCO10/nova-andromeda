@@ -4,11 +4,14 @@
   "private": true,
   "type": "module",
   "license": "MIT",
+  "engines": {
+    "node": "22.x"
+  },
   "scripts": {
-    "start": "node serve.mjs",
-    "build:graph": "node build.mjs",
-    "build:js": "esbuild src/app.js --bundle --format=esm --minify --outfile=dist/app.js --target=es2022",
-    "build": "npm run build:js && npm run build:graph"
+    "start": "../../scripts/node22 serve.mjs",
+    "build:graph": "../../scripts/node22 build.mjs",
+    "build:js": "../../scripts/node22 node_modules/esbuild/bin/esbuild src/app.js --bundle --format=esm --minify --outfile=dist/app.js --target=es2022",
+    "build": "npm run build:js && ../../scripts/node22 build.mjs"
   },
   "dependencies": {
     "3d-force-graph": "^1.80.0",

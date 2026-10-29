@@ -18,7 +18,7 @@ El cerebro conserva el renderer 3D de Andromeda: esfera de conocimiento, búsque
 
 - Python 3.10 o superior.
 - Ollama con un modelo local llamado `nova` (o configura `NOVA_MODEL`).
-- Node.js 22 o superior únicamente para construir el Segundo Cerebro 3D.
+- Node.js 22.x para el Segundo Cerebro 3D. El proyecto fija esa versión con `.nvmrc` y `.node-version`.
 
 ## Inicio
 
@@ -27,7 +27,7 @@ ollama serve
 python3 app.py
 ```
 
-En la consola de NOVA, escribe `/ayuda` para ver los comandos. Para iniciar el cerebro 3D, escribe `/cerebro-3d`, elige un nombre y aprueba las carpetas que quieres indexar. La app se sirve solo en `127.0.0.1`; NOVA no sube notas a ningún servicio.
+En macOS, instala la versión aislada con `brew install node@22`. NOVA la detecta para el cerebro 3D y deja intacto el `node` global. En la consola de NOVA, escribe `/ayuda` y después `/cerebro-3d`; elige un nombre y las carpetas que quieres indexar. La app se sirve solo en `127.0.0.1`.
 
 ## Datos locales y privacidad
 

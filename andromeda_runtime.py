@@ -320,14 +320,20 @@ def _brain_is_running(port, expected_name):
 
 
 def start_brain(root, read, write):
-    node = shutil.which("node")
-    if not node:
-        write("NOVA: No encontré Node.js. Instala Node.js 22 o superior para usar el Cerebro 3D.")
+    node = root / "scripts" / "node22"
+    if not node.is_file():
+        write("NOVA: No encontré el selector local scripts/node22. Reinstala o actualiza el repositorio.")
         return
-    version = subprocess.run([node, "--version"], capture_output=True, text=True, check=False).stdout.strip()
-    match = re.search(r"v?(\d+)", version)
-    if not match or int(match.group(1)) < 22:
-        write(f"NOVA: El Cerebro 3D requiere Node.js 22 o superior. Versión disponible: {version or 'desconocida'}.")
+    check = subprocess.run([str(node), "--version"], capture_output=True, text=True, check=False)
+    version = check.stdout.strip()
+    if check.returncode != 0:
+        global_node = shutil.which("node")
+        current = subprocess.run([global_node, "--version"], capture_output=True, text=True, check=False).stdout.strip() if global_node else "ninguna"
+        detail = check.stderr.strip() or "Instala Node.js 22.x para continuar."
+        write(f"NOVA: {detail} Versión global detectada: {current or 'ninguna'}. NOVA conserva esa versión global y usa Node 22 solo para el Cerebro 3D.")
+        return
+    if not re.fullmatch(r"v22\.\d+\.\d+", version):
+        write(f"NOVA: El selector devolvió {version or 'una versión desconocida'}; se necesita Node.js 22.x.")
         return
     app = root / "apps" / "3d-brain"
     config_path = app / "brain.config.json"
