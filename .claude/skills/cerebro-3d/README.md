@@ -12,7 +12,7 @@ La app incluye el globo, el orbe central, categorías con colores, búsqueda, le
 
 Lee directamente Markdown y texto, y también la memoria curada de Codex. La memoria de Claude se lee desde la carpeta Markdown que elijas. El conocimiento de reuniones y videos puede venir de exportaciones en Markdown. Otros formatos y servicios en línea necesitan una exportación o un adaptador probado.
 
-Para instalarlo por separado, copia esta carpeta completa (incluidas `assets`, `scripts`, `references` y `agents`) en `.claude/skills/cerebro-3d/` del AIOS de destino. En este repositorio, ejecuta `bash scripts/sync-codex-skills.sh cerebro-3d` para generar la copia de Codex. No copies solo `SKILL.md` ni incluyas la configuración o los datos generados de otra persona.
+Para instalarlo por separado, copia esta carpeta completa (incluidas `assets`, `scripts`, `references` y `agents`) en `.agents/skills/cerebro-3d/` del AIOS de destino. En este repositorio, ejecuta `bash scripts/sync-codex-skills.sh cerebro-3d` para generar la copia de Codex. No copies solo `SKILL.md` ni incluyas la configuración o los datos generados de otra persona.
 
 Validación del paquete: `node scripts/test-package.mjs`. Para una prueba visual más grande con datos ficticios, agrega `--keep --demo --out <carpeta-temporal>`.
 

@@ -1,6 +1,6 @@
 # Tu Cerebro 3D
 
-Una vista local y de solo lectura de las fuentes de conocimiento seleccionadas en `brain.config.json`. Forma parte de Andromeda AI, una adaptación de AIS-OS en español.
+Una vista local y de solo lectura de las fuentes que elijas en `brain.config.json`. En NOVA, el grafo muestra solo las categorías aprobadas; el perfil, SQLite y las copias de seguridad quedan fuera por defecto.
 
 Ejecuta `node serve.mjs` desde esta carpeta y abre el enlace localhost que aparece en la consola. Requiere Node.js 22 o superior. El renderer ya viene compilado, así que no hace falta instalar nada para usarlo. Para modificarlo, ejecuta `npm ci`, edita `src/` y luego `npm run build:js`.
 
@@ -26,4 +26,4 @@ El servidor escucha en `127.0.0.1`:
 
 El modo cine oculta los controles, no la información privada: revisa las notas visibles antes de grabar o compartir capturas.
 
-Las licencias de las dependencias de terceros están en `THIRD-PARTY-NOTICES.txt`.
+El renderer 3D procede de Andromeda AI/AIS-OS. Se conservan sus avisos de procedencia y las licencias de las dependencias en `THIRD-PARTY-NOTICES.txt`.

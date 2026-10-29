@@ -49,9 +49,13 @@ Claude Code toma el nombre de un skill de proyecto de su carpeta y no admite ali
 - **Renderer del Cerebro 3D** (`.claude/skills/cerebro-3d/assets/template/dist/app.js`, y su copia en `.agents/`): empaqueta three, 3d-force-graph, marked, DOMPurify, d3 y otras dependencias.
   - Sus licencias (MIT, ISC, tipo BSD y la licencia dual Apache-2.0 / MPL-2.0 de DOMPurify) están en `THIRD-PARTY-NOTICES.txt`, que se conserva sin cambios junto al bundle.
   - Si agregas o actualizas dependencias, actualiza ese archivo.
-- **Fuentes tipográficas** (Archivo, DM Sans, JetBrains Mono): se cargan en tiempo de ejecución desde Google Fonts (licencia SIL Open Font License) y no se redistribuyen en este repositorio.
+- **Tipografía del Cerebro 3D:** NOVA usa las fuentes del sistema y quitó las llamadas remotas a Google Fonts para mantener la interfaz local.
 - **Demo en video** (`docs/media/3d-brain-demo.mp4` y `3d-brain-preview.gif`): es la grabación original del autor (el "HerkBrain" de Nate Herk, con la interfaz en inglés). Se conserva sin cambios y con atribución. Conviene reemplazarla por una grabación propia de Andromeda AI antes de usarla con fines promocionales.
 
 ## Contenido propio de Andromeda AI
 
 Los frameworks y el conocimiento originales de Andromeda AI van en `references/andromeda/`. Ese contenido es de Miguel Silva y puede tener sus propios términos, que se indicarán en cada archivo. Mientras no se indique otra cosa, se distribuye junto con este repositorio bajo la misma licencia MIT.
+
+## Adaptación NOVA
+
+Este repositorio es un fork de Andromeda AI adaptado para NOVA por Jairo Cogollo Otero. La adaptación integra una consola Python con Ollama y SQLite, incorpora comandos locales para las entrevistas y auditorías, y cambia el branding del Segundo Cerebro 3D a NOVA. El renderer 3D y los frameworks derivados conservan la procedencia y licencias de sus autores originales; esta adaptación no implica afiliación ni respaldo de Nate Herk, AI Automation Society o Miguel Silva.

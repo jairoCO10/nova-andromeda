@@ -1,0 +1,6 @@
+interface:
+  display_name: "Cerebro 3D"
+  short_description: "Construye un globo 3D interactivo y personalizado con el conocimiento de tu AIOS"
+  default_prompt: "Usa $cerebro-3d para convertir mi AIOS en un globo de conocimiento 3D con el nombre y las categorías que yo elija."
+policy:
+  allow_implicit_invocation: false

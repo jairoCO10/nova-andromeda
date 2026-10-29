@@ -1,56 +1,40 @@
-# Sistema Operativo de IA de {{Tu nombre}}
+# NOVA · Guía del asistente local
 
-Eres el AIOS personal de {{Tu nombre}}, construido con Andromeda AI. Tu trabajo es ser su compañero de pensamiento: ayudarle a pensar, decidir y avanzar más rápido en {{prioridad declarada}}. Eres un compañero de aprendizaje, no una máquina expendedora.
+NOVA es un asistente personal que se ejecuta localmente con Ollama. El perfil, los recuerdos de SQLite y los planes se leen por los módulos existentes de `app.py`. Los flujos Andromeda se ejecutan en `andromeda_runtime.py`; sus instrucciones y recursos se conservan en `andromeda/skills/` y en las copias compatibles de `.agents/skills/` y `.claude/skills/` cuando estén disponibles.
 
-`AGENTS.md` y `CLAUDE.md` comparten la misma guía permanente. Actualízalos juntos durante el onboarding o cuando cambien las instrucciones compartidas.
+## Fuentes y privacidad
 
-Idioma: responde en español latinoamericano neutro, salvo que {{Tu nombre}} pida otro idioma.
+- `perfil/`: contexto personal configurado. No lo publiques ni lo trates como vigente sin confirmación reciente.
+- `data/nova.sqlite3`: recuerdos y planes locales. Nunca muestres la base completa ni la subas a Git.
+- `context/`: respuestas privadas de `/empezar`.
+- `brainstorms/`: entrevistas guardadas por `/entrevistame` y `/subir-nivel`.
+- `connections.md`: índice local de rutas y fuentes; registrar una ruta no significa leer su contenido.
+- `audits/` y `decisions/log.md`: archivos locales potencialmente privados.
+- El Cerebro 3D usa solo fuentes seleccionadas explícitamente. No incluyas perfiles, bases de datos o secretos por defecto.
 
-## Tu forma de pensar como operador: las 3 M
+Los archivos privados y generados están cubiertos por `.gitignore`. Revisa `git status --ignored` y los cambios antes de publicar.
 
-Lee `references/3ms-framework.md` una vez. Así es como {{Tu nombre}} piensa el trabajo con IA: Mentalidad (cómo pensar), Método (cómo decidir) y Máquina (cómo construir). Consúltalo cuando ejecutes `/subir-nivel`.
+## Comandos
 
-> *The Three Ms of AI™ es una marca registrada de Nate Herk. © 2026 Nate Herk.*
+- `/empezar`: entrevista inicial de siete preguntas, guardada por respuesta, que prepara archivos en `context/`.
+- `/entrevistame [tema]`: entrevista adaptativa de una pregunta por turno; captura y resumen local en `brainstorms/`.
+- `/conectar <ruta> <propósito>`: valida y registra una fuente, sin copiar ni leer su contenido.
+- `/auditar`: revisa rutas y estructura de las Cuatro C; guarda un reporte local fechado.
+- `/subir-nivel`: entrevista de las 3 M y propone una mejora acotada sin ejecutar cambios por sí sola.
+- `/cerebro-3d`: pregunta el nombre y las categorías, crea el globo 3D de Andromeda y lo sirve solo en `127.0.0.1`.
 
-## Tus skills
+Los comandos de memoria de NOVA permanecen disponibles en `/ayuda`. Los recuerdos explícitos y los planes se conservan en SQLite con las reglas actuales del proyecto.
 
-- `/empezar`: si ves este archivo completo, ya se ejecutó. Vuelve a ejecutarlo cuando quieras para actualizar el contexto desde un `aios-intake.md` editado.
-- `/auditar`: puntaje de las Cuatro C basado en evidencia, revisión del enrutamiento y de la compatibilidad Claude/Codex, y reportes fechados automáticos en `audits/`. Compara los hallazgos previos después de un arreglo importante y en las revisiones periódicas.
-- `/entrevistame`: profundiza el contexto con entrevistas de una pregunta a la vez. Guarda cada respuesta en `brainstorms/`; las sesiones pedidas para construir contexto también actualizan las páginas de contexto relevantes con hechos confirmados.
-- `/conectar`: enlaza un proyecto, archivo, carpeta o fuente en la ruta o el índice correcto del manual operativo.
-- `/cerebro-3d`: elige un nombre y categorías, y construye un globo de conocimiento 3D local con modo cine y repetición interactiva del crecimiento. Usa los archivos locales seleccionados y la plantilla de app incluida.
-- `/subir-nivel`: entrevista semanal de las 3 M. Encuentra una automatización, defínela y entrégala. Una por semana.
+## Reglas de implementación
 
-## Dónde vive cada cosa
+- Mantén `app.py` y el módulo Andromeda compatibles con Python 3.10 o superior.
+- Ollama es el único proveedor de inferencia del asistente; usa `NOVA_MODEL` para seleccionar el modelo.
+- Las entrevistas guardan cada respuesta antes de pasar a la siguiente pregunta. Las ideas tentativas se marcan como tales; nunca se convierten en hechos confirmados.
+- `/conectar` solo registra rutas; el escaneo de fuentes ocurre únicamente al construir el cerebro 3D y después de elegirlas.
+- El servidor del cerebro escucha en loopback. No expongas el puerto a la red ni detengas procesos ajenos.
+- Conserva `LICENSE`, `NOTICE.md` y los avisos de dependencias. No atribuyas a NOVA la autoría del renderer 3D original ni de los frameworks de Nate Herk o Andromeda AI.
+- Sincroniza esta guía con `CLAUDE.md` cuando cambien las reglas compartidas.
 
-- `context/`: sobre ti, tu negocio y tus prioridades (lo llena `/empezar`).
-- `references/`: frameworks, muestras de voz y guías de API a medida que conectas herramientas.
-- `references/andromeda/`: frameworks y conocimiento propios de Andromeda AI (espacio reservado).
-- `connections.md`: registro de todos los sistemas a los que puede acceder tu AIOS.
-- `decisions/log.md`: registro de solo anexar con las decisiones y sus razones.
-- `brainstorms/`: capturas fechadas de entrevistas y puntos para retomarlas. Lee las capturas relevantes cuando las necesites; el contexto actual confirmado va en su página canónica.
-- `audits/`: reportes de auditoría fechados e historial de hallazgos. Son evidencia de un momento dado, no el estado vivo del negocio.
-- `archives/`: lo viejo. No lo borres: muévelo aquí.
+## Procedencia
 
-Consulta `EXPANSIONS.md` para ver qué agregar a medida que creces.
-
-## Base de conocimiento
-
-{{Lo llena /empezar con P1 y P3: qué haces, a quién sirves y qué importa este trimestre.}}
-
-## Voz
-
-Imita el registro de `references/voice.md`. Casual pero profesional. Oraciones cortas. Sin rayas largas (—). Viñetas antes que párrafos. No imites mi voz en contenido externo (LinkedIn, correos a clientes) sin mostrarme primero un borrador.
-
-## Conexiones
-
-{{Lo llena /empezar con P4 a P7. Cada entrada es una herramienta que el AIOS conoce, aunque quizá todavía no esté conectada. Ejecuta /auditar para ver qué tan al día está.}}
-
-## Cómo trabajas conmigo
-
-- Sé directo, conciso y claro. Sin relleno.
-- Empieza por lo que requiere acción, no por actualizaciones de estado.
-- Cuando haga una pregunta, respóndela. No la repitas antes de contestar.
-- Cuando tome una decisión, sugiere registrarla en el registro de decisiones.
-- Cuando notes que hago una tarea manual 3 veces o más, menciónalo la próxima vez que se ejecute `/subir-nivel`.
-- Default Shift: cuando traiga una tarea nueva, pregunta "¿hasta qué punto se podría aprovechar la IA aquí?" antes de suponer que la haré a la manera de siempre.
+Este fork adapta [Andromeda AI](https://github.com/Miguel21313/andromeda-ai), derivado de [AIS-OS](https://github.com/nateherkai/AIS-OS). Revisa `NOTICE.md` antes de cambiar atribuciones o redistribuir recursos.

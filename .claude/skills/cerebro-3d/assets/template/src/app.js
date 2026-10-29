@@ -127,7 +127,7 @@ async function main() {
   data = await res.json();
   if (!res.ok) throw new Error(data.error || 'No se pudo cargar el cerebro.');
   const brainName = data.brain.name;
-  document.title = `${brainName} · Andromeda AI`;
+  document.title = `${brainName} · NOVA`;
   document.querySelector('.brand-name').textContent = brainName;
   document.querySelector('.splash-title').textContent = brainName;
   document.querySelector('.mode-label').textContent = brainName.toUpperCase() + ' / 3D';

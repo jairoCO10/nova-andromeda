@@ -1,0 +1,6 @@
+interface:
+  display_name: "Conectar al AIOS"
+  short_description: "Enlaza una fuente en la ruta correcta de tu AIOS"
+  default_prompt: "Usa $conectar para agregar esta fuente al enrutamiento de mi AIOS."
+policy:
+  allow_implicit_invocation: false

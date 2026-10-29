@@ -1,0 +1,4 @@
+interface:
+  display_name: "Auditar AIOS"
+  short_description: "Encuentra brechas de enrutamiento y diferencias entre Claude y Codex"
+  default_prompt: "Ejecuta $auditar en este proyecto."

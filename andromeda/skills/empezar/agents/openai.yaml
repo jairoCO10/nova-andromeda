@@ -1,0 +1,6 @@
+interface:
+  display_name: "Empezar (AIOS)"
+  short_description: "Configura o actualiza el contexto personal de tu AIOS"
+  default_prompt: "Usa $empezar para configurar o actualizar el contexto de mi AIOS."
+policy:
+  allow_implicit_invocation: false

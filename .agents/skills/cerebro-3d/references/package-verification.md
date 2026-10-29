@@ -1,12 +1,12 @@
 # Verificación del paquete
 
-## Verificación de la adaptación Andromeda AI
+## Verificación de la adaptación NOVA
 
 Verificado el 17 de septiembre de 2026 en Windows 11 con Node.js 22.16.0, después de localizar la interfaz al español y recompilar `dist/app.js`.
 
 - `node scripts/test-package.mjs` pasó (8 notas) en `.claude` y `.agents`. Con `--demo` también pasó (188 notas, 5 categorías, 545 conexiones).
 - Se revisó en el navegador una app ficticia "Atlas Brain" en escritorio y en una vista angosta (406 px):
-  - pantalla de inicio con la línea "Andromeda AI · adaptado por Miguel Silva";
+  - pantalla de inicio con la línea "NOVA · adaptado desde Andromeda AI";
   - inventario, panel de nota y lectura de nota, búsqueda sin resultados, filtro de una sola fuente y restauración;
   - pausa de movimiento;
   - demo completa hasta 188/188 con "Repetir demo", y modo cine.
